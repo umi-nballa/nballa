@@ -101,6 +101,9 @@ class CoveragesUtil {
       case "HOPS_GolfCartPD_HOE_Ext":
         result = isGolfCartPDCovAvailable(coverable as HomeownersLine_HOE)
         break
+      case "HODW_LimitedScreenCov_HOE_Ext":
+        result = isLimitedScreenCovAvailable(coverable as Dwelling_HOE)
+        break
       default:
         break
     }
@@ -192,6 +195,9 @@ class CoveragesUtil {
       case "BP7CrossSuitsExcl_EXt":
           result = getCrossSuitsExistence(coverable as BP7BusinessOwnersLine)
           break
+      case "HODW_LossAssEQEndorsement_HOE_Ext":
+          result = getLossAssEQEndorsementExistence(coverable as Dwelling_HOE)
+          break
       default:
         break
     }
@@ -281,6 +287,9 @@ class CoveragesUtil {
       case "DPDW_FairRentalValue_Ext":
         covTermsToInitialize.add((coverable as Dwelling_HOE).DPDW_FairRentalValue_Ext.DPDW_FairRentalValue_ExtTerm)
         break
+      case "HODW_LossAssEQEndorsement_HOE_Ext":
+        initLossAssEQEndorsementVCov_HOE(coverable)
+        break
       default:
         break
     }
@@ -341,11 +350,18 @@ class CoveragesUtil {
 
   private static function initDPLIMedPayOrPL_Cov_HOE(covPattern:String,coverable:Coverable){
     if(coverable.PolicyLine.BaseState == TC_HI && (coverable as HomeownersLine_HOE).HOPolicyType == TC_DP3_Ext){
-      if(covPattern === "DPLI_Personal_Liability_HOE" and !(coverable as HomeownersLine_HOE).DPLI_Med_Pay_HOEExists ){
+      if(covPattern === "DPLI_Personal_Liability_HOE" and !((coverable as HomeownersLine_HOE).DPLI_Med_Pay_HOEExists) ){
         (coverable as HomeownersLine_HOE).createCoverage("DPLI_Med_Pay_HOE")
-      }else if(covPattern === "DPLI_Med_Pay_HOE" and !(coverable as HomeownersLine_HOE).DPLI_Personal_Liability_HOEExists){
+      }else if(covPattern === "DPLI_Med_Pay_HOE" and !((coverable as HomeownersLine_HOE).DPLI_Personal_Liability_HOEExists) ){
         (coverable as HomeownersLine_HOE).createCoverage("DPLI_Personal_Liability_HOE")
       }
+    }
+  }
+
+  private static function initLossAssEQEndorsementVCov_HOE(coverable:Coverable){
+    var dwelling = coverable as Dwelling_HOE
+    if(dwelling.HODW_LossAssEQEndorsement_HOE_ExtExists && dwelling.HODW_LossAssessmentCov_HOE_ExtExists){
+      dwelling.HODW_LossAssEQEndorsement_HOE_Ext.HODW_LossAssEQLimit_HOETerm.Value = dwelling.HODW_LossAssessmentCov_HOE_Ext.HOPL_LossAssCovLimit_HOETerm.OptionValue.Value
     }
   }
 
@@ -450,6 +466,21 @@ class CoveragesUtil {
 
     return result
   }
+
+  private static function isLimitedScreenCovAvailable(dwelling:Dwelling_HOE) : boolean{
+    var result = true
+
+    if(dwelling.HOLine.BaseState==TC_FL && dwelling.HOLine.HOPolicyType == TC_HO3){
+      result = !dwelling.WHurricaneHailExclusion_Ext
+    }
+
+    if(dwelling.HOLine.BaseState==TC_FL && dwelling.HOLine.HOPolicyType == TC_DP3_Ext){
+      result = !dwelling.WHurricaneHailExclusion_Ext and dwelling.ResidenceType != TC_CONDO
+    }
+
+    return result
+  }
+
 
 
   private static function isWindstormExteriorPaintExclusionAvailable(hoLine : HomeownersLine_HOE) : boolean{
@@ -564,6 +595,14 @@ class CoveragesUtil {
     }else
       result = TC_ELECTABLE
 
+    return result
+  }
+
+  private static function getLossAssEQEndorsementExistence(dwelling : Dwelling_HOE) : ExistenceType{
+    var result : ExistenceType
+    if(dwelling.HODW_Earthquake_HOEExists && dwelling.HODW_LossAssessmentCov_HOE_ExtExists){
+      result = TC_REQUIRED
+    }
     return result
   }
 

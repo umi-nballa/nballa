@@ -9,4 +9,7 @@ class UWIssueDTO {
   @JsonProperty
   var _shortDescription : String as ShortDescription
 
+  @JsonProperty
+  var _blockingPoint : typekey.UWIssueBlockingPoint as BlockingPoint
+
 }

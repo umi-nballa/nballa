@@ -35,7 +35,11 @@ class CompositeLobDraftPlugin implements ILobDraftPlugin <DraftLobDataDTO> {
 
   override function updateNewDraftSubmission(period : PolicyPeriod, update : DraftLobDataDTO) {
     for (entry in _lobMap.entrySet()) {
-      entry.Value.updateNewDraftSubmission(period, update[entry.Key])
+      var lobUpdate = update[entry.Key]
+
+      if(lobUpdate != null){
+        entry.Value.updateNewDraftSubmission(period, lobUpdate)
+      }
     }
   }
 

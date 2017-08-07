@@ -37,7 +37,6 @@ class DefaultAccountContactPlugin implements IAccountContactPlugin{
     dto.FaxNumber = aContact.FaxPhone
     dto.EmailAddress1 = aContact.EmailAddress1
     dto.Subtype = aContact.Subtype.Code
-    dto.AccountHolder = true
 
     if(aContact.PrimaryAddress != null){
       dto.PrimaryAddress = _addressPlugin.toDto(aContact.PrimaryAddress)
@@ -49,6 +48,8 @@ class DefaultAccountContactPlugin implements IAccountContactPlugin{
           }
        }
     }
+
+    dto.PortalContactHash = aContact.PortalHash_Ext
   }
 
   private function fillPersonFields(aPerson: Person, dto: AccountContactDTO) {
@@ -86,6 +87,8 @@ class DefaultAccountContactPlugin implements IAccountContactPlugin{
     if (contact.Subtype == typekey.Contact.TC_PERSON){
       updatePersonData(contact as Person, dto)
     }
+
+    contact.PortalHash_Ext = dto.PortalContactHash
   }
 
   /**

@@ -860,8 +860,51 @@
 			<xsd:element name="AKA" type="xsd:string" minOccurs="0"/>
 			<xsd:element name="CreditResponseMessage" type="xsd:string" minOccurs="0" maxOccurs="unbounded"/>
             <xsd:element name="CreditGeneralMessage" type="xsd:string" minOccurs="0" maxOccurs="unbounded"/>
+            <xsd:element name="CreditAccountReview" type="CreditAccountReviewType" minOccurs="0"/>
 		</xsd:sequence>
 	</xsd:complexType>
+    <xsd:complexType name="CreditAccountSummaryTypeType">
+        <xsd:sequence>
+            <xsd:element name="AccountType" type="xsd:string" minOccurs="0"/>
+            <xsd:element name="NumberOfAccounts" type="xsd:string" minOccurs="0"/>
+            <xsd:element name="TotalOwed" type="xsd:string" minOccurs="0"/>
+            <xsd:element name="TotalPastDue" type="xsd:string" minOccurs="0"/>
+            <xsd:element name="HighAmount" type="xsd:string" minOccurs="0"/>
+        </xsd:sequence>
+    </xsd:complexType>
+    <xsd:complexType name="CreditAccountReviewType">
+        <xsd:sequence>
+            <xsd:element name="DateOldestTrade" type="xsd:string" minOccurs="0"/>
+            <xsd:element name="DateLatestTrade" type="xsd:string" minOccurs="0"/>
+            <xsd:element name="DateLatestActivity" type="xsd:string" minOccurs="0"/>
+            <xsd:element name="IncludeBankruptcies" type="xsd:string" minOccurs="0"/>
+            <xsd:element name="IncludePublicRecords" type="xsd:string" minOccurs="0"/>
+            <xsd:element name="IncludeCollectionRecords" type="xsd:string" minOccurs="0"/>
+            <xsd:element name="CreditAccountSummaryType" type="CreditAccountSummaryTypeType" minOccurs="0" maxOccurs="unbounded"/>
+            <xsd:element name="CreditAccountActivity" type="CreditAccountActivityType" minOccurs="0" maxOccurs="unbounded"/>
+        </xsd:sequence>
+    </xsd:complexType>
+    <xsd:complexType name="CreditAccountActivityType">
+        <xsd:sequence>
+            <xsd:element name="DateReported" type="xsd:string" minOccurs="0"/>
+            <xsd:element name="CurrentStatus" type="xsd:string" minOccurs="0"/>
+            <xsd:element name="HighCredit" type="xsd:string" minOccurs="0"/>
+            <xsd:element name="NowOwes" type="xsd:string" minOccurs="0"/>
+            <xsd:element name="PastDue" type="xsd:string" minOccurs="0"/>
+            <xsd:element name="Terms" type="xsd:string" minOccurs="0"/>
+            <xsd:element name="MonthsRev" type="xsd:string" minOccurs="0"/>
+            <xsd:element name="DateOpened" type="xsd:string" minOccurs="0"/>
+            <xsd:element name="AcctType" type="xsd:string" minOccurs="0"/>
+            <xsd:element name="FirmName" type="xsd:string" minOccurs="0"/>
+            <xsd:element name="FirmNumber" type="xsd:string" minOccurs="0"/>
+            <xsd:element name="CreditAccountActivityMsg" type="CreditAccountActivityMsgType" minOccurs="0" maxOccurs="unbounded"/>
+        </xsd:sequence>
+    </xsd:complexType>
+    <xsd:complexType name="CreditAccountActivityMsgType">
+        <xsd:sequence>
+            <xsd:element name="CreditAccountActivityMsgTxt" type="xsd:string" minOccurs="0"/>
+        </xsd:sequence>
+    </xsd:complexType>
 	<xsd:complexType name="QuestionOccurrenceInfoType">
 		<xsd:sequence>
 			<xsd:element name="OccurrenceDt" type="xsd:date"/>
@@ -1328,6 +1371,7 @@
 			<xsd:element name="OrganizationID" type="xsd:string" minOccurs="0"/>
 			<xsd:element name="OrganizationName" type="xsd:string" minOccurs="0"/>
 			<xsd:element name="Code" type="xsd:string" minOccurs="0"/>
+            <xsd:element name="AgentCode" type="xsd:string" minOccurs="0"/>
 			<xsd:element name="OfficeLocation" type="OfficeLocationType" minOccurs="0"/>
 			<xsd:element name="OrganizationDesc" type="xsd:string" minOccurs="0"/>
 			<xsd:element name="OrganizationType" type="OrganizationTypeType" minOccurs="0"/>
@@ -5168,7 +5212,10 @@
 			<xsd:element name="calcTotalCharge" type="xsd:string" minOccurs="0"/>
 			<xsd:element name="calcTotalChargeWithDerrama" type="xsd:string" minOccurs="0"/>
 			<xsd:element name="calcTotalPayment" type="xsd:string" minOccurs="0"/>
-		</xsd:sequence>
+            <xsd:element name="isDue" type="xsd:string"/>
+            <xsd:element name="isClosed" type="xsd:string"/>
+            <xsd:element name="isPaid" type="xsd:string"/>
+        </xsd:sequence>
 	</xsd:complexType>
 	<xsd:complexType name="SecondaryPolicyHolderType">
 		<xsd:sequence>
@@ -5233,7 +5280,7 @@
 			<xsd:element name="UWCompanyBranch" type="UWCompanyBranchType" minOccurs="0"/>
 			<xsd:element name="UWTier" type="xsd:string" minOccurs="0"/>
 			<xsd:element name="Producer" type="ProducerType" minOccurs="0"/>
-			<xsd:element name="ProducerCode" type="ProducerCodeType" minOccurs="0"/>
+			<xsd:element name="ProducerCode" type="ProducerCodeType" minOccurs="0" maxOccurs="unbounded"/>
 			<xsd:element name="Agency" type="AgencyType" minOccurs="0"/>
 			<xsd:element name="AgencyBranch" type="AgencyBranchType" minOccurs="0"/>
 			<xsd:element name="InsuranceProduct" type="InsuranceProductType" minOccurs="0"/>
@@ -5817,7 +5864,7 @@
 			<xsd:element name="ReceivedBy" type="ReceivedByType"/>
 			<xsd:element name="ReceivedAmount" type="xsd:byte"/>
 			<xsd:element name="ReceivedDate" type="xsd:date"/>
-			<xsd:element name="ProcessingDate" type="xsd:date"/>
+			<xsd:element name="ProcessingDate" type="xsd:date" minOccurs="0"/>
 			<xsd:element name="PaymentMethodType" type="PaymentMethodTypeType"/>
 			<xsd:element name="PaymentTransactionStatus" type="PaymentTransactionStatusType"/>
 			<xsd:element name="PaymentTransactionStatusReason" type="PaymentTransactionStatusReasonType"/>
@@ -5836,7 +5883,7 @@
 			<xsd:element name="ReceivedBy" type="ReceivedByType"/>
 			<xsd:element name="ReceivedAmount" type="xsd:byte"/>
 			<xsd:element name="ReceivedDate" type="xsd:date"/>
-			<xsd:element name="ProcessingDate" type="xsd:date"/>
+			<xsd:element name="ProcessingDate" type="xsd:date" minOccurs="0"/>
 			<xsd:element name="PaymentMethodType" type="PaymentMethodTypeType"/>
 			<xsd:element name="PaymentTransactionStatus" type="PaymentTransactionStatusType"/>
 			<xsd:element name="PaymentTransactionStatusReason" type="PaymentTransactionStatusReasonType"/>
@@ -5923,7 +5970,7 @@
 	</xsd:complexType>
 	<xsd:complexType name="PublishDocumentRequestType">
 		<xsd:sequence>
-			<xsd:element name="DocumentAttachment" type="DocumentAttachmentType" minOccurs="0"/>
+			<xsd:element name="DocumentAttachment" type="DocumentAttachmentType" minOccurs="0" maxOccurs="unbounded"/>
 			<xsd:element name="PolInfoTypeRq" type="PolicyDocumentPublishType" minOccurs="0"/>
 			<xsd:element name="ClaimsDocumentPublish" type="ClaimsDocumentPublishType" minOccurs="0" maxOccurs="unbounded"/>
 			<xsd:element name="BillingDocumentPublish" type="BillingDocumentPublishType" minOccurs="0"/>

@@ -4,18 +4,18 @@
   coverageCategory="HODW_Additional_HOE"
   coverageSubtype="DwellingCov_HOE"
   coveredPartyType="ThirdParty"
-  existence="Electable"
   lookupTableName="DwellingCov"
   owningEntityType="Dwelling_HOE"
   policyLinePattern="HomeownersLine_HOE"
   priority="19300"
   public-id="HODW_LossAssEQEndorsement_HOE_Ext"
   referenceDateByType="PolicyTerm">
-  <AvailabilityScript><![CDATA[if(Dwelling_HOE.HODW_Earthquake_HOEExists){
-return true
-}
+  <AvailabilityScript><![CDATA[if(Dwelling_HOE.HODW_Earthquake_HOEExists && Dwelling_HOE.HODW_LossAssessmentCov_HOE_ExtExists)
+  return true
 else
-return false]]></AvailabilityScript>
+  return false]]></AvailabilityScript>
+  <InitializeScript><![CDATA[una.productmodel.CoveragesUtil.initCoverage("HODW_LossAssEQEndorsement_HOE_Ext",HODW_LossAssEQEndorsement_HOE_Ext.Dwelling)]]></InitializeScript>
+  <ExistenceScript><![CDATA[return una.productmodel.CoveragesUtil.getExistence("HODW_LossAssEQEndorsement_HOE_Ext",Dwelling_HOE )]]></ExistenceScript>
   <CovTerms>
     <OptionCovTermPattern
       aggregationModel="po"
@@ -68,11 +68,10 @@ return false]]></AvailabilityScript>
           value="5.0000"/>
       </Options>
     </OptionCovTermPattern>
-    <OptionCovTermPattern
+    <DirectCovTermPattern
       aggregationModel="po"
-      choiceLookupTableName="DwellingCovCovOpt"
       codeIdentifier="HODW_LossAssEQLimit_HOE"
-      coverageColumn="ChoiceTerm1"
+      coverageColumn="DirectTerm1"
       lookupTableName="DwellingCovTerm"
       modelType="Limit"
       priority="100"
@@ -80,29 +79,7 @@ return false]]></AvailabilityScript>
       required="false"
       restrictionModel="prp"
       valueType="money">
-      <DefaultsSet>
-        <CovTermDefault
-          codeIdentifier="z2sg6gitmoiqoa6243u5qrgb9g9"
-          currency="usd"
-          defaultValue="5000"
-          public-id="z2sg6gitmoiqoa6243u5qrgb9g9"/>
-      </DefaultsSet>
-      <Options>
-        <CovTermOpt
-          codeIdentifier="zudg4ti91u7r9clj7cd9oim7mla"
-          currency="usd"
-          optionCode="5000"
-          priority="0"
-          public-id="zudg4ti91u7r9clj7cd9oim7mla"
-          value="5000.0000"/>
-        <CovTermOpt
-          codeIdentifier="zpnh2g5kn89p2dan6hijuvp8bn8"
-          currency="usd"
-          optionCode="10000"
-          priority="100"
-          public-id="zpnh2g5kn89p2dan6hijuvp8bn8"
-          value="10000.0000"/>
-      </Options>
-    </OptionCovTermPattern>
+      <LimitsSet/>
+    </DirectCovTermPattern>
   </CovTerms>
 </CoveragePattern>

@@ -35,8 +35,6 @@ class SubmissionUtil {
     branch.SubmissionProcess.beginEditing()
     branch.TermType = termType == null ? typekey.TermType.TC_ANNUAL : termType
 
-    branch.SourceSystem_Ext = SourceSystem_Ext.TC_GUIDEWIRE //Default to Guidewire
-
     /*
      * Account holder address could differ from policy address, unlink and update it if necessary.
      * It is absolutely valid to have separate account and policy addresses.
@@ -66,6 +64,9 @@ class SubmissionUtil {
       branch.Reinsurance_Ext = data.ReinsuranceFacultative
     }
 
+    if(data.SourceSystem != null){
+      branch.SourceSystem_Ext = data.SourceSystem
+    }
   }
 
   public static function updateSubmissionFlow(submission : Submission, data : DraftDataDTO) {

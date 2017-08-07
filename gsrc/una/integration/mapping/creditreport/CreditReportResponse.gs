@@ -60,6 +60,7 @@ class CreditReportResponse {
   private var _status : String as Status
   private var _reportCode : String as ReportCode
   private var _specialBillingID : String as SpecialBillingID
+  private var _creditAccountSummary : CreditAccountSummary_Ext as CreditAccountSummary
 
   construct() {
   }
@@ -115,6 +116,8 @@ class CreditReportResponse {
 
     private var _referenceNumber : String
     private var _specialBillingID : String
+
+    private var _creditAccountSummary : CreditAccountSummary_Ext
  
     construct() {
     }
@@ -352,6 +355,13 @@ class CreditReportResponse {
       return this
     }
 
+    public function withCreditAccountSummary(creditAccountSummary:CreditAccountSummary_Ext) : Builder {
+
+      this._creditAccountSummary = creditAccountSummary
+
+      return this
+    }
+
     public function create() : CreditReportResponse {
         
       return new CreditReportResponse(this)
@@ -393,6 +403,7 @@ class CreditReportResponse {
     this.Status = builder._status
     this.ReportCode = builder._reportCode
     this.SpecialBillingID = builder._specialBillingID
+    this._creditAccountSummary = builder._creditAccountSummary
     this._reasons.putAll(builder._reasons)
     this._messages.addAll(builder._messages)
     builder._reasons.clear()

@@ -294,11 +294,6 @@ class QuoteHandler implements IRpcHandler  {
       }
     })
 
-    if(uwExceptionEncounteredFlag) {
-      //send generic underwriting message back to the client
-      throw new UnderwritingException(uwException)
-    }
-
     return toDTO(qdd.SessionUUID, sub)
   }
 

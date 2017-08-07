@@ -1,29 +1,31 @@
 package edge.capabilities.gpa.job.submission
 
-uses edge.di.annotations.InjectableNode
-uses edge.jsonrpc.annotation.JsonRpcRunAsInternalGWUser
-uses edge.jsonrpc.annotation.JsonRpcMethod
+uses edge.PlatformSupport.Bundle
+uses edge.PlatformSupport.Logger
+uses edge.PlatformSupport.Reflection
+uses edge.capabilities.gpa.account.IAccountRetrievalPlugin
+uses edge.capabilities.gpa.document.IDocumentPlugin
+uses edge.capabilities.gpa.document.dto.DocumentDTO
+uses edge.capabilities.gpa.job.IJobPlugin
+uses edge.capabilities.gpa.job.IJobSummaryPlugin
+uses edge.capabilities.gpa.job.IUWIssuePlugin
+uses edge.capabilities.gpa.job.JobHandler
+uses edge.capabilities.gpa.job.dto.JobSummaryDTO
+uses edge.capabilities.gpa.job.dto.UWIssueDTO
 uses edge.capabilities.gpa.job.submission.dto.NewSubmissionDTO
 uses edge.capabilities.gpa.job.submission.dto.SubmissionDTO
-uses edge.capabilities.gpa.job.JobHandler
-uses edge.capabilities.helpers.JobUtil
-uses edge.jsonrpc.IRpcHandler
-uses edge.capabilities.gpa.note.dto.NoteDTO
-uses edge.capabilities.gpa.note.INotePlugin
-uses edge.capabilities.gpa.document.dto.DocumentDTO
-uses edge.capabilities.gpa.document.IDocumentPlugin
-uses java.lang.Exception
-uses edge.PlatformSupport.Reflection
-uses edge.PlatformSupport.Logger
-uses edge.capabilities.gpa.job.IJobPlugin
+uses edge.capabilities.gpa.job.submission.dto.SubmissionReviewDTO
 uses edge.capabilities.gpa.job.submission.dto.SubmissionSummaryDTO
-uses edge.capabilities.gpa.job.IUWIssuePlugin
-uses edge.capabilities.gpa.job.dto.UWIssueDTO
-uses edge.capabilities.gpa.job.dto.JobSummaryDTO
-uses edge.capabilities.gpa.job.IJobSummaryPlugin
-uses java.lang.Integer
-uses edge.capabilities.gpa.account.IAccountRetrievalPlugin
-uses edge.PlatformSupport.Bundle
+uses edge.capabilities.gpa.note.INotePlugin
+uses edge.capabilities.gpa.note.dto.NoteDTO
+uses edge.capabilities.helpers.JobUtil
+uses edge.di.annotations.InjectableNode
+uses edge.jsonrpc.IRpcHandler
+uses edge.jsonrpc.annotation.JsonRpcMethod
+uses edge.jsonrpc.annotation.JsonRpcRunAsInternalGWUser
+uses una.config.ConfigParamsUtil
+
+uses java.lang.Exception
 
 class SubmissionHandler extends JobHandler implements IRpcHandler {
   private static final var LOGGER = new Logger(Reflection.getRelativeName(SubmissionHandler))
@@ -36,9 +38,10 @@ class SubmissionHandler extends JobHandler implements IRpcHandler {
   var _uwIssuePlugin: IUWIssuePlugin
   var _jobSummaryPlugin: IJobSummaryPlugin
   var _accountRetrievalPlugin: IAccountRetrievalPlugin
+  var _submissionReviewPlugin: ISubmissionReviewPlugin
   @InjectableNode
   construct(aJobPlugin: IJobPlugin, aSubmissionPlugin: ISubmissionPlugin, aSubmissionSummaryPlugin: ISubmissionSummaryPlugin, aNotePlugin: INotePlugin, aDocumentPlugin: IDocumentPlugin,
-            aJobHelper: JobUtil, aUWIssuePlugin: IUWIssuePlugin, aJobSummaryPlugin: IJobSummaryPlugin, anAccountRetrievalPlugin: IAccountRetrievalPlugin) {
+            aJobHelper: JobUtil, aUWIssuePlugin: IUWIssuePlugin, aJobSummaryPlugin: IJobSummaryPlugin, anAccountRetrievalPlugin: IAccountRetrievalPlugin,aSubmissionReviewPlugin : ISubmissionReviewPlugin) {
     super(aJobPlugin, aJobHelper)
 
     this._jobPlugin = aJobPlugin
@@ -50,6 +53,7 @@ class SubmissionHandler extends JobHandler implements IRpcHandler {
     this._uwIssuePlugin = aUWIssuePlugin
     this._jobSummaryPlugin = aJobSummaryPlugin
     this._accountRetrievalPlugin = anAccountRetrievalPlugin
+    this._submissionReviewPlugin = aSubmissionReviewPlugin
   }
 
   /**
@@ -73,6 +77,30 @@ class SubmissionHandler extends JobHandler implements IRpcHandler {
     final var submission = _submissionPlugin.createSubmission(account, newSubmission)
 
     return _submissionPlugin.toDTO(submission)
+  }
+
+  /**
+   * Create an activity for UW to review submission
+   *
+   * <dl>
+   *   <dt>Calls:</dt>
+   * <dd> <code>IAccountRetrievalPlugin#getAccountByNumber(java.lang.String)</code> - To retrieve the account by AccountNumber</dd>
+   * <dd> <code>ISubmissionPlugin#createSubmission(Account, NewSubmissionDTO)</code> - To create a submission</dd>
+   * <dd> <code>ISubmissionPlugin#toDTO(Submission)</code> - To serialize the resulting submission</dd>
+   * </dl>
+   * @param   submissionReviewDTO   submissionReviewDTO, data about the new submission
+   * @returns A  SubmissionDTO, a representation of the resulting Submission entity
+   */
+  @JsonRpcRunAsInternalGWUser
+  @JsonRpcMethod
+  public function createActivityForUWReview(submissionReviewDTO : SubmissionReviewDTO) : SubmissionReviewDTO{
+    var activityPatternCode = ConfigParamsUtil.getString(TC_SubmitForReviewActivityPattern, null, submissionReviewDTO.AgentCode)
+    if(activityPatternCode == null){
+      activityPatternCode = ConfigParamsUtil.getString(TC_SubmitForReviewActivityPattern, null, null)
+    }
+    var activityPattern = ActivityPattern.finder.getActivityPatternByCode(activityPatternCode)
+    _submissionReviewPlugin.createUWReviewActivity(activityPattern,submissionReviewDTO)
+    return submissionReviewDTO
   }
 
   /**

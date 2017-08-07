@@ -140,7 +140,7 @@ class CreditReportRequestDispatcher extends PCValidationBase {
       for(message in creditReportResponse.Messages) {
         var creditMessage  = new CreditStatusReason(_policyPeriod)
         creditMessage.CreditStatusReasonDesc = message
-        creditReportExt.addToCreditStatusReasons(creditMessage)
+        creditReportExt.addToCreditGeneralMessage(creditMessage)
       }
     }
 
@@ -162,6 +162,7 @@ class CreditReportRequestDispatcher extends PCValidationBase {
     creditReportExt.SearchSSN = creditReportRequest.SocialSecurityNumber
     creditReportExt.SearchDateOfBirth = creditReportRequest.DateOfBirth
     creditReportExt.SearchGender = creditReportRequest.Gender
+    creditReportExt.CreditAccountSummary = creditReportResponse.CreditAccountSummary
 
 
 

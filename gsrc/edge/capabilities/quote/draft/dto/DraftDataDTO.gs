@@ -13,6 +13,7 @@ uses edge.aspects.validation.annotations.Augment
 uses edge.aspects.validation.Validation
 uses edge.aspects.validation.annotations.NotSet
 uses edge.capabilities.policycommon.accountcontact.dto.AccountContactDTO
+uses edge.capabilities.gpa.job.dto.UWIssueDTO
 
 /**
  * Basic (general) information about the sumbission. Includes
@@ -85,4 +86,11 @@ class DraftDataDTO {
 
   @JsonProperty
   var _premiumOnly : Boolean as PremiumOnly
+
+  @JsonProperty
+  var _sourceSystem : typekey.SourceSystem_Ext as SourceSystem
+
+
+  @JsonProperty
+  var _uwIssues : UWIssueDTO[] as UWIssues
 }

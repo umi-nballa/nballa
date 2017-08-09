@@ -122,6 +122,10 @@ abstract class BaseTunaValueUtil {
     } else {
       valObj = getTypeKey(propRef, aliasOrCode)
     }
+
+    if(valObj == null){
+      valObj = getTypeKey(propRef, aliasOrCode)
+    }
     return valObj
   }
 

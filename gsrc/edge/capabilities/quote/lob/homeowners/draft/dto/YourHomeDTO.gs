@@ -26,9 +26,6 @@ class YourHomeDTO {
   @JsonProperty @Required
   var clueHit_Ext : boolean as ClueHit_Ext
 
-  @JsonProperty @Required
-  var creditStatus : CreditStatusExt as CreditStatus
-
   @JsonProperty
   @TunaValue(HOLocation_HOE#DistToCoast_Ext, HOLocation_HOE#DistToCoastMatchLevel_Ext, HOLocation_HOE#OverrideDistToCoast_Ext, HOLocation_HOE#DistToCoastOverridden_Ext, {Dwelling_HOE#HOLocation})
   var _distanceToCoast : TunaValueDTO as DistanceToCoast
@@ -47,7 +44,7 @@ class YourHomeDTO {
   @JsonProperty @Required
   var _distToFireStation : int as DistanceToFireStation
 
-  @JsonProperty @Required
+  @JsonProperty
   var _dwellingLocation : typekey.DwellingLocationType_HOE as DwellingLocation
 
   @JsonProperty

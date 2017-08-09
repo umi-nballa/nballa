@@ -118,6 +118,10 @@ class DefaultDraftSubmissionPlugin implements IDraftSubmissionPlugin {
       throw new IllegalArgumentException("Quote request is incompatible with the existing quote")
     }
 
+    if(data.PolicyAddress == null){
+      data.PolicyAddress = data.AccountHolder.PrimaryAddress
+    }
+
     validateAddress(data.PolicyAddress)
 
     //For product availability check

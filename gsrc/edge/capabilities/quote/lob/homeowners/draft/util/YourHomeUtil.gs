@@ -82,15 +82,18 @@ final class YourHomeUtil extends BaseTunaValueUtil {
 
     mapTunaFields(data, dto, YourHomeDTO, FROM)
 
-    data.HOLocation.DistanceToFireHydrant = dto.DistanceToFireHydrant
-    data.HOLocation.DistanceToFireStation = dto.DistanceToFireStation
+    if(dto.DistanceToFireHydrant> 0){
+      data.HOLocation.DistanceToFireHydrant = dto.DistanceToFireHydrant
+    }
+    if(dto.DistanceToFireStation > 0){
+      data.HOLocation.DistanceToFireStation = dto.DistanceToFireStation
+    }
     data.HOLocation.NearCommercial = dto.NearCommercial
     data.ResidenceType  = dto.ResidenceType
     data.DwellingLocation =   dto.DwellingLocation
     data.HOLocation.FloodingHazard = dto.FloodingOrFireHazard
     data.DwellingUsage = dto.DwellingUsage
     data.Occupancy = dto.Occupancy
-    data.PolicyPeriod.CreditInfoExt.CreditReport.CreditStatus = dto.CreditStatus
     data.PolicyPeriod.HomeownersLine_HOE?.Dwelling.FirstTimeDeededHome_Ext = dto.FirstTimeDeededHome_Ext
     data.PolicyPeriod.HomeownersLine_HOE.ClueHit_Ext = dto.ClueHit_Ext
     data.BuilderWarranty_Ext = dto.BuilderWarranty

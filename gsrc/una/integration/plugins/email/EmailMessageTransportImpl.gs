@@ -133,7 +133,7 @@ class EmailMessageTransportImpl extends AbstractEmailMessageTransport {
    *
    */
   protected function addBody(out : HtmlEmail, email : Email) {
-    out.setHtmlMsg(gw.util.GosuEscapeUtil.escapeForHTML(email.Body))
+    out.setHtmlMsg(email.Body)
   }
 
   /** This will add the attached documents to the email multipart packet, it uses IDocumentContentSource to retrieve

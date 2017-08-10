@@ -12,5 +12,6 @@ uses edge.PlatformSupport.Bundle
  * To change this template use File | Settings | File Templates.
  */
 interface ISubmissionReviewPlugin {
-  public function createUWReviewActivity(activityPattern : ActivityPattern, submissionReviewDTO : SubmissionReviewDTO)
+  public function createUWReviewActivity(activityPattern : ActivityPattern, submissionReviewDTO : SubmissionReviewDTO, submission : Submission) : Activity
+  public function setAgentContactInfo(submissionReviewDTO : SubmissionReviewDTO, submission : Submission)
 }

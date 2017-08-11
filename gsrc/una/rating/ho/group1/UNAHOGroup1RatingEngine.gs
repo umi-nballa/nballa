@@ -317,9 +317,11 @@ class UNAHOGroup1RatingEngine extends UNAHORatingEngine_HOE<HomeownersLine_HOE> 
          if(dwelling.SupplHeatingSurcharge_Ext){
            rateSupplementalHeatingSurcharge(dateRange)
          }
+        if(_discountsOrSurchargeRatingInfo.PriorLosses > 0){
          rateLossHistoryCredit(dateRange)
 
       }
+        }
 
     }
 

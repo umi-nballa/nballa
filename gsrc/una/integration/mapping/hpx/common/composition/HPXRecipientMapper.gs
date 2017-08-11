@@ -49,6 +49,7 @@ class HPXRecipientMapper {
     recipient.PostalAddress.AddressLine2 = address.AddressLine2
     recipient.PostalAddress.City = address.City
     recipient.PostalAddress.State = address.State
+    recipient.PostalAddress.PostalCode = address.PostalCode
     recipient.PostalAddress.Country = address.Country
     recipient.EmailAddress.EmailAddr = emailAddress
     recipient.CommunicationMethodCode = communicationMethod

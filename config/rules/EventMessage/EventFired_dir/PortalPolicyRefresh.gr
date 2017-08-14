@@ -1,0 +1,16 @@
+package rules.EventMessage.EventFired_dir
+
+@gw.rules.RuleName("PortalPolicyRefresh")
+internal class PortalPolicyRefresh {
+  static function doCondition(messageContext : entity.MessageContext) : boolean {
+/*start00rule*/
+return messageContext.DestID == una.integration.plugins.portal.PolicyRefreshTransportImpl.DEST_ID
+/*end00rule*/
+}
+
+  static function doAction(messageContext : entity.MessageContext, actions : gw.rules.Action) {
+/*start00rule*/
+ 
+/*end00rule*/
+  }
+}

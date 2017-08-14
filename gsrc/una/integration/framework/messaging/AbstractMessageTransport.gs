@@ -5,6 +5,7 @@ uses gw.plugin.messaging.MessageTransport
 uses una.logging.UnaLoggerCategory
 
 uses java.lang.Integer
+uses gw.pl.logging.Logger
 
 /**
  * Abstract message transport that is super class for all the message transport implementations.
@@ -13,7 +14,7 @@ uses java.lang.Integer
  * Created By: vtadi on 5/18/2016
  */
 abstract class AbstractMessageTransport implements MessageTransport {
-  final static var _logger = UnaLoggerCategory.UNA_INTEGRATION
+  protected final static var _logger : Logger = UnaLoggerCategory.UNA_INTEGRATION
 
   protected var _destinationId: Integer as DestinationID
   protected var _destinationName: String as DestinationName

@@ -50,8 +50,8 @@ class HOGroup1DiscountsOrSurchargeRatingInfo extends HOCommonDiscountsOrSurcharg
   }
 
   private function isPrivateFireCompanyDiscountApplicable(line: HomeownersLine_HOE): boolean {
-    var territoryCode = line.dwelling?.HOLocation?.TerritoryCodeOrOverride
-    var zipCode = line?.dwelling.HOLocation.PolicyLocation.PostalCode?.trim()
+    var territoryCode = line.Dwelling?.HOLocation?.territoryCodeOrOverride
+    var zipCode = line?.Dwelling.HOLocation.PolicyLocation.PostalCode?.trim()
     if(zipCode.length > 5){
       zipCode = zipCode.substring(0, 5)
     }

@@ -22,6 +22,10 @@ enhancement PCDateEnhancement : Date
   property get ShortFormat() : String{
     return this.format( "short" )
   }
+
+  property get ShortFormatYearFirst() : String{
+    return this.format( "yyyy-MM-dd" )
+  }
    
   property get Calendar() : Calendar{
     return this.toCalendar()

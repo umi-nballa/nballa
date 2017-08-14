@@ -201,9 +201,17 @@ enhancement DwellingEnhancement_Ext : entity.Dwelling_HOE {
     else
       return this.RoofType
   }
+
+  property get SquareFootageOrOverride() : String{
+    if(this.OverrideTotalSqFtVal_Ext and this.TotalSqFtValOverridden_Ext != null){
+      return this.TotalSqFtValOverridden_Ext
+    }else{
+      return this.SquareFootage_Ext
+    }
+  }
       
   property get EarthQuakeTerritoryOrOverride() : String{
-    if(this.OverrideEarthquakeTer_Ext and this.OverrideEarthquakeTer_Ext != null){
+    if(this.OverrideEarthquakeTer_Ext and this.EarthquakeTerOverridden_Ext != null){
       return this.EarthquakeTerOverridden_Ext
     }else{
       return this.EarthQuakeTer_Ext
@@ -211,7 +219,7 @@ enhancement DwellingEnhancement_Ext : entity.Dwelling_HOE {
   }
 
   property get BCEGOrOverride() : typekey.BCEGGrade_Ext{
-    if(this.HOLocation.OverrideBCEG_Ext and this.HOLocation.OverrideBCEG_Ext != null){
+    if(this.HOLocation.OverrideBCEG_Ext and this.HOLocation.BCEGOverridden_Ext != null){
       return this.HOLocation.BCEGOverridden_Ext
     }else{
       return this.HOLocation.BCEG_Ext

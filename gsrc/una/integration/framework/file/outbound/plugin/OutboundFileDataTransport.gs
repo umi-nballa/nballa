@@ -16,7 +16,6 @@ uses java.lang.Exception
  * Created By: vtadi on 5/18/2016
  */
 abstract class OutboundFileDataTransport extends AbstractMessageTransport implements IFileDataTransport {
-  final static var _logger = UnaLoggerCategory.UNA_INTEGRATION
 
   /**
    * This function takes care of inserting an outbound file record created based on the given payload into the integration database.

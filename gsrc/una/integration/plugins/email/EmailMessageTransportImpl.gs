@@ -12,6 +12,8 @@ uses java.net.UnknownHostException
 uses java.util.Properties
 uses gw.api.system.PLLoggerCategory
 uses gw.plugin.email.HtmlEmail
+uses java.util.Map
+uses javax.mail.Transport
 
 /**
  * User: amohammed
@@ -26,8 +28,21 @@ uses gw.plugin.email.HtmlEmail
 class EmailMessageTransportImpl extends AbstractEmailMessageTransport {
 
   //set this to true/false depending upon the need
-  var debug = false
+  var debug = true
   construct() {
+  }
+
+  private var _userName: String
+
+  private var _password: String
+
+  private var _enableAuth: Boolean
+
+  override function setParameters(params: Map) {
+    _userName = params['userName'] as String
+    _password = params['password'] as String
+    _enableAuth = (params["enableAuthentication"]?: true) as Boolean
+    super.setParameters(params)
   }
 
   /**
@@ -39,12 +54,13 @@ class EmailMessageTransportImpl extends AbstractEmailMessageTransport {
    */
   protected override function createHtmlEmailAndSend(wkSmtpHost : String, wkSmtpPort : String, email : Email) {
 
-    PLLoggerCategory.CONFIG.info("Starting EmailMessageTransportImpl with emailHost=${smtpHost} port=${smtpPort} debug=${debug} ")
+    PLLoggerCategory.CONFIG.info("Starting EmailMessageTransportImpl with emailHost=${smtpHost} port=${smtpPort} debug=${debug} userName=${_userName} enableAuthentication=${_enableAuth}")
     var out = createHtmlEmail(wkSmtpHost, wkSmtpPort, email)
     // Use below code to encrypt or sign via your own plugin
     // out = EncryptionManager.getEncryptionUtils(EncryptionManager.SMIME).signMessage(session, out, cryptoKey)
     // Transport.send(out)
     if (wkSmtpHost != "") {
+      //Transport.send(out.prepareMessage())
       out.send()
     }
   }
@@ -53,8 +69,8 @@ class EmailMessageTransportImpl extends AbstractEmailMessageTransport {
 
     //Set the host smtp address
     var props = new Properties()
-    props.put("mail.smtp.host", wkSmtpHost)
-    props.put("mail.smtp.port", wkSmtpPort)
+    props.setProperty("mail.smtp.host", wkSmtpHost)
+    props.setProperty("mail.smtp.port", wkSmtpPort)
 
     var address : String
     var name : String
@@ -65,25 +81,39 @@ class EmailMessageTransportImpl extends AbstractEmailMessageTransport {
       address = _defaultSenderEmail
       name = _defaultSenderName
     }
-    props.put("sender.email", address)
-    props.put("sender.name", name)
-    props.put("mail.transport.protocol", "smtp");
+    props.setProperty("sender.email", address)
+    props.setProperty("sender.name", name)
+    props.setProperty("mail.transport.protocol", "smtp");
 
-    var sessionObj = Session.getDefaultInstance(props)
+    var sessionObj: Session = null
+    if(_enableAuth) {
+        props.setProperty("mail.smtp.auth", "true");
+        props.setProperty("mail.smtp.starttls.enable", "true");
+
+        var authenticator  = new javax.mail.Authenticator() {
+          protected override property get PasswordAuthentication(): javax.mail.PasswordAuthentication {
+            return new javax.mail.PasswordAuthentication(_userName, _password)
+          }
+        }
+
+        sessionObj = Session.getDefaultInstance(props, authenticator)
+    } else {
+        sessionObj = Session.getDefaultInstance(props)
+    }
 
     sessionObj.setDebug(debug)
 
-    var out = new HtmlEmail(sessionObj)
-    out.setFrom(address, name)
-    out.setCharset("UTF-8")
+    var htmlEmail = new HtmlEmail(sessionObj)
+    htmlEmail.setFrom(address, name)
+    htmlEmail.setCharset("UTF-8")
     if (email.ReplyTo != null && email.ReplyTo.EmailAddress != null) {
       address = email.ReplyTo.EmailAddress
       name = email.ReplyTo.Name
     }
-    out.addReplyTo(address, name)
-    populateEmail(out, email)
+    htmlEmail.addReplyTo(address, name)
+    populateEmail(htmlEmail, email)
 
-    return out
+    return htmlEmail
   }
 
   /** This will create the actual email documents for this email.  There are many reasons why there maybe different

@@ -452,10 +452,6 @@ class PolicyRefreshTransportImpl extends AbstractMessageTransport implements Ini
               }
             })
           }
-
-
-
-
           if(propCov != null) {
             home.Props.Prop.first().Coverage.add(propCov)
           }

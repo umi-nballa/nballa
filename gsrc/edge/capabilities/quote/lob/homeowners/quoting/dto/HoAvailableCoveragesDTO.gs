@@ -9,6 +9,7 @@ uses edge.el.Expr
 uses edge.capabilities.quote.lob.homeowners.quoting.internal.HOQuoteUtilities
 uses edge.aspects.validation.Validation
 uses edge.aspects.validation.annotations.Ensure
+uses edge.capabilities.policychange.lob.homeowners.draft.dto.DwellingAdditionalInterestDTO
 
 class HoAvailableCoveragesDTO implements IQuoteLobExtensionDTO {
   @JsonProperty
@@ -29,4 +30,7 @@ class HoAvailableCoveragesDTO implements IQuoteLobExtensionDTO {
     Expr.translate("Edge.Web.Api.Quote.HO.DescriptionUnique", {})
   )
   var _scheduledProperties : ScheduledPropertyDTO[] as ScheduledProperties
+
+  @JsonProperty
+  var _additionalInterest : DwellingAdditionalInterestDTO as AdditionalInterest
 }

@@ -99,7 +99,12 @@ class SubmissionHandler extends JobHandler implements IRpcHandler {
       activityPatternCode = ConfigParamsUtil.getString(TC_SubmitForReviewActivityPattern, null, null)
     }
     var activityPattern = ActivityPattern.finder.getActivityPatternByCode(activityPatternCode)
-    _submissionReviewPlugin.createUWReviewActivity(activityPattern,submissionReviewDTO)
+    final var submission = _jobHelper.findJobByJobNumber(submissionReviewDTO.QuoteID) as Submission
+    var activity = _submissionReviewPlugin.createUWReviewActivity(activityPattern,submissionReviewDTO,submission)
+    if(activity != null){
+      _submissionReviewPlugin.setAgentContactInfo(submissionReviewDTO,submission)
+    }
+    submissionReviewDTO.QuoteStatus = submission.LatestPeriod.Status
     return submissionReviewDTO
   }
 

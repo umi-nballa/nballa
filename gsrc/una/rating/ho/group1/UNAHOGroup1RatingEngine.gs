@@ -206,11 +206,8 @@ class UNAHOGroup1RatingEngine extends UNAHORatingEngine_HOE<HomeownersLine_HOE> 
           }
           break
       case HODW_Earthquake_HOE:
-          if (HasEarthquakeCoverage and (PolicyLine.BaseState == typekey.Jurisdiction.TC_NV or PolicyLine.BaseState == typekey.Jurisdiction.TC_AZ) and
-              (_dwellingRatingInfo.BCEGGrade != typekey.BCEGGrade_Ext.TC_99 and _dwellingRatingInfo.BCEGGrade != typekey.BCEGGrade_Ext.TC_98)
-              and (PolicyLine.HOPolicyType == HOPolicyType_HOE.TC_HO3 or PolicyLine.HOPolicyType == HOPolicyType_HOE.TC_HO4 or PolicyLine.HOPolicyType == HOPolicyType_HOE.TC_HO6)){
+         if (PolicyLine.BaseState == typekey.Jurisdiction.TC_NV or PolicyLine.BaseState == typekey.Jurisdiction.TC_AZ)
             rateEarthquakeCoverage(dwellingCov, dateRange)
-          }
           break
       case HODW_UnitOwnersCovASpecialLimits_HOE_Ext:
           if(PolicyLine.HOPolicyType == HOPolicyType_HOE.TC_HO6){
@@ -320,9 +317,11 @@ class UNAHOGroup1RatingEngine extends UNAHORatingEngine_HOE<HomeownersLine_HOE> 
          if(dwelling.SupplHeatingSurcharge_Ext){
            rateSupplementalHeatingSurcharge(dateRange)
          }
+        if(_discountsOrSurchargeRatingInfo.PriorLosses > 0){
          rateLossHistoryCredit(dateRange)
 
       }
+        }
 
     }
 
@@ -447,10 +446,11 @@ class UNAHOGroup1RatingEngine extends UNAHORatingEngine_HOE<HomeownersLine_HOE> 
       _logger.debug("Entering " + CLASS_NAME + ":: rateLossHistoryCredit", this.IntrinsicType)
     var costType : typekey.HOCostType_Ext
     if(PolicyLine.HOPolicyType == TC_DP3_Ext){
-      costType = HOCostType_Ext.TC_PRIORCLAIMHISTORYSURCHARGE
+     costType = HOCostType_Ext.TC_LOSSFREECREDITDWELLING
     }else{
       costType = HOCostType_Ext.TC_LOSSHISTORYCREDIT
     }
+
 
     var rateRoutineParameterMap = getHOLineDiscountsOrSurchargesParameterSet(PolicyLine, _discountsOrSurchargeRatingInfo, PolicyLine.BaseState)
     var costData = HOCreateCostDataUtil.createCostDataForHOLineCosts(dateRange, HORateRoutineNames.LOSS_HISTORY_CREDIT_RATE_ROUTINE, costType,

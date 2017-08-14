@@ -142,7 +142,7 @@ class HPXBP7CoverageMapper extends HPXCoverageMapper{
   }
 
   override function createOtherOptionCovTerm(coverage : Coverage, currentCovTerm : OptionCovTerm, transactions : java.util.List<Transaction>): wsi.schema.una.hpx.hpx_application_request.types.complex.LimitType {
-    if(currentCovTerm.PatternCode == "BP7OrdinLawCov_EXT") {
+    if(currentCovTerm.PatternCode == "BP7OrdinLawCov_EXT" or currentCovTerm.PatternCode == "BP7RatingBasis") {
       var limit = new wsi.schema.una.hpx.hpx_application_request.types.complex.LimitType()
       limit.Description = currentCovTerm.Pattern.Name
       limit.FormatText = currentCovTerm?.OptionValue?.OptionCode != null ? currentCovTerm.OptionValue.OptionCode : ""
@@ -165,6 +165,7 @@ class HPXBP7CoverageMapper extends HPXCoverageMapper{
       limit.Rate = 0.00
       limit.FormatText = currentCovTerm.OptionValue.OptionCode != null ? currentCovTerm.OptionValue.OptionCode : ""
       limit.LimitDesc = ""
+      limit.WrittenAmt.Amt = 0
       limit.CoverageCd = coverage.PatternCode
       limit.CoverageSubCd = currentCovTerm.PatternCode
       limit.addChild(new XmlElement("Coverable", createCoverableInfo(coverage)))

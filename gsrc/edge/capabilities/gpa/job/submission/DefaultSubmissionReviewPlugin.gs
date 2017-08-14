@@ -22,22 +22,27 @@ class DefaultSubmissionReviewPlugin implements ISubmissionReviewPlugin {
 
   }
 
-  override function createUWReviewActivity(activityPattern: ActivityPattern, submissionReviewDTO : SubmissionReviewDTO){
+  override function createUWReviewActivity(activityPattern: ActivityPattern, submissionReviewDTO : SubmissionReviewDTO, submission : Submission) : Activity{
     var bundle = Bundle.getCurrent().PlatformBundle
-    var submission = bundle.add(getSubmissionByJobNumber(submissionReviewDTO.QuoteID))
     var activity = activityPattern.createJobActivity(bundle,submission,null,null,null,null,null,null,null)
     var groupAndQueueName = ConfigParamsUtil.getString(TC_SubmitForReviewActivityQueue, null, activityPattern.Code)
     var group = gw.api.database.Query.make(entity.Group).compare(Group#Name.PropertyInfo.Name, Equals,groupAndQueueName).select().FirstResult
     activity.assignActivityToQueue(group.getQueue(groupAndQueueName),group)
     submissionReviewDTO.ActivityStatus = activity.Status
+    return activity
+  }
+
+  override function setAgentContactInfo(submissionReviewDTO: SubmissionReviewDTO, submission: Submission) {
+    var agentContactInfo = submissionReviewDTO.ContactName + " " + submissionReviewDTO.ContactPhoneNumber + " " + submissionReviewDTO.ContactExtension + " " + submissionReviewDTO.ContactEmail
+    submission.LatestPeriod.AgentContactInfo_Ext = agentContactInfo
   }
 
   /**
    * Fetches a submission by its number.
    */
-  private function getSubmissionByJobNumber(jobNumber : String) : Submission {
+  private function getSubmissionByJobNumber(jobNumber: String): Submission {
     final var foundSubmission = Query.make(Submission).compare("JobNumber", Equals, jobNumber).select().FirstResult
-    if (foundSubmission == null  ){
+    if (foundSubmission == null){
       throw new EntityNotFoundException() {: Message = "Submission not found" }
     }
     return foundSubmission

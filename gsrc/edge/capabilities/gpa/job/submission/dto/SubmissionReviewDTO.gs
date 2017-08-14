@@ -5,6 +5,7 @@ uses edge.jsonmapper.JsonProperty
 uses edge.aspects.validation.annotations.Phone
 uses edge.aspects.validation.annotations.Size
 uses edge.aspects.validation.annotations.Email
+uses edge.jsonmapper.JsonReadOnlyProperty
 
 /**
  * Created with IntelliJ IDEA.
@@ -18,13 +19,13 @@ class SubmissionReviewDTO {
   var _quoteID : String as QuoteID
 
   @JsonProperty @Required
-  var _producerContactName : String as ProducerContactName
+  var _contactName : String as ContactName
 
   @JsonProperty @JsonProperty @Size(0, 30) @Phone
   var _contactPhoneNumber : String as ContactPhoneNumber
 
   @JsonProperty @Required
-  var _extension : String as Extension
+  var _contactExtension : String as ContactExtension
 
   @JsonProperty @Required @Email
   var _contactEmail : String as ContactEmail
@@ -34,5 +35,8 @@ class SubmissionReviewDTO {
 
   @JsonProperty
   var _activityStatus : ActivityStatus as ActivityStatus
+
+  @JsonReadOnlyProperty
+  var _quoteStatus : String as QuoteStatus
 
 }

@@ -41,7 +41,6 @@ class ConstructionDTO {
 
   /** Electrical type of the building. */
   @JsonProperty
-  @Required
   var _electricalType: BreakerType_HOE as ElectricalType
 
   @JsonProperty
@@ -85,18 +84,15 @@ class ConstructionDTO {
   var _floorLocation: String as FloorLocation
 
   @JsonProperty
-  @Required
   var _foundationHeight: FoundationHeight_Ext as FoundationHeight
 
   @JsonProperty
   var _foundationProtected: Boolean as FoundationProtected
 
   @JsonProperty
-  @Required
   var _foundationMaterial: FoundationMaterial_Ext as FoundationMaterial
 
   @JsonProperty
-  @Required
   var _foundationType: FoundationType_HOE as FoundationType
 
   @JsonProperty
@@ -161,7 +157,6 @@ class ConstructionDTO {
 
   /** Type of plumbing in the building. */
   @JsonProperty
-  @Required
   var _plumbingType: PlumbingType_HOE as PlumbingType
 
   @JsonProperty
@@ -177,7 +172,6 @@ class ConstructionDTO {
 
   /** Type of primary heating. */
   @JsonProperty
-  @Required
   var _primaryHeatingType: HeatingType_HOE as PrimaryHeatingType
 
   @JsonProperty
@@ -273,7 +267,6 @@ class ConstructionDTO {
 
   /** Type of wiring in the building. */
   @JsonProperty
-  @Required
   var _wiringType: WiringType_HOE as WiringType
 
   @JsonProperty

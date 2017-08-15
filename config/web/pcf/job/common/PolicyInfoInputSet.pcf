@@ -192,6 +192,12 @@
       label="displaykey.Web.PolicyFile.Summary.DividedSourcePolicy"
       value="displaykey.Web.PolicyFile.Summary.PolicyNumOnAccount(dividedSourcePolicy.LatestBoundPeriod.PolicyNumberDisplayString, dividedSourcePolicy.Account.AccountNumber)"
       visible="dividedSourcePolicy != null and showSplitSource"/>
+    <BooleanRadioInput
+      editable="true"
+      id="Aged60OrOver_Ext"
+      label="displaykey.Web.SubmissionWizard.PolicyInfo.Aged60OrOver_Ext"
+      value="policyPeriod.Aged60OrOver_Ext"
+      visible="policyPeriod.BaseState == TC_FL &amp;&amp; policyPeriod.HomeownersLine_HOE.HOPolicyType == TC_HO3"/>
     <InputSet
       id="affinityGroupInputSet"
       visible="policyPeriod.HomeownersLine_HOE.HOPolicyType==HOPolicyType_HOE.TC_HO3 || policyPeriod.HomeownersLine_HOE.HOPolicyType==HOPolicyType_HOE.TC_HO6 || policyPeriod.HomeownersLine_HOE.HOPolicyType==HOPolicyType_HOE.TC_HOB_EXT">

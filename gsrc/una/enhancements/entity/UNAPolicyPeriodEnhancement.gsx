@@ -81,4 +81,30 @@ enhancement UNAPolicyPeriodEnhancement : entity.PolicyPeriod {
   public property get IsPortalQuote() : boolean{
     return this.SourceSystem_Ext != null and typekey.SourceSystem_Ext.TF_PORTALSOURCES.TypeKeys.contains(this.SourceSystem_Ext)
   }
+
+  //FL HO3 - New Submission, Renewal & Rewrite(Full & New Term) ONLY ---- To determine Named Insured or Co-Insured's(Spouse & Co-Insured ONLY)Age is greater than 60 (or) not
+  public function confirmAnyInsuredAgeOver60(){
+    var coInsuredAgeOver60 = false
+    var primNamedInsuredAgeOver60 = false
+
+    var coInsureds = this.PolicyContactRoles.whereTypeIs(PolicyAddlNamedInsured).where( \ relnToPNI -> relnToPNI.ContactRelationship_Ext == TC_SPOUSE ||
+        relnToPNI.ContactRelationship_Ext == TC_COINSURED)
+
+    if(this.BaseState == TC_FL && this.HomeownersLine_HOE.HOPolicyType == TC_HO3 && (this.Job.Subtype == TC_SUBMISSION || this.Job.Subtype == TC_RENEWAL ||
+        (this.Job.Subtype == TC_REWRITE && (this.Rewrite.RewriteType == TC_REWRITEFULLTERM || this.Rewrite.RewriteType == TC_REWRITENEWTERM)))){
+      if(this.PrimaryNamedInsured.DateOfBirth!=null && this.PeriodStart.differenceInYears(this.PrimaryNamedInsured.DateOfBirth)>60){
+        primNamedInsuredAgeOver60 = true
+      }
+
+      for(coInsured in coInsureds){
+        if(coInsured.DateOfBirth!=null && this.PeriodStart.differenceInYears(coInsured.DateOfBirth)>60){
+          coInsuredAgeOver60 = true
+          break
+        }
+      }
+      if(primNamedInsuredAgeOver60 || coInsuredAgeOver60){
+        this.Aged60OrOver_Ext = true
+      }
+    }
+  }
 }

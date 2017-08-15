@@ -51,6 +51,7 @@ class UNAHORenewalProcess extends AbstractUNARenewalProcess {
     }
 
     handleAlarmDiscountRemovalProcess()
+    this._branch.confirmAnyInsuredAgeOver60()
     super.pendingRenewalFirstCheck()
 
     if(JobProcessLogger.DebugEnabled){

@@ -54,8 +54,8 @@ class HPXJobMapper {
     if (policyPeriod.Cancellation != null) {
       cancellationInfo.CancellationTypeCd = policyPeriod.Cancellation.Source
       cancellationInfo.CancellationTypeDesc = policyPeriod.Cancellation.Source.Description
-      cancellationInfo.EffectiveDt = policyPeriod.Cancellation.CloseDate != null ? new XmlDate(policyPeriod.Cancellation.CloseDate) : null
-      cancellationInfo.CancelReasonCd = policyPeriod.Cancellation.CloseDate != null ? policyPeriod.Cancellation.CancelReasonCode : null
+      cancellationInfo.EffectiveDt = policyPeriod.Cancellation.getJobDate() != null ? new XmlDate(policyPeriod.Cancellation.getJobDate()) : null
+      cancellationInfo.CancelReasonCd = policyPeriod.Cancellation.getJobDate() != null ? policyPeriod.Cancellation.CancelReasonCode : null
       cancellationInfo.CancellationTypeDesc = policyPeriod.Cancellation.CancelReasonCode.Description
       cancellationInfo.ProRateFactor = 1.0 // TODO revisit
     }

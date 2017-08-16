@@ -136,6 +136,19 @@ class HPXBP7CoverageMapper extends HPXCoverageMapper{
       limit.CoverageSubCd = currentCovTerm.PatternCode
       limit.addChild(new XmlElement("Coverable", createCoverableInfo(coverage)))
       return limit
+    }  else if(currentCovTerm.PatternCode == "Reimbursmentperiod_EXT") {
+      var limit = new wsi.schema.una.hpx.hpx_application_request.types.complex.LimitType()
+      limit.Description = currentCovTerm.Pattern.Name
+      limit.CurrentTermAmt.Amt = 0
+      limit.NetChangeAmt.Amt = 0
+      limit.FormatPct = 0
+      limit.Rate = 0.00
+      limit.FormatText = currentCovTerm.OptionValue.Description != null ? currentCovTerm.OptionValue.Description : ""
+      limit.LimitDesc = ""
+      limit.CoverageCd = coverage.PatternCode
+      limit.CoverageSubCd = currentCovTerm.PatternCode
+      limit.addChild(new XmlElement("Coverable", createCoverableInfo(coverage)))
+      return limit
     }  else {
       return super.createOptionLimitInfo(coverage, currentCovTerm, transactions)
     }

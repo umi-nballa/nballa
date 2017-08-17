@@ -78,11 +78,7 @@ enhancement UNAPolicyPeriodEnhancement : entity.PolicyPeriod {
     return result
   }
 
-  public property get IsPortalQuote() : boolean{
-    return this.SourceSystem_Ext != null and typekey.SourceSystem_Ext.TF_PORTALSOURCES.TypeKeys.contains(this.SourceSystem_Ext)
-  }
-
-  //FL HO3 - New Submission, Renewal & Rewrite(Full & New Term) ONLY ---- To determine Named Insured or Co-Insured's(Spouse & Co-Insured ONLY)Age is greater than 60 (or) not
+ //FL HO3 - New Submission, Renewal & Rewrite(Full & New Term) ONLY ---- To determine Named Insured or Co-Insured's(Spouse & Co-Insured ONLY)Age is greater than 60 (or) not
   public function confirmAnyInsuredAgeOver60(){
     var coInsuredAgeOver60 = false
     var primNamedInsuredAgeOver60 = false

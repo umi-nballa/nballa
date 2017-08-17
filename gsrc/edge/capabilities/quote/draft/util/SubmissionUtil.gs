@@ -63,10 +63,6 @@ class SubmissionUtil {
     if(data.ReinsuranceFacultative != null){
       branch.Reinsurance_Ext = data.ReinsuranceFacultative
     }
-
-    if(data.SourceSystem != null){
-      branch.SourceSystem_Ext = data.SourceSystem
-    }
   }
 
   public static function updateSubmissionFlow(submission : Submission, data : DraftDataDTO) {

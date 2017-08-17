@@ -35,7 +35,13 @@ class HoQuotingPlugin implements ILobQuotingPlugin <HoAvailableCoveragesDTO> {
       "HODW_SectionII_HOE",
       "HOLI_Additional_HOE",
       "HODW_Additional_HOE",
-      "DPDW_LiabilityCoverages_HOE"
+      "DPDW_LiabilityCoverages_HOE",
+      "HODW_AdditionalScheduled_HOE_Ext",
+      "HOSL_AdditionalSchedLiab_HOE_Ext",
+      "HOLI_Optional_HOE",
+      "HODW_Optional_HOE",
+      "HODW_SchedulesCov_HOE",
+      "HODW_SchedLiabCov_HOE_Ext"
   }
 
   var _schedulePropertyUpdater : ArrayUpdater<Dwelling_HOE,ScheduledItem_HOE,ScheduledPropertyDTO>

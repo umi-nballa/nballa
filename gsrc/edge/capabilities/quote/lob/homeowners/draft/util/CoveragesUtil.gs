@@ -17,7 +17,7 @@ uses edge.capabilities.address.dto.AddressDTO
 final class CoveragesUtil {
 
   public static function fillBaseProperties(period : PolicyPeriod) : UNACoverageDTO[]{
-    var results : UNACoverageDTO[]
+    var results : List<UNACoverageDTO> = {}
 
     period.AllCoverables*.CoveragesFromCoverable.each( \ coverage -> {
       var coverageDTO = new UNACoverageDTO()
@@ -26,12 +26,19 @@ final class CoveragesUtil {
       if(coverage.Scheduled){
         coverageDTO.ScheduledItems = getScheduledItemDTOs(coverage)
       }else{
+        var coveragesTerms : List<UNACoverageTermDTO> = {}
+
         coverage.CovTerms.each( \ covTerm -> {
           var covTermDTO = new UNACoverageTermDTO()
           covTermDTO.Code = covTerm.PatternCode
           covTermDTO.Value = covTerm.ValueAsString
+          coveragesTerms.add(covTermDTO)
         })
+
+        coverageDTO.CoverageTerms = coveragesTerms
       }
+
+      results.add(coverageDTO)
     })
 
     return results

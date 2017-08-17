@@ -26,6 +26,10 @@ class ValidationRuleExecution<T>
     super(rule)
   }
 
+  construct(){
+
+  }
+
   /**
    * Updates the validation context's visited list before evaluating the
    * condition.

@@ -1,9 +1,5 @@
 package gw.rules.all.policyperiod
 
-uses gw.accelerator.ruleeng.IRuleCondition
-uses gw.accelerator.ruleeng.RuleEvaluationResult
-uses gw.accelerator.ruleeng.IRuleAction
-uses una.utils.ActivityUtil
 
 /**
  * Created with IntelliJ IDEA.
@@ -12,26 +8,23 @@ uses una.utils.ActivityUtil
  * Time: 11:07 AM
  * To change this template use File | Settings | File Templates.
  */
-class DocAlarmCertificate implements IRuleCondition<PolicyPeriod>,IRuleAction<PolicyPeriod, PolicyPeriod>{
-  override function evaluateRuleCriteria(period : PolicyPeriod) : RuleEvaluationResult {
+class DocAlarmCertificate extends DocumentRequestRuleExecution{
+  //TODO TLV keeping this comment in until Reqs come in for CR that actually tell us what to do.  Also logic might not actually be right so have to revisit once we get reqs
+//  var activityPattern = ActivityPattern.finder.getActivityPatternByCode("protective_device_follow_up")
+//  var activity =  activityPattern.createJobActivity(target.Bundle, target.Job, null, null, null, null, null, null, null)
+//  ActivityUtil.assignActivityToQueue(ActivityUtil.ACTIVITY_QUEUE.CSR_FOLLOW_UP.QueueName, ActivityUtil.ACTIVITY_QUEUE.CSR_FOLLOW_UP.QueueName, activity)
 
-  if (period.HomeownersLine_HOEExists && period.Status == typekey.PolicyPeriodStatus.TC_QUOTED  && isDocRequired(period) )
-        return RuleEvaluationResult.execute()
-    else
-        return RuleEvaluationResult.skip()
+  override function shouldGenerateDocumentRequest(period: PolicyPeriod): boolean {
+    return period.HomeownersLine_HOEExists
+        and period.Status == typekey.PolicyPeriodStatus.TC_QUOTED
+        and isDocRequired(period)
   }
 
-  override function satisfied(target: PolicyPeriod, context: PolicyPeriod, result: RuleEvaluationResult) {
-      var activityPattern = ActivityPattern.finder.getActivityPatternByCode("protective_device_follow_up")
-      var activity =  activityPattern.createJobActivity(target.Bundle, target.Job, null, null, null, null, null, null, null)
-      ActivityUtil.assignActivityToQueue(ActivityUtil.ACTIVITY_QUEUE.CSR_FOLLOW_UP.QueueName, ActivityUtil.ACTIVITY_QUEUE.CSR_FOLLOW_UP.QueueName, activity)
-
-      var list = new AgentDocList_Ext(target)
-      list.DocumentName = "Alarm Certificate or Billing Statement"
-      target.addToAgentDocs(list)
+  override property get DocumentType(): DocumentRequestType_Ext {
+    return TC_AlarmCertificate
   }
 
-  function isDocRequired(period : PolicyPeriod) : boolean{
+  function isDocRequired(period: PolicyPeriod): boolean {
     //Fire Alarm Reporting to Central Station
     var FireCntlStation = period.HomeownersLine_HOE?.dwelling.DwellingProtectionDetails.FireAlarmReportCntlStn
     //Burglar Alarm Reporting to Central Station
@@ -44,100 +37,95 @@ class DocAlarmCertificate implements IRuleCondition<PolicyPeriod>,IRuleAction<Po
     var FirePoliceStn = period.HomeownersLine_HOE?.dwelling.DwellingProtectionDetails.FireAlarmReportPoliceStn
 
 
-    if(period.BaseState.Code == typekey.State.TC_AZ &&
+    if (period.BaseState.Code == typekey.State.TC_AZ &&
         (period.HomeownersLine_HOE?.HOPolicyType == typekey.HOPolicyType_HOE.TC_HO3 ||
             period.HomeownersLine_HOE?.HOPolicyType == typekey.HOPolicyType_HOE.TC_HO4 ||
-            period.HomeownersLine_HOE?.HOPolicyType == typekey.HOPolicyType_HOE.TC_HO6)){
+            period.HomeownersLine_HOE?.HOPolicyType == typekey.HOPolicyType_HOE.TC_HO6)) {
       if (FireCntlStation || BurglarCntlStation)  {
         return true
       }
-    }else if (period.BaseState.Code == typekey.State.TC_CA){
+    } else if (period.BaseState.Code == typekey.State.TC_CA) {
       if (period.HomeownersLine_HOE?.HOPolicyType == typekey.HOPolicyType_HOE.TC_HO3 ||
           period.HomeownersLine_HOE?.HOPolicyType == typekey.HOPolicyType_HOE.TC_HO4 ||
           period.HomeownersLine_HOE?.HOPolicyType == typekey.HOPolicyType_HOE.TC_HO6) {
         if (FireCntlStation || BurglarCntlStation)  {
-           return true
+          return true
         }
-
-      }else if (
+      } else if (
           period.HomeownersLine_HOE?.HOPolicyType == typekey.HOPolicyType_HOE.TC_DP3_EXT ||
-              period.HomeownersLine_HOE?.HOPolicyType == typekey.HOPolicyType_HOE.TC_LPP_EXT||
-              period.HomeownersLine_HOE?.HOPolicyType == typekey.HOPolicyType_HOE.TC_TDP1_EXT||
-              period.HomeownersLine_HOE?.HOPolicyType == typekey.HOPolicyType_HOE.TC_TDP2_EXT||
+              period.HomeownersLine_HOE?.HOPolicyType == typekey.HOPolicyType_HOE.TC_LPP_EXT ||
+              period.HomeownersLine_HOE?.HOPolicyType == typekey.HOPolicyType_HOE.TC_TDP1_EXT ||
+              period.HomeownersLine_HOE?.HOPolicyType == typekey.HOPolicyType_HOE.TC_TDP2_EXT ||
               period.HomeownersLine_HOE?.HOPolicyType == typekey.HOPolicyType_HOE.TC_TDP3_EXT) {
         if (FireCntlStation || FireFireStation)  {
           return true
         }
       }
-    }else if (period.BaseState.Code == typekey.State.TC_FL){
+    } else if (period.BaseState.Code == typekey.State.TC_FL) {
       if (period.HomeownersLine_HOE?.HOPolicyType == typekey.HOPolicyType_HOE.TC_HO3 ||
           period.HomeownersLine_HOE?.HOPolicyType == typekey.HOPolicyType_HOE.TC_HO4 ||
           period.HomeownersLine_HOE?.HOPolicyType == typekey.HOPolicyType_HOE.TC_HO6) {
-        if (FireCntlStation ||BurglarCntlStation || BurglarPolicestn || FireFireStation)  {
+        if (FireCntlStation || BurglarCntlStation || BurglarPolicestn || FireFireStation)  {
           return true
         }
-
-      }else if ( period.HomeownersLine_HOE?.HOPolicyType == typekey.HOPolicyType_HOE.TC_DP3_EXT ||
-          period.HomeownersLine_HOE?.HOPolicyType == typekey.HOPolicyType_HOE.TC_LPP_EXT||
-          period.HomeownersLine_HOE?.HOPolicyType == typekey.HOPolicyType_HOE.TC_TDP1_EXT||
-          period.HomeownersLine_HOE?.HOPolicyType == typekey.HOPolicyType_HOE.TC_TDP2_EXT||
+      } else if (period.HomeownersLine_HOE?.HOPolicyType == typekey.HOPolicyType_HOE.TC_DP3_EXT ||
+          period.HomeownersLine_HOE?.HOPolicyType == typekey.HOPolicyType_HOE.TC_LPP_EXT ||
+          period.HomeownersLine_HOE?.HOPolicyType == typekey.HOPolicyType_HOE.TC_TDP1_EXT ||
+          period.HomeownersLine_HOE?.HOPolicyType == typekey.HOPolicyType_HOE.TC_TDP2_EXT ||
           period.HomeownersLine_HOE?.HOPolicyType == typekey.HOPolicyType_HOE.TC_TDP3_EXT) {
         if (FireCntlStation || BurglarCntlStation)  {
-           return true
+          return true
         }
       }
-    }else if (period.BaseState.Code == typekey.State.TC_HI){
+    } else if (period.BaseState.Code == typekey.State.TC_HI) {
       if (period.HomeownersLine_HOE?.HOPolicyType == typekey.HOPolicyType_HOE.TC_HO3 ||
           period.HomeownersLine_HOE?.HOPolicyType == typekey.HOPolicyType_HOE.TC_HO4 ||
           period.HomeownersLine_HOE?.HOPolicyType == typekey.HOPolicyType_HOE.TC_HO6) {
-        if (FireCntlStation ||BurglarCntlStation )  {
+        if (FireCntlStation || BurglarCntlStation)  {
           return true
         }
-
-      }else if (
+      } else if (
           period.HomeownersLine_HOE?.HOPolicyType == typekey.HOPolicyType_HOE.TC_DP3_EXT ||
-              period.HomeownersLine_HOE?.HOPolicyType == typekey.HOPolicyType_HOE.TC_LPP_EXT||
-              period.HomeownersLine_HOE?.HOPolicyType == typekey.HOPolicyType_HOE.TC_TDP1_EXT||
-              period.HomeownersLine_HOE?.HOPolicyType == typekey.HOPolicyType_HOE.TC_TDP2_EXT||
+              period.HomeownersLine_HOE?.HOPolicyType == typekey.HOPolicyType_HOE.TC_LPP_EXT ||
+              period.HomeownersLine_HOE?.HOPolicyType == typekey.HOPolicyType_HOE.TC_TDP1_EXT ||
+              period.HomeownersLine_HOE?.HOPolicyType == typekey.HOPolicyType_HOE.TC_TDP2_EXT ||
               period.HomeownersLine_HOE?.HOPolicyType == typekey.HOPolicyType_HOE.TC_TDP3_EXT) {
-        if (FireCntlStation )  {
+        if (FireCntlStation)  {
           return true
         }
       }
-    }else if (period.BaseState.Code == typekey.State.TC_NV){
+    } else if (period.BaseState.Code == typekey.State.TC_NV) {
       if (period.HomeownersLine_HOE?.HOPolicyType == typekey.HOPolicyType_HOE.TC_HO3 ||
           period.HomeownersLine_HOE?.HOPolicyType == typekey.HOPolicyType_HOE.TC_HO4 ||
           period.HomeownersLine_HOE?.HOPolicyType == typekey.HOPolicyType_HOE.TC_HO6) {
-        if (FireCntlStation ||BurglarCntlStation )  {
-           return true
+        if (FireCntlStation || BurglarCntlStation)  {
+          return true
         }
       }
-    } else if (period.BaseState.Code == typekey.State.TC_NC){
+    } else if (period.BaseState.Code == typekey.State.TC_NC) {
       if (period.HomeownersLine_HOE?.HOPolicyType == typekey.HOPolicyType_HOE.TC_HO3 ||
           period.HomeownersLine_HOE?.HOPolicyType == typekey.HOPolicyType_HOE.TC_HO4 ||
           period.HomeownersLine_HOE?.HOPolicyType == typekey.HOPolicyType_HOE.TC_HO6) {
-        if (FireCntlStation ||BurglarCntlStation || FireFireStation || FirePoliceStn)  {
-           return true
+        if (FireCntlStation || BurglarCntlStation || FireFireStation || FirePoliceStn)  {
+          return true
         }
       }
-    }else if(period.BaseState.Code == typekey.State.TC_SC &&
+    } else if (period.BaseState.Code == typekey.State.TC_SC &&
         (period.HomeownersLine_HOE?.HOPolicyType == typekey.HOPolicyType_HOE.TC_HO3 ||
             period.HomeownersLine_HOE?.HOPolicyType == typekey.HOPolicyType_HOE.TC_HO4 ||
-            period.HomeownersLine_HOE?.HOPolicyType == typekey.HOPolicyType_HOE.TC_HO6)){
+            period.HomeownersLine_HOE?.HOPolicyType == typekey.HOPolicyType_HOE.TC_HO6)) {
       if (FireCntlStation || BurglarCntlStation)  {
-         return true
+        return true
       }
-    }else if(period.BaseState.Code == typekey.State.TC_TX &&
+    } else if (period.BaseState.Code == typekey.State.TC_TX &&
         (period.HomeownersLine_HOE?.HOPolicyType == typekey.HOPolicyType_HOE.TC_HOA_EXT ||
             period.HomeownersLine_HOE?.HOPolicyType == typekey.HOPolicyType_HOE.TC_HOB_EXT ||
             period.HomeownersLine_HOE?.HOPolicyType == typekey.HOPolicyType_HOE.TC_HCONB_EXT)){
       if (FireCntlStation || BurglarCntlStation)  {
-         return true
-
+        return true
       }
     }
     return false
   }
-
 }
 

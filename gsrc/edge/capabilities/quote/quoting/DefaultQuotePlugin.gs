@@ -14,6 +14,10 @@ uses gw.api.web.productmodel.ProductModelSyncIssue
 uses gw.web.productmodel.ProductModelSyncIssueWrapper
 uses edge.capabilities.quote.lob.dto.QuoteLobDataDTO
 uses java.lang.Exception
+uses gw.api.profiler.PCProfilerTag
+uses gw.job.JobProcessValidator
+uses edge.util.helper.UserUtil
+uses una.config.ConfigParamsUtil
 
 /**
  * Default implementation of quoting plugin.
@@ -161,8 +165,6 @@ class DefaultQuotePlugin implements IQuotePlugin {
     for (period in submission.ActivePeriods) {
       quoteSinglePeriod(period)
     }
-
-       //quoteSinglePeriod(submission.LatestPeriod)
   }
   
   
@@ -176,6 +178,7 @@ class DefaultQuotePlugin implements IQuotePlugin {
     var cond = proc.canRequestQuote()
     if (cond.Okay){
       try {
+        period.Submission.IsPortalRequest = true
         proc.requestQuote(_validationLevelPlugin.getValidationLevel(), RatingStyle.TC_DEFAULT)
 
       } catch (e : Exception) {
@@ -186,8 +189,18 @@ class DefaultQuotePlugin implements IQuotePlugin {
       LOGGER.error("Could not quote for the following reasons : " + cond.Message)
       throw new UnderwritingException()
     }
-    //throw underwriting exception if there are any blocking UW issues
-    checkForBlockingUWIssues(period, UWIssueBlockingPoint.TC_BLOCKSISSUANCE)
+
+    if(period.Submission.QuoteType == TC_FULL){
+      var validator = new JobProcessValidator()
+
+      try{ //at this time we aren't validating anything else for binding.  only using this to get list of documents
+        PCProfilerTag.BIND_VALIDATE.execute(\ -> validator.validatePeriodForUI(period, TC_BINDABLE))
+      }catch(e : com.guidewire.pl.system.bundle.validation.EntityValidationException){
+        if(LOGGER.DebugEnabled){
+          LOGGER.debug("skipping validation errors found for bind in the 'checkEligibility' function")
+        }
+      }
+    }
   }
 
   

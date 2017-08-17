@@ -12,6 +12,7 @@ uses edge.capabilities.quote.draft.dto.AdditionalNamedInsuredDTO
 uses edge.capabilities.quote.draft.dto.TrustDTO
 uses edge.capabilities.reports.dto.clue.PriorLossDTO
 uses edge.capabilities.policy.dto.PriorPolicyDTO
+uses java.lang.Integer
 
 /**
  * Homeowners extension for quote draft.

@@ -455,7 +455,7 @@ class HPXDwellingCoverageMapper extends HPXCoverageMapper{
       limit.FormatPct = 0
       limit.Rate = 0.00
       limit.FormatText = item.NumberOfFamilies
-      limit.LimitDesc = item.PolicyLocation.CompactName != null ? "Location : " + item.PolicyLocation.CompactName : ""
+      limit.LimitDesc = item.PolicyLocation.CompactName != null ? "Location: " + item.PolicyLocation.CompactName : ""
       limit.WrittenAmt.Amt = 0
       for (trx in transactions) {
         if(trx.Cost typeis ScheduleCovCost_HOE){

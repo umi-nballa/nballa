@@ -93,7 +93,7 @@ class EmailMessageTransportImpl extends AbstractEmailMessageTransport {
     }
     props.setProperty("sender.email", address)
     props.setProperty("sender.name", name)
-    props.setProperty("mail.transport.protocol", "smtp");
+    //props.setProperty("mail.transport.protocol", "smtp");
 
     var sessionObj: Session = null
     if(_enableAuth) {
@@ -169,7 +169,9 @@ class EmailMessageTransportImpl extends AbstractEmailMessageTransport {
           out.addBcc(contact.EmailAddress, contact.Name)
         }
     } else {
-        out.addTo(_overrideToAddress, "${PRODUCT}Override-${ENV}")
+      for (contact in email.ToRecipients) {
+        out.addTo(contact.EmailAddress, contact.Name)
+      }//out.addTo(_overrideToAddress, "${PRODUCT}Override-${ENV}")
     }
   }
 

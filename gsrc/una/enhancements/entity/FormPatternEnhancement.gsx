@@ -17,7 +17,7 @@ enhancement FormPatternEnhancement : entity.FormPattern {
     var editionDate : Date = null
 
     if(this.Edition != null) {
-        editionDate = new SimpleDateFormat("MM yy").parse(this.Edition)
+        editionDate = new SimpleDateFormat("MMyy").parse(this.Edition)
     }
     return editionDate
   }

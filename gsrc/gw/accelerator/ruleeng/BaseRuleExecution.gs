@@ -37,6 +37,10 @@ class BaseRuleExecution<T, C, RT extends Rule_Ext>
     _thisRule = rule
   }
 
+  construct(){
+
+  }
+
   /**
    * Evaluates the rule condition and, if the condition indicates, executes the
    * rule action. This is the main entry point for evaluating the rule against a

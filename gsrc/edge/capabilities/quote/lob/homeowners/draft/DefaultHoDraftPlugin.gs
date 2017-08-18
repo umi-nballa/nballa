@@ -151,6 +151,7 @@ class DefaultHoDraftPlugin implements ILobDraftPlugin<HoDraftDataExtensionDTO>{
     res.AdditionalNamedInsureds = toAdditionalNamedInsuredsDTO(period)
     res.Trusts = toTrustDTOs(period)
     res.SelfReportedPriorLosses = toSelfReportPriorLosses(period)
+    mapReturnedAdditionalParameters(period, res)
 
     return res
   }

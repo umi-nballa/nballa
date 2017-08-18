@@ -1,0 +1,40 @@
+<?xml version="1.0"?>
+<entity
+  xmlns="http://guidewire.com/datamodel"
+  desc="represents a request for documentation"
+  entity="DocumentRequest_Ext"
+  table="documentrequest_ext"
+  type="retireable">
+  <typekey
+    desc="The type of document being requested"
+    name="Type"
+    nullok="false"
+    typelist="DocumentRequestType_Ext"/>
+  <foreignkey
+    desc="The related job"
+    fkentity="Job"
+    name="Job"
+    nullok="false"/>
+  <column
+    desc="The type name of the related entity.  This is assists in storing a soft reference to an anonymous entity and is exposed by an enhancement property"
+    getterScriptability="hidden"
+    name="RelatedEntityType"
+    nullok="true"
+    setterScriptability="hidden"
+    type="varchar">
+    <columnParam
+      name="size"
+      value="60"/>
+  </column>
+  <column
+    desc="The id of the related entity.  This is assists in storing a soft reference to an anonymous entity and is exposed by an enhancement property"
+    getterScriptability="hidden"
+    name="RelatedEntityID"
+    nullok="true"
+    setterScriptability="hidden"
+    type="varchar">
+    <columnParam
+      name="size"
+      value="60"/>
+  </column>
+</entity>

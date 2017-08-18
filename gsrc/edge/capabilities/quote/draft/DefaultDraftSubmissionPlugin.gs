@@ -185,6 +185,8 @@ class DefaultDraftSubmissionPlugin implements IDraftSubmissionPlugin {
     res.AccountNumber = submission.Policy.Account.AccountNumber
     res.TermType = period.TermType
     res.UWIssues = toUWIssuesDTO(period, res)
+    res.TrailingDocuments = period.Job.DocumentUploadRequests*.Type*.DisplayName
+
     res.Lobs = _lobPlugin.toDraftDTO(period)
     return res
   }

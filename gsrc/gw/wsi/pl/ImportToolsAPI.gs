@@ -132,7 +132,7 @@ class ImportToolsAPI {
     date = DateUtil.currentDate()
     try {
       Transaction.runWithNewBundle(\ bundle -> {
-        var results = ImportingUtil.processUpdate(graph, bundle)
+        var results = ImportingUtil.processImport(graph, true, bundle)
         for (bean in results.Values)  {
           var entityTypeName = bean.ID.Type.RelativeName
           var sum = summaries.get(entityTypeName)

@@ -1,10 +1,5 @@
 package gw.rules.all.policyperiod
 
-uses gw.accelerator.ruleeng.IRuleCondition
-uses gw.accelerator.ruleeng.RuleEvaluationResult
-uses gw.accelerator.ruleeng.IRuleAction
-uses una.utils.ActivityUtil
-
 /**
  * Created with IntelliJ IDEA.
  * User: parumugam
@@ -12,27 +7,21 @@ uses una.utils.ActivityUtil
  * Time: 11:07 AM
  * To change this template use File | Settings | File Templates.
  */
-class DocConsenttoRate implements IRuleCondition<PolicyPeriod> , IRuleAction<PolicyPeriod, PolicyPeriod>{
-  override function evaluateRuleCriteria(period : PolicyPeriod) : RuleEvaluationResult {
+class DocConsenttoRate  extends DocumentRequestRuleExecution{
+  //TODO TLV keeping this comment in until Reqs come in for CR that actually tell us what to do.  Also logic might not actually be right so have to revisit once we get reqs
+//  var activityPattern = ActivityPattern.finder.getActivityPatternByCode("consent_to_rate_follow_up")
+//  var activity = activityPattern.createJobActivity(target.Bundle, target.Job, null, null, null, null, null, null, null)
+//  ActivityUtil.assignActivityToQueue(ActivityUtil.ACTIVITY_QUEUE.CSR_FOLLOW_UP.QueueName, ActivityUtil.ACTIVITY_QUEUE.CSR_FOLLOW_UP.QueueName, activity)
 
-   if (period.HomeownersLine_HOEExists && period.Status == typekey.PolicyPeriodStatus.TC_QUOTED){
-          if(period.BaseState.Code == typekey.State.TC_NC){
-             if (period.ConsentToRate_Ext && period.ConsentToRateReceived_Ext)  {
-               return RuleEvaluationResult.execute()
-             }
-            }
-      }
-   return RuleEvaluationResult.skip()
+  override function shouldGenerateDocumentRequest(period: PolicyPeriod): boolean {
+    return period.HomeownersLine_HOEExists
+        and period.Status == typekey.PolicyPeriodStatus.TC_QUOTED
+        and period.ConsentToRate_Ext
+        and !period.ConsentToRateReceived_Ext
   }
 
-  override function satisfied(target: PolicyPeriod, context: PolicyPeriod, result: RuleEvaluationResult){
-    var activityPattern = ActivityPattern.finder.getActivityPatternByCode("consent_to_rate_follow_up")
-    var activity =  activityPattern.createJobActivity(target.Bundle, target.Job, null, null, null, null, null, null, null)
-    ActivityUtil.assignActivityToQueue(ActivityUtil.ACTIVITY_QUEUE.CSR_FOLLOW_UP.QueueName, ActivityUtil.ACTIVITY_QUEUE.CSR_FOLLOW_UP.QueueName, activity)
-
-    var list = new AgentDocList_Ext(target)
-    list.DocumentName = "Consent to Rate"
-    target.addToAgentDocs(list)
+  override property get DocumentType(): DocumentRequestType_Ext {
+    return TC_PLConsentToRate
   }
 }
 

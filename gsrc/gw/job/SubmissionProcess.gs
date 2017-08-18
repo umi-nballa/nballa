@@ -13,6 +13,8 @@ uses gw.api.system.PCLoggerCategory
 uses una.pageprocess.submission.JobWizardToolBarPCFController
 uses una.utils.ActivityUtil
 uses una.config.activity.OFACWorkController
+uses edge.util.helper.UserUtil
+uses una.config.ConfigParamsUtil
 
 /**
  * Encapsulates the actions taken within a Submission job.
@@ -189,9 +191,12 @@ class SubmissionProcess extends NewTermProcess {
     var validationLevel: ValidationLevel = alsoTryingToIssue ? TC_READYFORISSUE : TC_BINDABLE
     var blockingPoint : UWIssueBlockingPoint = alsoTryingToIssue ? TC_BLOCKSISSUANCE : TC_BLOCKSBIND
 
-    PCProfilerTag.BIND_VALIDATE.execute(\ -> JobProcessValidator.validatePeriodForUI(_branch, validationLevel))
-    PCProfilerTag.BIND_CHECK_UW_ISSUES.execute(\ -> JobProcessEvaluator.evaluateAndCheckForBlockingUWIssues(_branch, blockingPoint))
 
+    PCProfilerTag.BIND_VALIDATE.execute(\ -> new JobProcessValidator().validatePeriodForUI(_branch, validationLevel))
+
+    if(!_branch.Submission.IsPortalRequest){
+      PCProfilerTag.BIND_CHECK_UW_ISSUES.execute(\ -> JobProcessEvaluator.evaluateAndCheckForBlockingUWIssues(_branch, blockingPoint))
+    }
     // Do AccountSyncable validation
     PCProfilerTag.BIND_PREPARE_ACCOUNT_SYNCABLES.execute(\ -> _branch.AllAccountSyncables.each(\ a -> a.prepareForPromote()))
 

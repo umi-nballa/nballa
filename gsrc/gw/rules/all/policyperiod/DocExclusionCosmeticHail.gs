@@ -1,10 +1,5 @@
 package gw.rules.all.policyperiod
 
-uses gw.accelerator.ruleeng.IRuleCondition
-uses gw.accelerator.ruleeng.RuleEvaluationResult
-uses gw.accelerator.ruleeng.IRuleAction
-uses una.utils.ActivityUtil
-
 /**
  * Created with IntelliJ IDEA.
  * User: parumugam
@@ -12,28 +7,21 @@ uses una.utils.ActivityUtil
  * Time: 11:07 AM
  * To change this template use File | Settings | File Templates.
  */
-class DocExclusionCosmeticHail implements IRuleCondition<PolicyPeriod>, IRuleAction<PolicyPeriod, PolicyPeriod>{
+class DocExclusionCosmeticHail extends DocumentRequestRuleExecution{
+  //TODO TLV keeping this comment in until Reqs come in for CR that actually tell us what to do.  Also logic might not actually be right so have to revisit once we get reqs
+//  var activityPattern = ActivityPattern.finder.getActivityPatternByCode("cosmetic_damage_follow_up")
+//  var activity = activityPattern.createJobActivity(target.Bundle, target.Job, null, null, null, null, null, null, null)
+//  ActivityUtil.assignActivityToQueue(ActivityUtil.ACTIVITY_QUEUE.CSR_FOLLOW_UP.QueueName, ActivityUtil.ACTIVITY_QUEUE.CSR_FOLLOW_UP.QueueName, activity)
 
-  override function evaluateRuleCriteria(period : PolicyPeriod) : RuleEvaluationResult {
-    //  cosmetic_damage_follow_up
-    if (period.HomeownersLine_HOEExists && period.Status == typekey.PolicyPeriodStatus.TC_QUOTED){
-          if(period.BaseState.Code == typekey.State.TC_TX){
-             if (period.HomeownersLine_HOE.Dwelling.HailResistantRoofCredit_Ext &&
-                 period.HomeownersLine_HOE.AllExclusions.hasMatch( \ elt1 -> elt1.PatternCode=="HODW_CosmeticDamagebyHail_HOE_Ext"))  {
-               return RuleEvaluationResult.execute()
-             }
-            }
-      }
-   return RuleEvaluationResult.skip()
+  override function shouldGenerateDocumentRequest(period: PolicyPeriod): boolean {
+    return period.HomeownersLine_HOEExists
+        and period.Status == typekey.PolicyPeriodStatus.TC_QUOTED
+        and period.HomeownersLine_HOE.Dwelling.HailResistantRoofCredit_Ext
+        and period.HomeownersLine_HOE.AllExclusions.hasMatch( \ elt1 -> elt1.PatternCode=="HODW_CosmeticDamagebyHail_HOE_Ext")
   }
-   override function satisfied(target: PolicyPeriod, context: PolicyPeriod, result: RuleEvaluationResult) {
-     var activityPattern = ActivityPattern.finder.getActivityPatternByCode("cosmetic_damage_follow_up")
-     var activity =  activityPattern.createJobActivity(target.Bundle, target.Job, null, null, null, null, null, null, null)
-     ActivityUtil.assignActivityToQueue(ActivityUtil.ACTIVITY_QUEUE.CSR_FOLLOW_UP.QueueName, ActivityUtil.ACTIVITY_QUEUE.CSR_FOLLOW_UP.QueueName, activity)
 
-     var list = new AgentDocList_Ext(target)
-     list.DocumentName = "Hail Resistant Roof Certificate/Exclusion of Cosmetic Damage to Roof"
-     target.addToAgentDocs(list)
-   }
+  override property get DocumentType(): DocumentRequestType_Ext {
+    return TC_CosmeticHailExclusion
+  }
 }
 

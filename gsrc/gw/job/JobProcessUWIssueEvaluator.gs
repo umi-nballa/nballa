@@ -76,23 +76,25 @@ class JobProcessUWIssueEvaluator {
    */
   function evaluateAndFindBlockingUWIssuesInSlices(branch : PolicyPeriod, blockingPoint : UWIssueBlockingPoint, oosSlices_ : entity.PolicyPeriod[]) : entity.UWIssue[] {
     for (ooseSlice in oosSlices_) {
-      //never run UW Issues for
-
-      if(typekey.SourceSystem_Ext.TF_NONPORTALSOURCES.TypeKeys.contains(branch.SourceSystem_Ext) /**or branch.SourceSystem_Ext == TC_MyUniversal and UserUtil.getUserByName("PortalUser") != User.util.CurrentUser **/){ //TODO tlv - will need to change this to the actual portal user id when that is defined
+      if(branch.Submission == null){
         for (checkingSet in checkingSetsFor(blockingPoint)) {
           evaluateUWIssues(ooseSlice, checkingSet)
         }
-      }else if(branch.SourceSystem_Ext == TC_MYUniversal and branch.Submission.QuoteType == QuoteType.TC_FULL){//only process during full quote if source system == myuniversal
-        _PORTAL_CHECKING_SETS.each( \ portalCheckingSet -> {
-          evaluateUWIssues(ooseSlice, portalCheckingSet)
-        })
-      }else{
-        if(JobProcessLogger.DebugEnabled){
-          JobProcessLogger.logDebug("Bypassing underwriting rules check for Source System ${branch.SourceSystem_Ext} and user ${User}")
+      }else{//on submissions, we only run uw issues if the quote type is full for portal.  At that time we run ALL UW issues
+        if(branch.Submission.IsPortalRequest){
+          if(branch.Submission.QuoteType == TC_FULL){
+            _PORTAL_CHECKING_SETS.each( \ portalCheckingSet -> {
+              evaluateUWIssues(ooseSlice, portalCheckingSet)
+            })
+          }
+        }else{//always run when it's not Portal request
+          for (checkingSet in checkingSetsFor(blockingPoint)) {
+            evaluateUWIssues(ooseSlice, checkingSet)
+          }
         }
       }
     }
-    
+
     for (ooseSlice in oosSlices_) {
       var blockingIssues = findBlockingIssues(ooseSlice, blockingPoint)
       if (not blockingIssues.IsEmpty) {

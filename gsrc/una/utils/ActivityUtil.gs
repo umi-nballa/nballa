@@ -1,12 +1,13 @@
 package una.utils
 
-uses java.util.Queue
 uses gw.api.database.Query
-uses java.lang.Exception
 uses una.integration.framework.exception.ExceptionUtil
 uses una.integration.framework.exception.FieldErrorInformation
 uses una.integration.util.propertyinspections.UnaErrorCode
 uses una.integration.mapping.document.DocumentActivity
+uses java.util.HashMap
+uses com.google.gdata.util.common.base.Pair
+uses una.config.ConfigParamsUtil
 
 /**
  * Created with IntelliJ IDEA.
@@ -52,6 +53,47 @@ class ActivityUtil {
     return false
   }
 
+  public static function createJobActivityIfNotExists(job : Job, patternCode : String, queue : ACTIVITY_QUEUE, associatedEntity : KeyableBean){
+    if(!job.AllOpenActivities.hasMatch( \ activity -> activity.ActivityPattern.Code?.equalsIgnoreCase(patternCode))){
+      var activity = createActivityAutomatically(job.LatestPeriod, patternCode)
+      activity.AssociatedEntity = associatedEntity
+      ActivityUtil.assignActivityToQueue(queue.QueueName, queue.QueueName, activity)
+    }
+  }
+
+  public static function createDocumentRequestActivity(docType : DocumentRequestType_Ext, job : Job, associatedEntity : KeyableBean){
+    var activityMetaData = ConfigParamsUtil.getPair<String, String>(TC_ActivityMetaDataPair, job.SelectedVersion.BaseState, docType.Code)
+
+    if(activityMetaData != null){
+	    //First is always the patterncode.  Second represents the Queue code in the ACTIVITY_QUEUE enum above
+      createJobActivityIfNotExists(job, activityMetaData.First, ACTIVITY_QUEUE.AllValues.atMostOneWhere( \ queue -> queue.Code?.equalsIgnoreCase(activityMetaData.Second)), associatedEntity)
+    }
+  }
+
+  public static function removeDocumentRequestActivityUnconditionally(docType : DocumentRequestType_Ext, job : Job, associatedEntity : KeyableBean){
+    var activityMetaData = ConfigParamsUtil.getPair<String, ACTIVITY_QUEUE>(TC_ActivityMetaDataPair, job.SelectedVersion.BaseState, docType.Code)
+
+    if(activityMetaData != null){
+      var relatedActivities = job.AllOpenActivities.where(\ activity -> activity.ActivityPattern.Code?.equalsIgnoreCase(activityMetaData.First))
+      var relatedActivity : Activity
+
+      if(associatedEntity != null){
+        relatedActivity = relatedActivities.firstWhere( \ activity -> activity.AssociatedEntity == associatedEntity)
+      }else{
+        relatedActivity = relatedActivities.first()
+      }
+
+      if(relatedActivity != null and relatedActivity.Bundle.ReadOnly){
+        gw.transaction.Transaction.runWithNewBundle(\ bundle -> {
+          relatedActivity = bundle.add(relatedActivity)
+          relatedActivity.remove()
+        })
+      }else{
+        relatedActivity?.remove()
+      }
+    }
+  }
+
   /**
    * The activity gets created automatically in the backend. The function calls the OOTB method for creating an activity
    *and passes the current bundle.
@@ -62,7 +104,7 @@ class ActivityUtil {
     var activity: Activity = null
     if (activityPattern != null)
     {
-      activity = activityPattern.createJobActivity(gw.transaction.Transaction.getCurrent(), policyPeriod.Job, null, null, "", null, null, null, null)
+      activity = activityPattern.createJobActivity(!policyPeriod.Bundle.ReadOnly ? policyPeriod.Bundle : gw.transaction.Transaction.getCurrent(), policyPeriod.Job, null, null, "", null, null, null, null)
     } else {
       var fieldError = new FieldErrorInformation()  {: FieldName = "Activity Pattern Code", : FieldValue = patternCode}
       ExceptionUtil.throwException(UnaErrorCode.PATTERN_CODE_NOT_PRESENT, {fieldError})

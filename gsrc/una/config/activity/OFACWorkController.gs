@@ -25,6 +25,7 @@ class OFACWorkController {
   }
 
   public function advanceWorkItems(activities : Activity[]){
+    activities = activities.where( \ activity -> ACTIVITY_PATTERN_KEYS.containsIgnoreCase(activity.ActivityPattern.Code))
     activities?.each( \ activity -> {
         gw.transaction.Transaction.runWithNewBundle(\ bundle -> {
           activity = bundle.add(activity)

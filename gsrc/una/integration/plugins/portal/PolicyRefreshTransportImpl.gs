@@ -16,6 +16,7 @@ uses wsi.remote.una.portalpolicyservice.policyservice.types.complex.Installment
 uses java.lang.Exception
 uses dynamic.Dynamic
 uses java.lang.Class
+uses java.text.SimpleDateFormat
 
 /**
  * Created with IntelliJ IDEA.
@@ -81,24 +82,17 @@ class PolicyRefreshTransportImpl extends AbstractMessageTransport implements Ini
 
     var policies = new wsi.remote.una.portalpolicyservice.policyservice.types.complex.Policies()
     policies.PersonalPolicy = getPersonalPolicyRequest(policyPeriod)
-    policies.PolicyEdition = (policyPeriod.TermNumber?:1 - 1)//Policy Edition is 0 based on the portal side
+    policies.PolicyEdition = (policyPeriod.TermNumber?:1) - 1//Policy Edition is 0 based on the portal side
     policies.PremiumAmt = policyPeriod.TotalPremiumRPT
 
     policies.CallingCenter = "PC"
-
-    //This billing ingformation is going to be sent from BC
-    var billingPlugin = gw.plugin.Plugins.get( gw.plugin.billing.IBillingSummaryPlugin )
-    var summary = billingPlugin.retrievePolicyBillingSummary(policyPeriod.PolicyNumber, policyPeriod.TermNumber)
-    var billingPolicies = billingPlugin.retrieveBillingPolicies(policyPeriod.Policy.Account.AccountNumber)
-    policies.BalanceDue = summary.CurrentOutstanding
-    policies.BalanceTotal = summary.TotalBilled
-    policies.BalanceDueDate = new XmlDateTime()
 
     policies.print()
 
     var response = service.PersonalPolicy_UPSERT(policies, authHeader)
     _logger.debug("Response: {}", response)
-    print("Status: "  + response.Status + "\nResult: " + response.Result.PolicyNumber + "\nMessage:${response.Result.Message}")
+    print("Status: "  + response.Status + "\nResult: " + response.Result.PolicyNumber + "\nPolicyID:${response.Result.PolicyID}\nMessage:${response.Result.Message}")
+
     if(response == null) {
       var description = "No response recieved from Portal"
       _logger.error("PolicyRefresh Integration Error", description)
@@ -130,9 +124,9 @@ class PolicyRefreshTransportImpl extends AbstractMessageTransport implements Ini
         :Cust = getCustomerDetails(policyPeriod),
         :IsGWPolicy = "true",
         :Home = getHome(policyPeriod),
-        :BillingInfo = getBillingInfo(policyPeriod),//TODO: Moving to BC
-        :Installments = getInstallments(policyPeriod), //TODO: Moving to BC
-        :TransRecaps = getTransactionRecaps(policyPeriod),//TODO: Moving to BC
+//        :BillingInfo = getBillingInfo(policyPeriod),//TODO: Moving to BC
+//        :Installments = getInstallments(policyPeriod), //TODO: Moving to BC
+//        :TransRecaps = getTransactionRecaps(policyPeriod),//TODO: Moving to BC
         :PolicyLoan = getPolicyLoans(policyPeriod)
     }
 
@@ -146,7 +140,7 @@ class PolicyRefreshTransportImpl extends AbstractMessageTransport implements Ini
 
     var agencyDetails = new Policy_Agency()
       {
-          :AgentNum = agency.AgenyNumber_Ext,
+          :AgentNum = "89999",// policyPeriod.EffectiveDatedFields.ProducerCode,//agency.AgenyNumber_Ext,
           :AgentName = agency.Name,
           :Addr = mapAddress(primaryAddress, Agency_Addr),
           :Email = agency.Contact.EmailAddress1
@@ -185,7 +179,7 @@ class PolicyRefreshTransportImpl extends AbstractMessageTransport implements Ini
                     :RatingState = policyPeriod.PolicyAddress.State?.Description,
                     :RatingStateCode = policyPeriod.PolicyAddress.State?.Code,
                     :Status = policyPeriod.Status.Code,
-                    :Term = policyPeriod.TermNumber?.toString()
+                    :Term = ((policyPeriod.TermNumber?:1) - 1).toString()
                 }
         }
 
@@ -203,82 +197,32 @@ class PolicyRefreshTransportImpl extends AbstractMessageTransport implements Ini
   }
 
   public function getGroupLineCode(policyPeriod: PolicyPeriod): String {
-    var groupLine = ""
+    var groupLineCode = ""
     if(policyPeriod.Policy.Product.ProductType == ProductType.TC_PERSONAL) {
 
       if(HOPolicyType_HOE.TF_ALLHOTYPES.TypeKeys.contains(policyPeriod.HomeownersLine_HOE.HOPolicyType)) {
-        groupLine = "24" //"Homeowners"; (HO3, HO4, HO6)
+        groupLineCode = "24" //"Homeowners"; (HO3, HO4, HO6)
         if(policyPeriod.HomeownersLine_HOE.BaseState == Jurisdiction.TC_TX) {
-          groupLine = "23" //"Homeowners - TX"; (HOA, HOB, HCONB)
+          groupLineCode = "23" //"Homeowners - TX"; (HOA, HOB, HCONB)
         }
       }  else if(HOPolicyType_HOE.TF_FIRETYPES.TypeKeys.contains(policyPeriod.HomeownersLine_HOE.HOPolicyType)){
 
         if(HOPolicyType_HOE.TF_ALLTDPTYPES.TypeKeys.contains(policyPeriod.HomeownersLine_HOE.HOPolicyType)){
-          groupLine = "21" //"Dwelling Fire - TX"; (TDP1, TDP2 TDP3)
+          groupLineCode = "21" //"Dwelling Fire - TX"; (TDP1, TDP2 TDP3)
         } else if (HOPolicyType_HOE.TC_DP3_EXT == policyPeriod.HomeownersLine_HOE.HOPolicyType and policyPeriod.HomeownersLine_HOE.BaseState == Jurisdiction.TC_FL ) {
-          groupLine = "22" //"Rental Dwelling Fire"; (DP3 florida only)
+          groupLineCode = "22" //"Rental Dwelling Fire"; (DP3 florida only)
         } else {
-          groupLine = "19" //"Dwelling Fire"
+          groupLineCode = "19" //"Dwelling Fire"
         }
       }
     } else { //commercial
       if(policyPeriod.BP7LineExists or policyPeriod.BOPLineExists){
-        groupLine = "75"
+        groupLineCode = "75"
       } else if(policyPeriod.CPLineExists) {
-        groupLine = "85"
+        groupLineCode = "85"
       }
     }
-    return groupLine
-  }
-
-  //TODO: Move to BC
-  public function getBillingInfo(policyPeriod: PolicyPeriod): ArrayList<Policy_BillingInfo> {
-    return new ArrayList<Policy_BillingInfo>() {
-        new Policy_BillingInfo(){
-            :BalDue = "200", :BillType = "Direct Bill", :LastPaymentAmt="100", :LastPaymentDt = "11/11/2020", :PayType = "Insured", :PrevBalDue = "0", :TotalPremPaid = "100", :TotalTermPrem = "300"
-        },
-        new Policy_BillingInfo(){
-            :BalDue = "1000", :BillType = "Direct Bill", :LastPaymentAmt="100", :LastPaymentDt = "11/11/2020", :PayType = "Insured", :PrevBalDue = "0", :TotalPremPaid = "100", :TotalTermPrem = "300"
-        }
-    }
-  }
-
-  //TODO: Move to BC
-  public function getInstallments(policyPeriod: PolicyPeriod): Policy_Installments {
-    return new Policy_Installments(){
-        : Installment = new ArrayList<Installments_Installment>(){
-            new Installments_Installment()
-                {
-                    : InstallNum = "1", : InstallStatus = "CN", : InstallDt = "2020-11-11", : InstallAmt = "100", : InstallAmtDue = "200", : InstallTransCd = "INS"
-                },
-            new Installments_Installment()
-                {
-                    : InstallNum = "2", : InstallStatus = "CN", : InstallDt = "2020-11-11", : InstallAmt = "100", : InstallAmtDue = "200", : InstallTransCd = "INS"
-                },
-            new Installments_Installment()
-                {
-                    : InstallNum = "3", : InstallStatus = "CN", : InstallDt = "2020-11-11", : InstallAmt = "100", : InstallAmtDue = "200", : InstallTransCd = "INS"
-                }
-        }
-    }
-  }
-
-  //TODO: Move to BC
-  public function getTransactionRecaps(policyPeriod: PolicyPeriod): Policy_TransRecaps {
-    return new Policy_TransRecaps()
-    {
-        :TransRecap = new ArrayList<TransRecaps_TransRecap>()
-          {
-            new TransRecaps_TransRecap()
-            {
-                :AmtPd = "100", :BalanceDue = "200", :CarryDt = "2020-11-11", :Cash = "100", :CurrAct = "CP", :EffDt = "2020-11-11", :EnteredDt = "2020-11-11", :Comments = "jfkaslfjaskfjs"
-            },
-            new TransRecaps_TransRecap()
-            {
-                :AmtPd = "100", :BalanceDue = "200", :CarryDt = "2020-11-11", :Cash = "100", :CurrAct = "CP", :EffDt = "2020-11-11", :EnteredDt = "2020-11-11", :Comments = "jfkaslfjaskfjs"
-            }
-          }
-    }
+    return groupLineCode
   }
 
   public function getPolicyLoans(policyPeriod: PolicyPeriod): ArrayList<Policy_PolicyLoan> {
@@ -330,109 +274,53 @@ class PolicyRefreshTransportImpl extends AbstractMessageTransport implements Ini
                             :UserLineCode = "24",
                             :WiringYr = dwelling.ElectricalSystemUpgradeDate?.toString(),
                             :YrBuilt = dwelling.YearBuiltOrOverride?.toString(),
-                            //:HurricaneDollar = "4580",// TODO: Need mapping
+                            :HurricaneDollar = "NOCALC",// TODO: Dependent on DE2608
 
                             : Coverage = new ArrayList<Prop_Coverage>() {
-                                //new Prop_Coverage() { : AllPerilDeduct = "1000", : CovALimit = "2000", : CovAPrem = "22", : HurricaneDeduct = "2"},
-                                //new Prop_Coverage() { : AllPerilDeduct = "1000", : FloodDWLimit = "5000", : FloodDWPrem = "2200", : HurricaneDeduct = "2"}
                             },
                             : ItemNotes = new Prop_ItemNotes() { : Note = new ArrayList<ItemNotes_Note>() },
                             : LossHist = new ArrayList<Prop_LossHist>() {
-                                new Prop_LossHist() { : LossAmt = "433", : LossDt = "2017-11-11", : LossType = "CLM", : PaidClaim = "C"}
+                                //new Prop_LossHist() { : LossAmt = "433", : LossDt = "2017-11-11", : LossType = "CLM", : PaidClaim = "C"}
                             },
                             :Addr = mapAddress(policyPeriod.PolicyAddress.Address, Prop_Addr)
 
                         }
                     }
             },
-        :Loan = new ArrayList<Home_Loan>()
-            {
-                new Home_Loan()
-                {
-                  :LoanName = "Personal Loan", :LoanNum = "123FF48", :LoanType = "Mortgagee", :OrigNum = "222222",
-                  :Addr = new Loan_Addr()
-                      {
-                        :Addr1 = "djfdjfdf", :AddrTypeCd = "MailingAddress", :City = "Orange", :County = "Orange", :State = "Florida", :Zip = "11111"
-                      },
-                  :PhoneInfo = new Loan_PhoneInfo()
-                      {
-                        :PhoneNum = "5555555555", :PhoneTypeCd = "Work"
-                      }
-                },
-                new Home_Loan()
-                {
-                    :LoanName = "Personal Loan", :LoanNum = "123FF48", :LoanType = "Mortgagee", :OrigNum = "222222",
-                    :Addr = new Loan_Addr()
-                        {
-                            :Addr1 = "djfdjfdf", :AddrTypeCd = "MailingAddress", :City = "Orange", :County = "Orange", :State = "Florida", :Zip = "11111"
-                        },
-                    :PhoneInfo = new Loan_PhoneInfo()
-                        {
-                            :PhoneNum = "5555555555", :PhoneTypeCd = "Work"
-                        }
-                }
-            },
-        :Endorsements = new Home_Endorsements()
-            {
-                : Endorsement = new ArrayList<Endorsements_Endorsement>()
-                    {
-                        new Endorsements_Endorsement()
-                            {
-                                : Description = "Sample Endorsement 1", : EditionDt = "0404", : EndNum = "432", : ItemNum = "2", : Limit = "0", : Premium = "200"
-                            },
-                        new Endorsements_Endorsement()
-                            {
-                                : Description = "Sample Endorsement 2", : EditionDt = "0404", : EndNum = "432", : ItemNum = "2", : Limit = "0", : Premium = "200"
-                            },
-                        new Endorsements_Endorsement()
-                            {
-                                : Description = "Sample Endorsement 3", : EditionDt = "0404", : EndNum = "432", : ItemNum = "2", : Limit = "0", : Premium = "200"
-                            }
-                    }
-          },
+        :Loan = new ArrayList<Home_Loan>() { //Leaving this  empty, the Portal team said it is not used - CLM - 08/16/2017
+        },
+        :Endorsements = new Home_Endorsements() { : Endorsement = new ArrayList<Endorsements_Endorsement>() },
         //TODO: Move to CC
         :Claims = new Home_Claims()
             {
               :Claim = new ArrayList<Claims_Claim>()
                   {
-                      new Claims_Claim()
-                          {
-                             :ClaimNum = "23FEEE5849", :LossDt = "2017-11-11", :LossPd = "300", :ReportedDt = "2017-11-11", :Status = "Closed"
-                          },
-                      new Claims_Claim()
-                          {
-                              :ClaimNum = "23FEEE5840", :LossDt = "2017-11-11", :LossPd = "300", :ReportedDt = "2017-11-11", :Status = "Closed"
-                          }
+//                      new Claims_Claim()
+//                          {
+//                             :ClaimNum = "23FEEE5849", :LossDt = "2017-11-11", :LossPd = "300", :ReportedDt = "2017-11-11", :Status = "Closed"
+//                          },
+//                      new Claims_Claim()
+//                          {
+//                              :ClaimNum = "23FEEE5840", :LossDt = "2017-11-11", :LossPd = "300", :ReportedDt = "2017-11-11", :Status = "Closed"
+//                          }
                   }
             }
     }
 
     //  Add Notes
     var notes = policyPeriod.Policy.Account.Notes
-    notes.each( \ note -> home.Props.Prop.first().ItemNotes.Note.add(new ItemNotes_Note() { : EnteredDt = note.AuthoringDate, : Remarks = note.Body, : Title = note.Subject, : UserId = note.Author.DisplayName }))
-
-    //home.Props.Prop.first().Coverage.add( new Prop_Coverage() { : CovALimit = dwelling.DwellingLimitCovTerm.DisplayValue, : CovAPrem = dwelling.DwellingLimitCovTerm, : HurricaneDeduct = "2"})
-
-    var covALimit = dwelling.DwellingLimitCovTerm.Value
-    var covBLimit = dwelling.OtherStructuresLimitCovTerm.Value
-    var covCLimit = dwelling.PersonalPropertyLimitCovTerm.Value
-//
-//    //you can add enhancement properties to the below to make them prettier and re-usable like the ones above
-//    var covDLimit = (HOPolicyType_HOE.TF_FIRETYPES.TypeKeys.contains(line.HOPolicyType)) ? dwelling.HODW_Loss_Of_Use_HOE.HODW_LossOfUseDwelLimit_HOETerm.Value : dwelling.DPDW_FairRentalValue_Ext.DPDW_FairRentalValue_ExtTerm.Value
-//    var covELimit = (HOPolicyType_HOE.TF_FIRETYPES.TypeKeys.contains(line.HOPolicyType)) ? line.DPLI_Personal_Liability_HOE.DPLI_LiabilityLimit_HOETerm.Value : line.HOLI_Personal_Liability_HOE.HOLI_Liability_Limit_HOETerm.Value
-//    var covFLimit = (HOPolicyType_HOE.TF_FIRETYPES.TypeKeys.contains(line.HOPolicyType)) ? line.DPLI_Med_Pay_HOE.DPLI_MedPay_Limit_HOETerm.Value : line.HOLI_Med_Pay_HOE.HOLI_MedPay_Limit_HOETerm.Value
+    notes.each( \ note -> home.Props.Prop.first().ItemNotes.Note.add(new ItemNotes_Note() { : EnteredDt = note.AuthoringDate?.toString(), : Remarks = note.Body, : Title = note.Subject, : UserId = note.Author.DisplayName }))
 
     var covList = line.CoveragesFromCoverable.where( \ elt -> line.hasCoverageConditionOrExclusion(elt.PatternCode)).toList()
     covList.addAll(dwelling.CoveragesFromCoverable.where( \ elt -> dwelling.hasCoverageConditionOrExclusion(elt.PatternCode)).toList())
-    //dwelling.VersionList.Coverages.where( \ c -> c.AllVersions.first().CoverageCategory.Code.equals("HODW_SectionI_HOE")).flatMap(\ c -> c.Costs).flatMap(\ c -> c.AllVersions).toList()
-    //dwelling.VersionList.Coverages.flatMap(\ c -> c.Costs).flatMap(\ c -> c.AllVersions).toList()
+
     print("Section I")
     covList.where( \ elt -> elt.CoverageCategory.Code.equals("HODW_SectionI_HOE")).each( \ cov -> {
       var costModelList = una.pageprocess.QuoteScreenPCFController.getCostModels(cov)
       costModelList.each( \ costModel ->
         {
           var propCov: Prop_Coverage = null
-          print("${costModel.Coverage.Pattern.Name} :: ${costModel.LimitDisplayValue ?: costModel.LimitValue} :: ${costModel.PremiumDisplayValue}")
+          print("${costModel.Coverage.PatternCode} :: ${costModel.Coverage.Pattern.Name} :: ${costModel.LimitDisplayValue ?: costModel.LimitValue} :: ${costModel.PremiumDisplayValue}")
 
           if(costModel.Coverage.PatternCode  ==  "HODW_Dwelling_Cov_HOE" || costModel.Coverage.PatternCode  == "DPDW_Dwelling_Cov_HOE") {
             propCov = new Prop_Coverage() { : CovALimit = costModel.LimitValue, : CovAPrem = costModel.Premium }
@@ -440,16 +328,25 @@ class PolicyRefreshTransportImpl extends AbstractMessageTransport implements Ini
           } else if(costModel.Coverage.PatternCode  ==  "HODW_Other_Structures_HOE" || costModel.Coverage.PatternCode  == "DPDW_Other_Structures_HOE") {
             propCov = new Prop_Coverage() { : CovBLimit = costModel.LimitValue, : CovBPrem = costModel.Premium }
 
-          } else if(costModel.Coverage.PatternCode  ==  "HODW_Loss_Of_Use_HOE" || costModel.Coverage.PatternCode  == "DPDW_FairRentalValue_Ext") {
+          } else if(costModel.Coverage.PatternCode  ==  "HODW_Personal_Property_HOE" || costModel.Coverage.PatternCode  == "DPDW_Personal_Property_HOE") {
             propCov = new Prop_Coverage() { : CovCLimit = costModel.LimitValue, : CovCPrem = costModel.Premium }
 
-          } else if(costModel.Coverage.PatternCode  ==  "HODW_SectionI_Ded_HOE") {
+          } else if(costModel.Coverage.PatternCode  ==  "HODW_Loss_Of_Use_HOE" || costModel.Coverage.PatternCode  == "DPDW_FairRentalValue_Ext") {
+            propCov = new Prop_Coverage() { : CovDLimit = costModel.LimitValue, : CovDPrem = costModel.Premium }
+
+          }
+          else if(costModel.Coverage.PatternCode  ==  "HODW_SectionI_Ded_HOE") {
             costModel.Coverage.CovTerms.each( \ term -> {
-              if(term.PatternCode.equals("HODW_AllPeril_HOE_Ext")){
-                propCov = new Prop_Coverage() { :AllPerilDeduct = term.DisplayValue }
+              print("${term.PatternCode} :: ${term.Pattern.Name} :: ${term.DisplayValue}")
+              if(term.PatternCode.equals("HODW_OtherPerils_Ded_HOE")){ //HODW_AllPeril_HOE_Ext
+                propCov = new Prop_Coverage() { :AllPerilDeduct = term.ValueAsString }
               } else if(term.PatternCode.equals("HODW_Hurricane_Ded_HOE")) {
-                propCov = new Prop_Coverage() { :HurricaneDeduct = term.DisplayValue }
+                propCov = new Prop_Coverage() { :HurricaneDeduct = term.ValueAsString }
               }
+              if(propCov != null) {
+                home.Props.Prop.first().Coverage.add(propCov)
+              }
+               propCov = null
             })
           }
           if(propCov != null) {
@@ -461,39 +358,53 @@ class PolicyRefreshTransportImpl extends AbstractMessageTransport implements Ini
     covList.where( \ elt -> elt.CoverageCategory.Code.equals("HODW_SectionII_HOE")).each( \ cov -> {
         var costModelList = una.pageprocess.QuoteScreenPCFController.getCostModels(cov)
         costModelList.each( \ costModel -> {
-            print("${costModel.Coverage.Pattern.Name} :: ${costModel.LimitDisplayValue ?: costModel.LimitValue} :: ${costModel.PremiumDisplayValue}")
+          var propCov: Prop_Coverage = null
+          print("${costModel.Coverage.PatternCode} :: ${costModel.Coverage.Pattern.Name} :: ${costModel.LimitDisplayValue ?: costModel.LimitValue} :: ${costModel.PremiumDisplayValue}")
+
+          if(costModel.Coverage.PatternCode  ==  "HOLI_Personal_Liability_HOE" || costModel.Coverage.PatternCode  == "DPLI_Personal_Liability_HOE") {
+            propCov = new Prop_Coverage() { : CovELimit = costModel.LimitValue, : CovEPrem = costModel.Premium }
+
+          } else if(costModel.Coverage.PatternCode  ==  "HOLI_Med_Pay_HOE" || costModel.Coverage.PatternCode  == "DPLI_Med_Pay_HOE") {
+            propCov = new Prop_Coverage() { : CovFLimit = costModel.LimitValue, : CovFPrem = costModel.Premium }
+
+          }
+          if(propCov != null) {
+            home.Props.Prop.first().Coverage.add(propCov)
+          }
         })
     })
 
 
-//    var section2 = line.VersionList.HOLineCoverages.where( \ c -> c.AllVersions.first().CoverageCategory.Code.equals("HODW_SectionII_HOE")).flatMap(\ c -> c.Costs).flatMap(\ c -> c.AllVersions).toList()
-//    section2.each( \ cov -> {
-//      var costModelList = una.pageprocess.QuoteScreenPCFController.getCostModels(cov.Coverage)
-//      costModelList.each( \ costModel ->
-//      {
-//        print("${costModel.Coverage.PatternCode } :: ${costModel.LimitDisplayValue} :: ${costModel.PremiumDisplayValue}")
-//
-//      })
-//    })
+    policyPeriod.Forms.each( \ form -> {
+      print("${form.Pattern.Code} :: ${form.Pattern.FormDescription} :: ${form.Pattern.ClausePattern} ")
 
-//    policyPeriod.AllCoverables*.CoveragesFromCoverable.each( \ coverage -> {
-        //home.Props.Prop.first().Coverage.add(//new Prop_Coverage() { : AllPerilDeduct = coverage."1000", : CovALimit = "2000", : CovAPrem = "22", : HurricaneDeduct = "2"}))
+      //var addCosts = una.pageprocess.QuoteScreenPCFController.getAdditionalCoverageCosts(dwelling)
+      //addCosts.each( \ elt -> form.Pattern.ClausePattern })
 
-//      var coverageDTO = new UNACoverageDTO()
-//      coverageDTO.Code = coverage.PatternCode
-//
-//      if(coverage.Scheduled){
-//        coverageDTO.ScheduledItems = getScheduledItemDTOs(coverage)
-//      }else{
-//        coverage.CovTerms.each( \ covTerm -> {
-//          var covTermDTO = new UNACoverageTermDTO()
-//          covTermDTO.Code = covTerm.PatternCode
-//          covTermDTO.Value = covTerm.ValueAsString
-//        })
-//      }
-//    })
+      var endorsement =  new Endorsements_Endorsement()
+          {
+              : Description = form.FormDescription, : EditionDt = form.Pattern.EditionAsDate, : EndNum = "0", : ItemNum = "0", : Limit = "0", : Premium = "0"
+          }
+
+      home.Endorsements.Endorsement.add(endorsement)
+    })
+
+    policyPeriod.HomeownersLine_HOE.HOPriorLosses_Ext.each( \ priorLoss -> {
+
+      var lossAmt = priorLoss.ClaimPayment?.sum( \ claimPayment -> claimPayment.ClaimAmount)
+
+      var lossHist = new Prop_LossHist() {
+          : LossAmt = lossAmt != null ? lossAmt.toString() : "",
+          : LossDt = priorLoss.ClaimDate,
+          : LossType = priorLoss.ClaimType.Code.toString(),
+          : PaidClaim = priorLoss.ClaimPayment?.countWhere( \ pay -> typekey.Status_Ext.TC_CLOSED.equals(pay.ClaimDisposition_Ext.Code) and pay.ClaimAmount > 0)
+      }
+
+      home.Props.Prop.first().LossHist.add(lossHist)
+    })
 
 
+   //home.Endorsements.Endorsement.
     return home
   }
 

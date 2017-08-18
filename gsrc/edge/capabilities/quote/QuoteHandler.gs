@@ -26,12 +26,15 @@ uses edge.el.Expr
 uses edge.aspects.validation.annotations.Context
 uses edge.PlatformSupport.Bundle
 uses edge.capabilities.quote.draft.util.SubmissionUtil
+uses edge.capabilities.quote.binding.dto.BindingDataDTO
+uses edge.capabilities.address.dto.AddressDTO
+uses una.logging.UnaLoggerCategory
 
 /**
  * Quoting handler. Manages quoting session.
  */
 class QuoteHandler implements IRpcHandler  {
-
+   static final var _LOGGER = UnaLoggerCategory.UNA_EDGE_API
   /**
    * Draft submission plugin used in quote.
    */
@@ -279,17 +282,8 @@ class QuoteHandler implements IRpcHandler  {
         SubmissionUtil.updateSubmissionFlow(sub, qdd.DraftData)
         _quotingPlugin.quoteAllOfferings(sub)
       } catch(uwe : UnderwritingException) {
-        //set flag for use later
-        uwExceptionEncounteredFlag = true
-        uwException = uwe
-        // if an Exception is thrown during quoting, we should withdraw all but one period
-        final var base = QuoteUtil.getBasePeriod(sub)
-        sub.SelectedVersion = base
-        if (base.JobProcess != null) {
-          base.JobProcess.withdrawOtherActivePeriods()
-          if (base.Status == PolicyPeriodStatus.TC_QUOTING || base.Status == PolicyPeriodStatus.TC_QUOTED) {
-            base.JobProcess.edit()
-          }
+        if(_LOGGER.DebugEnabled){
+          _LOGGER.debug("Encountered underwriting exception while quoting submission transaction number ${sub.JobNumber}.", uwe)
         }
       }
     })
@@ -335,48 +329,23 @@ class QuoteHandler implements IRpcHandler  {
     return toDTO(qdd.SessionUUID, sub)
   }
 
-
-  /**
-   * Binds the submission
-   *
-   * <dl>
-   *   <dt>Calls:</dt>
-   *   <dd><code>ISessionPlugin#validateAndRefreshSession(String,String)</code> - to pull the session id out of
-   *       QuoteDataDTO where it validates whether the session is valid or not</dd>
-   *   <dd><code>IBindingPlugin#preBind(Submission,BindingDataDTO)</code> - to update the submission before
-   *       being bound</dd>
-   *   <dd><code>IBindingPlugin#bind(Submission)</code> - to bind the submission</dd>
-   *   <dd><code>IDraftSubmissionPlugin#toDTO(Submission)</code> - to re-generate the returned draft data from the submission</dd>
-   *   <dd><code>IQuotePlugin#toDTO(Submission)</code> - to re-generate the returned quote data from the submission</dd>
-   *   <dd><code>IBindingPlugin#getBindingData(Submission)</code> - to re-generate the binding data from the submission</dd>
-   * </dl>
-   *
-   * @param  qdd data that captures an existing submission
-   * @return     the DTO for the updated submission. The contents of the returned value are as follows:
-   *             <dl>
-   *               <dt>SessionUUID</dt><dd>the session ID</dd>
-   *               <dt>QuoteID</dt><dd>the JobNumber of the submission</dd>
-   *               <dt>DraftData</dt><dd>the draft data DTO</dd>
-   *               <dt>QuotingData</dt><dd>the quote data</dd>
-   *               <dt>BindingData</dt><dd>the quote data</dd>
-   *               <dt>IsSubmitAgent</dt><dd><code>null</code></dd>
-   *            </dl>
-   */
   @JsonRpcUnauthenticatedMethod
-  @Context("DriverEmailRequired", Expr.const(true))
-  public function bind(qdd : QuoteDataDTO) : QuoteDataDTO {
+  public function bind(quoteNumber : String, selectedPaymentPlan : String) : BindingDataDTO{
+    var sub = getSubmissionByJob(quoteNumber)
+    var bindingData = new BindingDataDTO(){:ChosenQuote = sub.SelectedVersion.PublicID, :SelectedPaymentPlan = selectedPaymentPlan}
+
     /* Perform update and binding in different transactions. */
-    var sub = withBundledSubmission(qdd, \ s -> {
-      _bindingPlugin.preBind(s, qdd.BindData)
-      return s
-    })
+   Bundle.transaction( \ bundle -> {
+     sub = bundle.add(sub)
+      _bindingPlugin.preBind(sub, bindingData)
+  })
 
     Bundle.transaction(\ bundle -> {
       sub = bundle.add(sub)
-      _bindingPlugin.bind(sub, qdd.BindData)
+      _bindingPlugin.bind(sub, bindingData)
     })
 
-    return toDTO(qdd.SessionUUID, sub)
+    return _bindingPlugin.getBindingData(sub)
   }
 
   /**
@@ -464,7 +433,6 @@ class QuoteHandler implements IRpcHandler  {
     res.BindData = _bindingPlugin.getBindingData(submission)
     return res
   }
-
 
   /**
    * Fetches a submission by its number.

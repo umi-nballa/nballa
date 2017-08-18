@@ -29,6 +29,7 @@ class UnaLoggerCategory extends PCLoggerCategory {
   public static final var UNA_CLAIMSMAPPING : ILogger = createLogger("ClaimsMapping")
   public static final var UNA_REINSTATEMENT_API : ILogger = createLogger("ReinstatementAPI")
   public static final var UNA_RULES_ENGINE : ILogger = createLogger("RulesEngine")
+  public static final var UNA_EDGE_API : ILogger = createLogger("EdgeAPI")
 
   public static function load() : void {
   }

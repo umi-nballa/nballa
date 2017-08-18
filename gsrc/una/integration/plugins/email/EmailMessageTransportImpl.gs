@@ -14,6 +14,7 @@ uses gw.api.system.PLLoggerCategory
 uses gw.plugin.email.HtmlEmail
 uses java.util.Map
 uses javax.mail.Transport
+uses gw.api.system.server.ServerUtil
 
 /**
  * User: amohammed
@@ -32,16 +33,25 @@ class EmailMessageTransportImpl extends AbstractEmailMessageTransport {
   construct() {
   }
 
+  private static var ENV = ServerUtil.Env
+
+  private static var PRODUCT = ServerUtil.Product
+
   private var _userName: String
 
   private var _password: String
 
   private var _enableAuth: Boolean
 
+  private var _overrideToAddress: String
+
+
+
   override function setParameters(params: Map) {
     _userName = params['userName'] as String
     _password = params['password'] as String
     _enableAuth = (params["enableAuthentication"]?: true) as Boolean
+    _overrideToAddress = params['overrideToAddress'] as String
     super.setParameters(params)
   }
 
@@ -148,14 +158,18 @@ class EmailMessageTransportImpl extends AbstractEmailMessageTransport {
    * @throws MessagingException if there are problems adding recipients
    */
   protected function addRecipients(out : HtmlEmail, email : Email) {
-    for (contact in email.ToRecipients) {
-      out.addTo(contact.EmailAddress, contact.Name)
-    }
-    for (contact in email.CcRecipients) {
-      out.addCc(contact.EmailAddress, contact.Name)
-    }
-    for (contact in email.BccRecipients) {
-      out.addBcc(contact.EmailAddress, contact.Name)
+    if(!_overrideToAddress.HasContent) {
+        for (contact in email.ToRecipients) {
+          out.addTo(contact.EmailAddress, contact.Name)
+        }
+        for (contact in email.CcRecipients) {
+          out.addCc(contact.EmailAddress, contact.Name)
+        }
+        for (contact in email.BccRecipients) {
+          out.addBcc(contact.EmailAddress, contact.Name)
+        }
+    } else {
+        out.addTo(_overrideToAddress, "${PRODUCT}Override-${ENV}")
     }
   }
 
@@ -198,14 +212,15 @@ class EmailMessageTransportImpl extends AbstractEmailMessageTransport {
     // If the problem is with an email address, extract them from the exception, log the error, remove them from the message, and send again
     if (exception typeis SendFailedException) {
       var rootCause = getRootCause(exception)
-      if (rootCause != null &&
-          (rootCause typeis UnknownHostException
-              || rootCause typeis SocketException)) {
+      if (rootCause != null && (rootCause typeis UnknownHostException || rootCause typeis SocketException)) {
         handleErrorConnectingToMailServer(message, exception)
       } else {
         var invalidAddresses = exception.InvalidAddresses
         if (invalidAddresses != null && !invalidAddresses.IsEmpty) {
           retry = handleInvalidAddresses(email, invalidAddresses)
+        } else {
+          message.ErrorDescription = exception.Message
+          message.reportError()
         }
         if (!retry) {
           message.ErrorDescription = exception.Message
@@ -232,6 +247,9 @@ class EmailMessageTransportImpl extends AbstractEmailMessageTransport {
   function getRootCause(me : Exception) : Exception {
     var e = me
     while (e typeis MessagingException) {
+      if(e.NextException == null) {
+        break
+      }
       e = e.NextException
     }
     return e

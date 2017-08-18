@@ -11,6 +11,8 @@ uses una.utils.EnvironmentUtil
 uses java.util.HashMap
 uses java.lang.Exception
 uses java.util.Set
+uses com.google.gdata.util.common.base.Pair
+uses gw.api.util.DisplayableException
 
 /**
  * Created with IntelliJ IDEA.
@@ -392,6 +394,48 @@ class ConfigParamsUtil {
     }
 
     return results
+  }
+
+  public static function getPair<T, E>(configParamType : ConfigParameterType_Ext, state : Jurisdiction) : Pair<T, E>{
+    var result : Pair<T, E>
+
+    if(configParamType != null){
+      var retrievedConfigParam = getConfigParameter(configParamType, state, null)
+
+      if(retrievedConfigParam != null){
+        var splitPair = retrievedConfigParam.Value.split(",")*.trim()
+
+        try{
+          result = new Pair<T, E>(splitPair[0] as T, splitPair[1] as E)
+        }catch(e : Exception){
+          _logger.error("Unable to retrieve or convert configuration parameter: " + e.Message)
+          throw new DisplayableException("Configuration error occurred.  See log for details.")
+        }
+      }
+    }
+
+    return result
+  }
+
+  public static function getPair<T, E>(configParamType : ConfigParameterType_Ext, state : Jurisdiction, configFilter : String) : Pair<T, E>{
+    var result : Pair<T, E>
+
+    if(configParamType != null){
+      var retrievedConfigParam = getConfigParameter(configParamType, state, configFilter)
+
+      if(retrievedConfigParam != null){
+        var splitPair = retrievedConfigParam.Value.split(",")*.trim()
+
+        try{
+          result = new Pair<T, E>(splitPair[0] as T, splitPair[1] as E)
+        }catch(e : Exception){
+          _logger.error("Unable to retrieve or convert configuration parameter: " + e.Message)
+          throw new DisplayableException("Configuration error occurred.  See log for details.")
+        }
+      }
+    }
+
+    return result
   }
 
   private static function getConfigParameter(configParamType : ConfigParameterType_Ext, state : Jurisdiction, configFilter : String) : ConfigurationParameter_Ext{

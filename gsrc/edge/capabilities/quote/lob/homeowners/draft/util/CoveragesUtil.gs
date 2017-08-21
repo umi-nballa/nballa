@@ -20,28 +20,36 @@ final class CoveragesUtil {
     var results : List<UNACoverageDTO> = {}
 
     period.AllCoverables*.CoveragesFromCoverable.each( \ coverage -> {
-      var coverageDTO = new UNACoverageDTO()
-      coverageDTO.Code = coverage.PatternCode
-
-      if(coverage.Scheduled){
-        coverageDTO.ScheduledItems = getScheduledItemDTOs(coverage)
-      }else{
-        var coveragesTerms : List<UNACoverageTermDTO> = {}
-
-        coverage.CovTerms.each( \ covTerm -> {
-          var covTermDTO = new UNACoverageTermDTO()
-          covTermDTO.Code = covTerm.PatternCode
-          covTermDTO.Value = covTerm.ValueAsString
-          coveragesTerms.add(covTermDTO)
-        })
-
-        coverageDTO.CoverageTerms = coveragesTerms
-      }
-
+      var coverageDTO = fillBaseProperties(coverage)
       results.add(coverageDTO)
     })
 
     return results
+  }
+
+  public static function fillBaseProperties(coverage : Coverage) : UNACoverageDTO{
+    var result = new UNACoverageDTO()
+    result.Code = coverage.PatternCode
+
+    if(coverage.Scheduled){
+      result.ScheduledItems = getScheduledItemDTOs(coverage)
+    }else{
+      var coveragesTerms : List<UNACoverageTermDTO> = {}
+
+      coverage.CovTerms?.each( \ covTerm -> {
+        var covTermDTO = new UNACoverageTermDTO()
+        covTermDTO.Code = covTerm.PatternCode
+        covTermDTO.Value = covTerm.ValueAsString
+        coveragesTerms.add(covTermDTO)
+      })
+
+      var costModel = una.pageprocess.QuoteScreenPCFController.getCostModels(coverage)
+      result.Premium = costModel.single().Premium
+
+      result.CoverageTerms = coveragesTerms
+    }
+
+    return result
   }
 
   public static function updateFrom(period : PolicyPeriod, coverageDTOs : UNACoverageDTO[]){

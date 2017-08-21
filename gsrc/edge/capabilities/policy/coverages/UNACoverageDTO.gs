@@ -2,6 +2,7 @@ package edge.capabilities.policy.coverages
 
 uses edge.jsonmapper.JsonProperty
 uses edge.aspects.validation.annotations.Required
+uses java.math.BigDecimal
 
 /**
  * Created with IntelliJ IDEA.
@@ -19,4 +20,7 @@ class UNACoverageDTO {
 
   @JsonProperty
   var _scheduledItems : List<UNAScheduledItemDTO> as ScheduledItems
+
+  @JsonProperty
+  var _premium : BigDecimal as Premium
 }

@@ -10,16 +10,23 @@ uses edge.capabilities.quote.lob.homeowners.quoting.internal.HOQuoteUtilities
 uses edge.aspects.validation.Validation
 uses edge.aspects.validation.annotations.Ensure
 uses edge.capabilities.policychange.lob.homeowners.draft.dto.DwellingAdditionalInterestDTO
+uses edge.capabilities.policy.coverages.UNACoverageDTO
 
-class HoAvailableCoveragesDTO implements IQuoteLobExtensionDTO {
+class HOPremiumCostsDTO implements IQuoteLobExtensionDTO {
   @JsonProperty
   var _basePremium : AmountDTO as BasePremium
 
   @JsonProperty
-  var _baseCovs : CoverageDTO[] as BaseCoverages
+  var _baseCovs : UNACoverageDTO[] as BaseCoverages
 
   @JsonProperty
-  var _additionalCovs : CoverageDTO[] as AdditionalCoverages
+  var _additionalCovs : UNACoverageDTO[] as AdditionalCoverages
+
+  @JsonProperty
+  var discountsAndSurcharges : List< AdditionalChargeDTO > as DiscountsAndSurcharges
+
+  @JsonProperty
+  var fees : List<AdditionalChargeDTO> as TaxesAndFees
 
   @JsonProperty
   @Context("DuplicatePropertyDescrs",

@@ -1,7 +1,7 @@
 package edge.capabilities.quote.lob.homeowners.quoting
 
 uses edge.capabilities.quote.lob.ILobQuotingPlugin
-uses edge.capabilities.quote.lob.homeowners.quoting.dto.HoAvailableCoveragesDTO
+uses edge.capabilities.quote.lob.homeowners.quoting.dto.HOPremiumCostsDTO
 uses edge.capabilities.quote.lob.homeowners.quoting.dto.ScheduledPropertyDTO
 uses edge.di.annotations.InjectableNode
 uses edge.capabilities.quote.coverage.util.CoverageUtil
@@ -16,8 +16,13 @@ uses java.util.Collection
 uses edge.util.mapping.ArrayUpdater
 uses edge.security.authorization.IAuthorizerProviderPlugin
 uses edge.util.mapping.Mapper
+uses una.pageprocess.QuoteScreenPCFController
+uses edge.capabilities.policy.coverages.UNACoverageDTO
+uses edge.capabilities.quote.lob.homeowners.draft.util.CoveragesUtil
+uses edge.capabilities.quote.lob.homeowners.quoting.dto.AdditionalChargeDTO
+uses java.math.BigDecimal
 
-class HoQuotingPlugin implements ILobQuotingPlugin <HoAvailableCoveragesDTO> {
+class HoQuotingPlugin implements ILobQuotingPlugin < HOPremiumCostsDTO > {
   // Coverage codes contributing to the base premium
   static var baseCoverageCodes = {
       "HODW_SectionI_Ded_HOE",
@@ -26,7 +31,16 @@ class HoQuotingPlugin implements ILobQuotingPlugin <HoAvailableCoveragesDTO> {
       "HODW_Personal_Property_HOE",
       "HODW_Loss_Of_Use_HOE",
       "HOLI_Personal_Liability_HOE",
-      "HOLI_Med_Pay_HOE"
+      "HOLI_Med_Pay_HOE",
+      "DPDW_Dwelling_Cov_HOE",
+      "DPDW_Other_Structures_HOE",
+      "DPDW_Personal_Property_HOE",
+      "DPDW_FairRentalValue_Ext",
+      "DPDW_Additional_Living_Exp_HOE",
+      "HODW_LateWildlifeClaimReporting_Ext",
+      "DPLI_Personal_Liability_HOE",
+      "DPLI_Med_Pay_HOE",
+      "DPLI_Premise_Liability_HOE_Ext"
   }
 
   // Categories for used coverages
@@ -60,53 +74,22 @@ class HoQuotingPlugin implements ILobQuotingPlugin <HoAvailableCoveragesDTO> {
 
   }
 
-  override function getQuoteDetails(pp: PolicyPeriod): HoAvailableCoveragesDTO {
+  override function getQuoteDetails(pp: PolicyPeriod): HOPremiumCostsDTO {
     if (!pp.HomeownersLine_HOEExists) {
       return null
     }
 
     final var hoeLine = pp.HomeownersLine_HOE
 
-    final var res = new HoAvailableCoveragesDTO()
-
-    var coverages = new ArrayList<CoverageDTO>()
-
-    res.BasePremium = AmountDTO.fromMonetaryAmount(basePremium(hoeLine))
-
-    var allPatterns = getAllCoveragePatterns(hoeLine)
-
-    res.BaseCoverages = selectBaseCoverages(allPatterns).map(\pattern -> {
-      return CoverageUtil.toDTO(pattern, findCoverable(hoeLine, pattern), \b -> null)
-    }).toTypedArray()
-
-
-    res.AdditionalCoverages = selectAdditionalCoverages(allPatterns)
-        .map(\pattern -> {
-          if (pattern.OwningEntityType == HomeownersLine_HOE.Type.RelativeName) {
-            return CoverageUtil.toDTO(pattern, hoeLine, \b -> null)
-          } else {
-            return CoverageUtil.toDTO(pattern, hoeLine.Dwelling, \cov -> costOfCoverage(cov))
-          }
-        }).toTypedArray()
-
-    if ( hoeLine.Dwelling.HODW_ScheduledProperty_HOEExists) {
-      res.ScheduledProperties = _schedulePropertyMapper.mapArray<ScheduledItem_HOE,ScheduledPropertyDTO>(
-        hoeLine.Dwelling.HODW_ScheduledProperty_HOE.ScheduledItems,
-        \ item -> {
-          return new ScheduledPropertyDTO(){
-            : FixedId = item.FixedId.toString(),
-            : Description = item.Description,
-            : ExposureValue = item.ExposureValue,
-            : Type = item.ScheduleType
-          }
-        }
-      )
-    }
-
+    final var res = new HOPremiumCostsDTO ()
+    res.BaseCoverages = getBaseCoverages(hoeLine)
+    res.AdditionalCoverages = getAdditionalCoverages(hoeLine)
+    res.DiscountsAndSurcharges = getDiscountsAndSurcharges(hoeLine)
+    res.TaxesAndFees = getTaxesFees(hoeLine)
     return res
   }
 
-  override function updateCustomQuote(pp: PolicyPeriod, update: HoAvailableCoveragesDTO) {
+  override function updateCustomQuote(pp: PolicyPeriod, update: HOPremiumCostsDTO) {
     if (!pp.HomeownersLine_HOEExists) {
       return
     }
@@ -114,10 +97,7 @@ class HoQuotingPlugin implements ILobQuotingPlugin <HoAvailableCoveragesDTO> {
     final var hoeLine = pp.HomeownersLine_HOE
     var allPatterns = getAllCoveragePatterns(hoeLine)
     var baseCoverages = selectBaseCoverages(allPatterns).toTypedArray()
-
-    CoverageUtil.updateFrom(\ pat -> findCoverable(hoeLine,pat), baseCoverages, update.BaseCoverages)
     var additionalCoverages = selectAdditionalCoverages(allPatterns).toTypedArray()
-    CoverageUtil.updateFrom(\ pat -> findCoverable(hoeLine,pat), additionalCoverages, update.AdditionalCoverages)
 
     updateScheduledProperties(hoeLine.Dwelling, update.ScheduledProperties)
   }
@@ -130,7 +110,7 @@ class HoQuotingPlugin implements ILobQuotingPlugin <HoAvailableCoveragesDTO> {
       var lineCoverages = hoeLine.Pattern.getCoverageCategory(code).coveragePatternsForEntity(HomeownersLine_HOE)
       var dwellingCoverages = hoeLine.Pattern.getCoverageCategory(code).coveragePatternsForEntity(Dwelling_HOE)
       return lineCoverages.concat(dwellingCoverages).toList()
-    }).where(\pattern -> findCoverable(hoeLine, pattern).isCoverageSelectedOrAvailable(pattern))
+    }).where(\pattern -> findCoverable(hoeLine, pattern).hasCoverage(pattern))
   }
 
   override function generateVariants(base: PolicyPeriod) {
@@ -210,5 +190,69 @@ class HoQuotingPlugin implements ILobQuotingPlugin <HoAvailableCoveragesDTO> {
     } else {
       dwelling.setCoverageConditionOrExclusionExists(pattern,false)
     }
+  }
+
+  function getBaseCoverages(hoeLine : HomeownersLine_HOE) : UNACoverageDTO[]{
+    var results : List<UNACoverageDTO> = {}
+
+    var baseCoveragePatterns = selectBaseCoverages(getAllCoveragePatterns(hoeLine))
+
+    baseCoveragePatterns?.each( \ baseCoveragePattern -> {
+      var baseCoverageEntity = findCoverable(hoeLine, baseCoveragePattern).getCoverage(baseCoveragePattern)
+      results.add(CoveragesUtil.fillBaseProperties(baseCoverageEntity))
+    })
+
+    return results.toTypedArray()
+  }
+
+  function getAdditionalCoverages(hoeLine : HomeownersLine_HOE) : UNACoverageDTO[]{
+    var results : List<UNACoverageDTO> = {}
+
+    var allPatterns = getAllCoveragePatterns(hoeLine)
+    var baseCoveragePatterns = selectBaseCoverages(allPatterns)
+    var additionalCoveragePatterns = allPatterns?.where( \ pattern -> !baseCoveragePatterns.contains(pattern))
+
+    additionalCoveragePatterns?.each( \ addlCoveragePattern -> {
+      var additionalCoverageEntity = findCoverable(hoeLine, addlCoveragePattern).getCoverage(addlCoveragePattern)
+
+      if(additionalCoverageEntity != null){
+        results.add(CoveragesUtil.fillBaseProperties(additionalCoverageEntity))
+      }
+    })
+
+
+    return results.toTypedArray()
+  }
+
+  function getDiscountsAndSurcharges(hoeLine : HomeownersLine_HOE) : List<AdditionalChargeDTO>{
+    var results : List<AdditionalChargeDTO> = {}
+
+    var otherCosts = (hoeLine.HomeownersCosts.whereTypeIs(HomeownersLineCost_EXT).where( \ cost -> cost.HOCostType != null and !typekey.HOCostType_Ext.TF_SECTIONIDEDCOSTS.TypeKeys.contains(cost.HOCostType))) as List<entity.HomeownersLineCost_EXT>
+
+    otherCosts?.where( \ otherCost -> otherCost.ActualTermAmount.Amount != BigDecimal.ZERO)
+        ?.each( \ otherCost -> {
+      var discountOrSurcharge = new AdditionalChargeDTO ()
+      discountOrSurcharge.Name = otherCost.HOCostType.Description
+      discountOrSurcharge.Amount = otherCost.ActualTermAmount.Amount
+
+      results.add(discountOrSurcharge)
+    })
+
+    return results
+  }
+
+  function getTaxesFees(hoeLine : HomeownersLine_HOE) : List<AdditionalChargeDTO>{
+    var results : List<AdditionalChargeDTO>= {}
+
+    var feeCosts = hoeLine.HomeownersCosts.whereTypeIs(HOTaxCost_HOE) as List<entity.HOTaxCost_HOE>
+
+    feeCosts?.each( \ fee -> {
+      var feeDTO = new AdditionalChargeDTO()
+      feeDTO.Amount = fee.ActualTermAmount.Amount
+      feeDTO.Name = fee.ChargePattern.Description
+      results.add(feeDTO)
+    })
+
+    return results
   }
 }

@@ -41,8 +41,8 @@ class QuoteScreenPCFController {
 
   public static function getCostModels(coverage: Coverage) : List< HOCostModel >{
     var results : List< HOCostModel > = {}
-    var dwellingCov : DwellingCov_HOE = (coverage typeis DwellingCov_HOE) ? coverage : null
-    var hoLineCov : HomeownersLineCov_HOE = (coverage typeis HomeownersLineCov_HOE) ? coverage : null
+    var dwellingCov = (coverage typeis DwellingCov_HOE) ? coverage : null
+    var hoLineCov = (coverage typeis HomeownersLineCov_HOE) ? coverage : null
 
     if(dwellingCov != null and dwellingCov.IsBaseCoverage){
       var baseCosts = dwellingCov.Dwelling.Branch.AllCosts?.whereTypeIs(HomeownersBaseCost_HOE)

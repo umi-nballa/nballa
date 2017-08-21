@@ -169,9 +169,7 @@ class EmailMessageTransportImpl extends AbstractEmailMessageTransport {
           out.addBcc(contact.EmailAddress, contact.Name)
         }
     } else {
-      for (contact in email.ToRecipients) {
-        out.addTo(contact.EmailAddress, contact.Name)
-      }//out.addTo(_overrideToAddress, "${PRODUCT}Override-${ENV}")
+      out.addTo(_overrideToAddress, "${PRODUCT}Override-${ENV}")
     }
   }
 

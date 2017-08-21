@@ -84,6 +84,9 @@ class PolicyRefreshTransportImpl extends AbstractMessageTransport implements Ini
     policies.PersonalPolicy = getPersonalPolicyRequest(policyPeriod)
     policies.PolicyEdition = (policyPeriod.TermNumber?:1) - 1//Policy Edition is 0 based on the portal side
     policies.PremiumAmt = policyPeriod.TotalPremiumRPT
+    policies.BalanceTotal = "0"
+    policies.BalanceDue = "0"
+    policies.BalanceDueDate = new XmlDateTime()
 
     policies.CallingCenter = "PC"
 

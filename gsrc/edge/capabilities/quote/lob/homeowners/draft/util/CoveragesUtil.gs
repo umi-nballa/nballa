@@ -30,6 +30,7 @@ final class CoveragesUtil {
   public static function fillBaseProperties(coverage : Coverage) : UNACoverageDTO{
     var result = new UNACoverageDTO()
     result.Code = coverage.PatternCode
+    result.Name = coverage.Pattern.Name
 
     if(coverage.Scheduled){
       result.ScheduledItems = getScheduledItemDTOs(coverage)

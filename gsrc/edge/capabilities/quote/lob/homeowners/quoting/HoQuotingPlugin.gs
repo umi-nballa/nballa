@@ -85,7 +85,7 @@ class HoQuotingPlugin implements ILobQuotingPlugin < HOPremiumCostsDTO > {
     res.BaseCoverages = getBaseCoverages(hoeLine)
     res.AdditionalCoverages = getAdditionalCoverages(hoeLine)
     res.DiscountsAndSurcharges = getDiscountsAndSurcharges(hoeLine)
-    res.TaxesAndFees = getTaxesFees(hoeLine)
+    res.Fees = getFees(hoeLine)
     return res
   }
 
@@ -241,7 +241,7 @@ class HoQuotingPlugin implements ILobQuotingPlugin < HOPremiumCostsDTO > {
     return results
   }
 
-  function getTaxesFees(hoeLine : HomeownersLine_HOE) : List<AdditionalChargeDTO>{
+  function getFees(hoeLine: HomeownersLine_HOE) : List<AdditionalChargeDTO>{
     var results : List<AdditionalChargeDTO>= {}
 
     var feeCosts = hoeLine.HomeownersCosts.whereTypeIs(HOTaxCost_HOE) as List<entity.HOTaxCost_HOE>

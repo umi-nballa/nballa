@@ -16,8 +16,6 @@ uses edge.capabilities.quote.lob.dto.QuoteLobDataDTO
 uses java.lang.Exception
 uses gw.api.profiler.PCProfilerTag
 uses gw.job.JobProcessValidator
-uses edge.util.helper.UserUtil
-uses una.config.ConfigParamsUtil
 
 /**
  * Default implementation of quoting plugin.

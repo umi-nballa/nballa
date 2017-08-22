@@ -16,5 +16,8 @@ class UNACoverageTermDTO {
   var _patternCode : String as Code
 
   @JsonProperty
+  var _name : String as Name
+
+  @JsonProperty
   var _selectedValue : String as Value
 }

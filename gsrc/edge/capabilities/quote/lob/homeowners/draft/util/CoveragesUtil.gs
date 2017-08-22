@@ -40,6 +40,7 @@ final class CoveragesUtil {
       coverage.CovTerms?.each( \ covTerm -> {
         var covTermDTO = new UNACoverageTermDTO()
         covTermDTO.Code = covTerm.PatternCode
+        covTermDTO.Name = covTerm.Pattern.Name
         covTermDTO.Value = covTerm.ValueAsString
         coveragesTerms.add(covTermDTO)
       })

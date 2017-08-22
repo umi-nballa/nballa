@@ -21,7 +21,7 @@ class UNATunaReturnActivity_each implements IRuleCondition<HomeownersLine_HOE> {
     {
       var activityPattern = ActivityPattern.finder.getActivityPatternByCode("TUNA_MultipleBCEGFound")
 
-      if(holine.AssociatedPolicyPeriod.Job.AllOpenActivities.firstWhere( \ elt -> elt.ActivityPattern.Code=="TUNA_MultipleBCEGFound")==null)
+      if(activityPattern!=null && holine.AssociatedPolicyPeriod.Job.AllOpenActivities.firstWhere( \ elt -> elt.ActivityPattern.Code=="TUNA_MultipleBCEGFound")==null)
       {
         var activity =  activityPattern.createJobActivity(holine.AssociatedPolicyPeriod.Bundle, holine.AssociatedPolicyPeriod.Job, null, null, null, null, null, null, null)
       }
@@ -32,7 +32,7 @@ class UNATunaReturnActivity_each implements IRuleCondition<HomeownersLine_HOE> {
     {
       var activityPattern = ActivityPattern.finder.getActivityPatternByCode("TUNA_NoBCEGFound")
 
-      if(holine.AssociatedPolicyPeriod.Job.AllOpenActivities.firstWhere( \ elt -> elt.ActivityPattern.Code=="TUNA_NoBCEGFound")==null)
+      if(activityPattern!=null && holine.AssociatedPolicyPeriod.Job.AllOpenActivities.firstWhere( \ elt -> elt.ActivityPattern.Code=="TUNA_NoBCEGFound")==null)
       {
         var activity =  activityPattern.createJobActivity(holine.AssociatedPolicyPeriod.Bundle, holine.AssociatedPolicyPeriod.Job, null, null, null, null, null, null, null)
       }
@@ -43,7 +43,7 @@ class UNATunaReturnActivity_each implements IRuleCondition<HomeownersLine_HOE> {
     {
       var activityPattern = ActivityPattern.finder.getActivityPatternByCode("TUNA_MultipleDistanceToCoastFound")
 
-      if(holine.AssociatedPolicyPeriod.Job.AllOpenActivities.firstWhere( \ elt -> elt.ActivityPattern.Code=="TUNA_MultipleDistanceToCoastFound")==null)
+      if(activityPattern!=null && holine.AssociatedPolicyPeriod.Job.AllOpenActivities.firstWhere( \ elt -> elt.ActivityPattern.Code=="TUNA_MultipleDistanceToCoastFound")==null)
       {
         var activity =  activityPattern.createJobActivity(holine.AssociatedPolicyPeriod.Bundle, holine.AssociatedPolicyPeriod.Job, null, null, null, null, null, null, null)
       }
@@ -56,7 +56,7 @@ class UNATunaReturnActivity_each implements IRuleCondition<HomeownersLine_HOE> {
     {
       var activityPattern = ActivityPattern.finder.getActivityPatternByCode("TUNA_BaseFloodElevationChanged")
 
-      if(holine.AssociatedPolicyPeriod.Job.AllOpenActivities.firstWhere( \ elt -> elt.ActivityPattern.Code=="TUNA_BaseFloodElevationChanged")==null)
+      if(activityPattern!=null && holine.AssociatedPolicyPeriod.Job.AllOpenActivities.firstWhere( \ elt -> elt.ActivityPattern.Code=="TUNA_BaseFloodElevationChanged")==null)
       {
         var activity =  activityPattern.createJobActivity(holine.AssociatedPolicyPeriod.Bundle, holine.AssociatedPolicyPeriod.Job, null, null, null, null, null, null, null)
       }
@@ -68,7 +68,7 @@ class UNATunaReturnActivity_each implements IRuleCondition<HomeownersLine_HOE> {
     {
       var activityPattern = ActivityPattern.finder.getActivityPatternByCode("TUNA_ConstructionTypeChanged")
 
-      if(holine.AssociatedPolicyPeriod.Job.AllOpenActivities.firstWhere( \ elt -> elt.ActivityPattern.Code=="TUNA_ConstructionTypeChanged")==null)
+      if(activityPattern!=null && holine.AssociatedPolicyPeriod.Job.AllOpenActivities.firstWhere( \ elt -> elt.ActivityPattern.Code=="TUNA_ConstructionTypeChanged")==null)
       {
         var activity =  activityPattern.createJobActivity(holine.AssociatedPolicyPeriod.Bundle, holine.AssociatedPolicyPeriod.Job, null, null, null, null, null, null, null)
       }
@@ -80,7 +80,7 @@ class UNATunaReturnActivity_each implements IRuleCondition<HomeownersLine_HOE> {
       var activityPattern = ActivityPattern.finder.getActivityPatternByCode("TUNA_RoofShapeChanged")
 
 
-      if(holine.AssociatedPolicyPeriod.Job.AllOpenActivities.firstWhere( \ elt -> elt.ActivityPattern.Code=="TUNA_RoofShapeChanged")==null)
+      if(activityPattern!=null && holine.AssociatedPolicyPeriod.Job.AllOpenActivities.firstWhere( \ elt -> elt.ActivityPattern.Code=="TUNA_RoofShapeChanged")==null)
       {
         var activity =  activityPattern.createJobActivity(holine.AssociatedPolicyPeriod.Bundle, holine.AssociatedPolicyPeriod.Job, null, null, null, null, null, null, null)
       }
@@ -97,7 +97,7 @@ class UNATunaReturnActivity_each implements IRuleCondition<HomeownersLine_HOE> {
       var activityPattern = ActivityPattern.finder.getActivityPatternByCode("TUNA_YearBuiltWasNullFromTuna")
 
 
-      if(holine.AssociatedPolicyPeriod.Job.AllOpenActivities.firstWhere( \ elt -> elt.ActivityPattern.Code=="TUNA_YearBuiltWasNullFromTuna")==null)
+      if(activityPattern!=null && holine.AssociatedPolicyPeriod.Job.AllOpenActivities.firstWhere( \ elt -> elt.ActivityPattern.Code=="TUNA_YearBuiltWasNullFromTuna")==null)
       {
         var activity =  activityPattern.createJobActivity(holine.AssociatedPolicyPeriod.Bundle, holine.AssociatedPolicyPeriod.Job, null, null, null, null, null, null, null)
       }
@@ -109,7 +109,7 @@ class UNATunaReturnActivity_each implements IRuleCondition<HomeownersLine_HOE> {
       var activityPattern = ActivityPattern.finder.getActivityPatternByCode("TUNA_YearBuiltWasChanged")
 
 
-      if(holine.AssociatedPolicyPeriod.Job.AllOpenActivities.firstWhere( \ elt -> elt.ActivityPattern.Code=="TUNA_YearBuiltWasChanged")==null)
+      if(activityPattern!=null && holine.AssociatedPolicyPeriod.Job.AllOpenActivities.firstWhere( \ elt -> elt.ActivityPattern.Code=="TUNA_YearBuiltWasChanged")==null)
       {
         var activity =  activityPattern.createJobActivity(holine.AssociatedPolicyPeriod.Bundle, holine.AssociatedPolicyPeriod.Job, null, null, null, null, null, null, null)
       }

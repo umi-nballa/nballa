@@ -11,6 +11,7 @@ uses una.rating.ho.tx.ratinginfos.HORatingInfo
 
 uses java.util.Map
 uses una.rating.ho.tx.ratinginfos.HODPBasePremiumRatingInfo
+uses una.rating.ho.tx.ratinginfos.HODwellingRatingInfo
 
 /**
  * Created with IntelliJ IDEA.
@@ -28,6 +29,7 @@ class HOBasePremiumRaterTX {
   private var _baseDPPremiumRatingInfo : HODPBasePremiumRatingInfo
   private var _baseHOPremiumRatingInfo : HOBasePremiumRatingInfo
   private var _rateRoutineParameterMap : Map<CalcRoutineParamName, Object>
+  private var _dwellingRatingInfo : HODwellingRatingInfo
 
   private var _routinesToCostTypeMapping: Map<String, HOCostType_Ext> = {
       HORateRoutineNames.BASE_PREMIUM_RATE_ROUTINE -> HOCostType_Ext.TC_BASEPREMIUM,
@@ -118,7 +120,7 @@ class HOBasePremiumRaterTX {
   private property get baseDPRoutinesToExecute(): List<String> {
      var routinesToExecute: List<String> = {}
     routinesToExecute.add(HORateRoutineNames.BASE_PREMIUM_DWELLING_FIRE_RATE_ROUTINE)
-    if(_dwelling?.DPDW_Personal_Property_HOEExists)
+    if(_dwelling?.DPDW_Personal_Property_HOEExists and _dwelling?.DPDW_Personal_Property_HOE?.DPDW_PersonalPropertyLimit_HOETerm?.Value > 0)
       routinesToExecute.add(HORateRoutineNames.BASE_PREMIUM_DWELLING_FIRE_PERSONAL_PROPERTY_RATE_ROUTINE)
     return routinesToExecute
   }

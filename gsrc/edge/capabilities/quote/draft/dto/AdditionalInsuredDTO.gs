@@ -12,4 +12,10 @@ uses edge.jsonmapper.JsonProperty
 class AdditionalInsuredDTO extends PolicyContactDTO{
   @JsonProperty
   private var _additionalInsuredType : typekey.AdditionalInsuredType as Type
+
+  @JsonProperty
+  private var _additionalInsuredCoverageType : typekey.AddlInsuredCovType_Ext as CoverageType
+
+  @JsonProperty
+  private var _interestType : typekey.AddlInsdInterestType_Ext as InterestType
 }

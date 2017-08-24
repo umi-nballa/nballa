@@ -134,7 +134,7 @@ enhancement UNACovTermEnhancement_Ext : gw.api.domain.covterm.CovTerm {
     var result : String
 
     if(this typeis OptionCovTerm){
-      result = this.Value.asString()
+      result = this.OptionValue.Description
     }else if(this typeis DirectCovTerm){
       result = this.Value.asString()
     }else if(this typeis TypekeyCovTerm){

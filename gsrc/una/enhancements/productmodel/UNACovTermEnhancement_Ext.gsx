@@ -6,6 +6,7 @@ uses gw.api.domain.covterm.DirectCovTerm
 uses una.config.ConfigParamsUtil
 uses una.productmodel.runtimedefaults.CoverageTermsRuntimeDefaultController
 uses una.productmodel.runtimedefaults.CoverageTermsRuntimeDefaultController.CovTermDefaultContext
+uses gw.api.domain.covterm.TypekeyCovTerm
 
 /**
  * Created with IntelliJ IDEA.
@@ -127,6 +128,22 @@ enhancement UNACovTermEnhancement_Ext : gw.api.domain.covterm.CovTerm {
     }else{
       return this.Pattern.Required
     }
+  }
+
+  public property get SelectedValueAsString() : String{
+    var result : String
+
+    if(this typeis OptionCovTerm){
+      result = this.Value.asString()
+    }else if(this typeis DirectCovTerm){
+      result = this.Value.asString()
+    }else if(this typeis TypekeyCovTerm){
+      result = this.Value.getDisplayName()
+    }else{
+      result = this.ValueAsString
+    }
+
+    return result
   }
 
   private property get BasedOnBigDecimalValue() : String{

@@ -89,9 +89,12 @@ class UNAHONCRatingEngine extends UNAHORatingEngine_HOE<HomeownersLine_HOE> {
           break
 /*      default:
           throw new Exception("Cov rate routine note found")*/
-
+      case HOLI_BusinessPursuits_HOE_Ext:
+          rateBusinessPursuits(lineCov, dateRange)
+          break
+      }
     }
-  }
+
 
 
 /**
@@ -333,6 +336,25 @@ class UNAHONCRatingEngine extends UNAHORatingEngine_HOE<HomeownersLine_HOE> {
     if (_logger.DebugEnabled)
       _logger.debug("Outboard Motors and Watercraft Coverage Rated Successfully", this.IntrinsicType)
   }
+
+  /**
+   * Rate Business Pursuits
+   */
+
+  function rateBusinessPursuits(lineCov: HOLI_BusinessPursuits_HOE_Ext, dateRange: DateRange){
+    if(_logger.DebugEnabled)
+      _logger.debug("Entering " + CLASS_NAME + ":: rateBusinessPursuits", this.IntrinsicType)
+    var rateRoutineParameterMap = getLineCovParameterSet (PolicyLine, _lineRatingInfo, PolicyLine.BaseState.Code)
+    var costData = HOCreateCostDataUtil.createCostDataForLineCoverages(lineCov, dateRange, HORateRoutineNames.BUSINESS_PURSUITS_ROUTINE_NAME, RateCache, PolicyLine, rateRoutineParameterMap, Executor, this.NumDaysInCoverageRatedTerm)
+    if (costData !=null){
+      addCost(costData)
+    }
+    if (_logger.DebugEnabled)
+      _logger.debug("Business Pursuits Rated Successfully", this.IntrinsicType)
+
+  }
+
+
 
   /**
    * Rate the Loss assessment Coverage

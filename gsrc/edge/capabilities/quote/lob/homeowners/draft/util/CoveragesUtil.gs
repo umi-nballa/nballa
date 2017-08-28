@@ -45,10 +45,12 @@ final class CoveragesUtil {
         coveragesTerms.add(covTermDTO)
       })
 
-      var costModel = una.pageprocess.QuoteScreenPCFController.getCostModels(coverage)
-      result.Premium = costModel.single().Premium
-
       result.CoverageTerms = coveragesTerms
+
+      var costModel = una.pageprocess.QuoteScreenPCFController.getCostModels(coverage)
+      if(!costModel.Empty) {
+        result.Premium = costModel.single().Premium
+      }
     }
 
     return result

@@ -8,6 +8,10 @@
     <Require
       name="policyAddlInsuredDetail"
       type="entity.PolicyAddlInsuredDetail"/>
+    <Variable
+      initialValue="una.pageprocess.ContactPCFController.areAdditionalInsuredCoverageFieldsAvailable(policyAddlInsuredDetail.Branch)"
+      name="areCoverageFieldsAvailable"
+      type="Boolean"/>
     <InputColumn>
       <TypeKeyInput
         available="policyAddlInsuredDetail.AdditionalInsuredType != typekey.AdditionalInsuredType.TC_TRUESTEE_EXT"
@@ -16,6 +20,20 @@
         label="displaykey.Web.LineWizard.AdditionalInsured.Type"
         required="true"
         value="policyAddlInsuredDetail.AdditionalInsuredType"/>
+      <Input
+        editable="true"
+        id="insuredType"
+        label="&quot;Additional Insured Type&quot;"
+        required="true"
+        value="policyAddlInsuredDetail.CoverageType_Ext"
+        visible="areCoverageFieldsAvailable"/>
+      <Input
+        editable="true"
+        id="interest"
+        label="&quot;Additional Insured Interest&quot;"
+        required="true"
+        value="policyAddlInsuredDetail.InterestType_Ext"
+        visible="areCoverageFieldsAvailable"/>
     </InputColumn>
   </DetailViewPanel>
 </PCF>

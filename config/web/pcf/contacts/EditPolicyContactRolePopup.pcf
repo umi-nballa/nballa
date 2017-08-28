@@ -14,6 +14,8 @@
       signature="EditPolicyContactRolePopup(policyContactRole:PolicyContactRole, canEdit: Boolean)"/>
     <LocationEntryPoint
       signature="EditPolicyContactRolePopup(policyContactRole:PolicyContactRole, canEdit: Boolean, additionalInterestDetails : AddlInterestDetail)"/>
+    <LocationEntryPoint
+      signature="EditPolicyContactRolePopup(policyContactRole:PolicyContactRole, canEdit: Boolean, policyAdditionalInsuredDetail : PolicyAddlInsuredDetail)"/>
     <Variable
       name="policyContactRole"
       type="PolicyContactRole"/>
@@ -23,6 +25,9 @@
     <Variable
       name="additionalInterestDetails"
       type="AddlInterestDetail"/>
+    <Variable
+      name="policyAdditionalInsuredDetail"
+      type="PolicyAddlInsuredDetail"/>
     <Screen
       editable="true"
       id="ContactDetailScreen">
@@ -35,6 +40,37 @@
           <InputSetRef
             def="AdditionalInterestDetails_ExtInputSet(additionalInterestDetails, policyContactRole.AccountContactRole.AccountContact.Contact)"
             visible="policyContactRole.Subtype == TC_PolicyAddlInterest"/>
+        </InputColumn>
+      </DetailViewPanel>
+      <DetailViewPanel
+        id="AdditionalInsuredInfoDV"
+        visible="policyContactRole typeis PolicyAddlInsured and policyContactRole.Branch.HomeownersLine_HOEExists">
+        <Variable
+          initialValue="policyContactRole typeis PolicyAddlInsured and una.pageprocess.ContactPCFController.areAdditionalInsuredCoverageFieldsAvailable(policyContactRole.Branch)"
+          name="areCoverageFieldsAvailable"
+          type="Boolean"/>
+        <InputColumn>
+          <TypeKeyInput
+            available="policyAdditionalInsuredDetail.AdditionalInsuredType != typekey.AdditionalInsuredType.TC_TRUESTEE_EXT"
+            editable="true"
+            id="Type"
+            label="displaykey.Web.LineWizard.AdditionalInsured.Type"
+            required="true"
+            value="policyAdditionalInsuredDetail.AdditionalInsuredType"/>
+          <Input
+            editable="true"
+            id="insuredType"
+            label="&quot;Additional Insured Type&quot;"
+            required="true"
+            value="policyAdditionalInsuredDetail.CoverageType_Ext"
+            visible="areCoverageFieldsAvailable"/>
+          <Input
+            editable="true"
+            id="interest"
+            label="&quot;Additional Insured Interest&quot;"
+            required="true"
+            value="policyAdditionalInsuredDetail.InterestType_Ext"
+            visible="areCoverageFieldsAvailable"/>
         </InputColumn>
       </DetailViewPanel>
       <PanelRef

@@ -144,7 +144,6 @@ class DefaultHoDraftPlugin implements ILobDraftPlugin<HoDraftDataExtensionDTO>{
     res.PriorPolicy = toPriorPolicyDTO(period)
     res.Construction = toConstructionDTO(hoLine.Dwelling)
     res.Rating = toRatingDTO(hoLine.Dwelling)
-    res.Coverages = toCoveragesDTO(hoLine)
     res.ConditionsAndExclusions = toConditionsAndExclusionsDTO(period)
     res.AdditionalInsureds = toAdditionalInsuredsDTO(period)
     res.AdditionalInterests = toAdditionalInterestsDTO(period)
@@ -245,10 +244,6 @@ class DefaultHoDraftPlugin implements ILobDraftPlugin<HoDraftDataExtensionDTO>{
     final var res = new RatingDTO()
     RatingUtil.fillBaseProperties(res, dwelling)
     return res
-  }
-
-  protected function toCoveragesDTO(hoLine : HomeownersLine_HOE) : UNACoverageDTO[]{
-    return CoveragesUtil.fillBaseProperties(hoLine.Branch)
   }
 
   protected function toConditionsAndExclusionsDTO(period : PolicyPeriod) : List<String>{

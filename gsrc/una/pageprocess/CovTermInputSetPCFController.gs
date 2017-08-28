@@ -135,11 +135,7 @@ class CovTermInputSetPCFController {
     var coverable = term.Clause.OwningCoverable
 
     switch(term.PatternCode){
-      case "HODW_OtherStructure_HOE":
-        (coverable as Dwelling_HOE).HODW_PermittedIncOcp_HOE_Ext.HODWDwelling_HOETerm?.setValue(!term.Value)
-        break
       case "HODWDwelling_HOE":
-        (coverable as Dwelling_HOE).HODW_PermittedIncOcp_HOE_Ext.HODW_OtherStructure_HOETerm?.setValue(!term.Value)
          ProductModelSyncIssuesHandler.syncSpecifiedCoverages({(coverable as Dwelling_HOE).HODW_PermittedIncOcp_HOE_Ext}, null)
         break
       case "HODW_ExecutiveCov_HOE_Ext":
@@ -318,10 +314,11 @@ class CovTermInputSetPCFController {
   }
 
   public static function validateRequiredPIField(dwelling:Dwelling_HOE):String{
-
-     if(dwelling.HODW_PermittedIncOcp_HOE_ExtExists and (dwelling.HOPolicyType == TC_HO3 or dwelling.HOPolicyType == TC_HO6) and
-        dwelling.HODW_PermittedIncOcp_HOE_Ext.HODWDwelling_HOETerm.Value == null and
-        dwelling.HODW_PermittedIncOcp_HOE_Ext.HODW_OtherStructure_HOETerm.Value == null) {
+     if( dwelling.HODW_PermittedIncOcp_HOE_ExtExists and (dwelling.HOPolicyType == TC_HO3 or dwelling.HOPolicyType == TC_HO6) and
+        (dwelling.HODW_PermittedIncOcp_HOE_Ext.HODWDwelling_HOETerm.Value == null and
+        dwelling.HODW_PermittedIncOcp_HOE_Ext.HODW_OtherStructure_HOETerm.Value == null) or
+         (dwelling.HODW_PermittedIncOcp_HOE_Ext.HODWDwelling_HOETerm.Value == false and
+             dwelling.HODW_PermittedIncOcp_HOE_Ext.HODW_OtherStructure_HOETerm.Value == false) ) {
          return displaykey.Web.Policy.HomeownersLine.Validation.RequiredTerm_Ext
       }
     else if(dwelling.HODW_PermittedIncOcp_HOE_ExtExists and

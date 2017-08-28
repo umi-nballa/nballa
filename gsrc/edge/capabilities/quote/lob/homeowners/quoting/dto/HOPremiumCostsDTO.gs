@@ -26,7 +26,7 @@ class HOPremiumCostsDTO implements IQuoteLobExtensionDTO {
   var discountsAndSurcharges : List< AdditionalChargeDTO > as DiscountsAndSurcharges
 
   @JsonProperty
-  var fees : List<AdditionalChargeDTO> as TaxesAndFees
+  var fees : List<AdditionalChargeDTO> as Fees
 
   @JsonProperty
   @Context("DuplicatePropertyDescrs",

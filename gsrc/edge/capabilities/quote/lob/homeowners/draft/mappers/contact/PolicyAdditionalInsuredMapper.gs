@@ -13,6 +13,8 @@ uses java.lang.Integer
 class PolicyAdditionalInsuredMapper extends PolicyContactMapper<PolicyAddlInsured, AdditionalInsuredDTO> {
   override function updateContactRole(additionalInsured : PolicyAddlInsured, dto: AdditionalInsuredDTO) {
     additionalInsured.PolicyAdditionalInsuredDetails.first().AdditionalInsuredType = dto.Type
+    additionalInsured.PolicyAdditionalInsuredDetails.first().CoverageType_Ext = dto.CoverageType
+    additionalInsured.PolicyAdditionalInsuredDetails.first().InterestType_Ext = dto.InterestType
   }
 
   override function createContactRole(period: PolicyPeriod, portalIndex : Integer, contact: Contact) {
@@ -27,6 +29,8 @@ class PolicyAdditionalInsuredMapper extends PolicyContactMapper<PolicyAddlInsure
     var result = new AdditionalInsuredDTO()
 
     result.Type = role.PolicyAdditionalInsuredDetails.first().AdditionalInsuredType
+    result.InterestType = role.PolicyAdditionalInsuredDetails.first().InterestType_Ext
+    result.CoverageType = role.PolicyAdditionalInsuredDetails.first()?.CoverageType_Ext
 
     return result
   }

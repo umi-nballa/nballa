@@ -30,6 +30,7 @@ final class CoveragesUtil {
   public static function fillBaseProperties(coverage : Coverage) : UNACoverageDTO{
     var result = new UNACoverageDTO()
     result.Code = coverage.PatternCode
+    result.Name = coverage.Pattern.Name
 
     if(coverage.Scheduled){
       result.ScheduledItems = getScheduledItemDTOs(coverage)
@@ -39,7 +40,8 @@ final class CoveragesUtil {
       coverage.CovTerms?.each( \ covTerm -> {
         var covTermDTO = new UNACoverageTermDTO()
         covTermDTO.Code = covTerm.PatternCode
-        covTermDTO.Value = covTerm.ValueAsString
+        covTermDTO.Name = covTerm.Pattern.Name
+        covTermDTO.Value = covTerm.SelectedValueAsString
         coveragesTerms.add(covTermDTO)
       })
 
@@ -63,6 +65,7 @@ final class CoveragesUtil {
     })
 
     removeCoverages(coverageDTOs, period)
+    executeCoveragesPostUpdate(period, coverageDTOs)
   }
 
   private static function getScheduledItemDTOs(coverage : Coverage) : List<UNAScheduledItemDTO>{
@@ -292,5 +295,13 @@ final class CoveragesUtil {
     }
 
     return result
+  }
+
+  private static function executeCoveragesPostUpdate(period : PolicyPeriod, coverageDTOs : UNACoverageDTO[]){
+    toggleFloodCoverage(period, coverageDTOs)
+  }
+
+  private static function toggleFloodCoverage(period : PolicyPeriod, coverageDTOs : UNACoverageDTO[]){
+    period.HomeownersLine_HOE.Dwelling.FloodCoverage_Ext = coverageDTOs*.Code.containsIgnoreCase("HODW_FloodCoverage_HOE_Ext")
   }
 }

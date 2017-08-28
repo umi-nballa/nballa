@@ -68,6 +68,7 @@ public final class HORateRoutineNames {
   public static final var HIGHER_ALL_PERIL_DEDUCTIBLE_RATE_ROUTINE_EC_WIND_INCLUDED_DWELLING : String = "UNAHODPHigherAllPerilDeductibleECWindIncludedDwelling"
   public static final var HIGHER_ALL_PERIL_DEDUCTIBLE_RATE_ROUTINE_EC_WIND_INCLUDED_PERSONAL_PROPERTY : String = "UNAHODPHigherAllPerilDeductibleECWindIncludedPersonalProperty"
   public static final var DP_DEDUCTIBLE : String = "UNAHODPDeductible"
+  public static final var BUSINESS_PURSUITS_ROUTINE_NAME : String = "UNAHOBusinessPursuits"
 
   //group1 routines
   //TODO : Need to update the routine names for group1 states
@@ -173,6 +174,7 @@ public final class HORateRoutineNames {
   public static final var DP_PLANTS_TREES_SHRUBS : String = "UNAHODPPlantsTreesShrubs"
   public static final var DP_WOOD_SHAKE_ROOF : String = "UNAHODPWoodShakeRoof"
   public static final var DP_SUPPLEMENTAL_HEATING_SURCHARGE : String = "UNAHODPSupplementalHeatingSurcharge"
+  public static final var DP_AUTOMATIC_INCREASE_IN_INSURANCE : String = "UNAHODPAutomaticIncreaseInInsurance"
 
 
 }

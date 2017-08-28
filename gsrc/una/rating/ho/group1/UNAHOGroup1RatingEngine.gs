@@ -223,6 +223,9 @@ class UNAHOGroup1RatingEngine extends UNAHORatingEngine_HOE<HomeownersLine_HOE> 
       case HODW_DifferenceConditions_HOE_Ext:
           rateDifferenceInConditions(dwellingCov, dateRange)
           break
+      case HODW_AutomaticIncreaseInInsurance:
+          rateAutomaticIncreaseInsurance(dwellingCov, dateRange)
+          break
     }
   }
 
@@ -699,6 +702,23 @@ class UNAHOGroup1RatingEngine extends UNAHORatingEngine_HOE<HomeownersLine_HOE> 
       addCost(costData)
     if (_logger.DebugEnabled)
       _logger.debug("Personal Property Replacement Cost Rated Successfully", this.IntrinsicType)
+  }
+
+  /**
+   * Function which rates the Difference in conditions
+   */
+  function rateAutomaticIncreaseInsurance(dwellingCov: HODW_AutomaticIncreaseInInsurance, dateRange: DateRange) {
+    if (_logger.DebugEnabled)
+      _logger.debug("Entering " + CLASS_NAME + ":: rateAutomaticIncreaseInsurance", this.IntrinsicType)
+    var lineLevelRatingInfo = new HOGroup1LineLevelRatingInfo(PolicyLine)
+    lineLevelRatingInfo.TotalBasePremium = _discountsOrSurchargeRatingInfo.TotalBasePremium
+    var rateRoutineParameterMap = getHOLineParameterSet(PolicyLine, lineLevelRatingInfo, PolicyLine.BaseState.Code)
+    var costData = HOCreateCostDataUtil.createCostDataForDwellingCoverage(dwellingCov, dateRange, HORateRoutineNames.DP_AUTOMATIC_INCREASE_IN_INSURANCE, RateCache, PolicyLine, rateRoutineParameterMap, Executor, this.NumDaysInCoverageRatedTerm)
+    _hoRatingInfo.DifferenceInConditions = costData.ActualTermAmount
+    if (costData != null)
+      addCost(costData)
+    if (_logger.DebugEnabled)
+      _logger.debug("rateAutomaticIncreaseInsurance Rated Successfully", this.IntrinsicType)
   }
 
   /**

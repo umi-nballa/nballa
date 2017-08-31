@@ -29,6 +29,10 @@ class HOCostModel {
     this._branch = _coverage.PolicyLine.Branch
   }
 
+  property get CostList() : List<HomeownersCost_HOE>  {
+    return this._costs
+  }
+
   property get Premium() : BigDecimal{
     return this._costs?.sum(\ bc -> bc.ActualAmount.Amount)
   }

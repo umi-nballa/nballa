@@ -34,6 +34,19 @@ final class CoveragesUtil {
 
     if(coverage.Scheduled){
       result.ScheduledItems = getScheduledItemDTOs(coverage)
+
+      if(coverage.PatternCode == "HODW_ScheduledProperty_HOE"){
+            var costModel = una.pageprocess.QuoteScreenPCFController.getCostModels(coverage)
+            costModel.each( \ c ->  {
+            var structureData = gw.lob.ho.rating.QuotePageUtil_HOE.getStructuredData(c.CostList)
+            var structureDataDetails = structureData.atMostOneWhere( \ e -> e.SpecialCoverage and e.LowLevelCost).Details
+            var covTermDscription = structureDataDetails.atMostOne()
+            var cost = una.pageprocess.QuoteScreenPCFController.getPremiumDisplayValue(covTermDscription.cost)
+            var scheduledItem =  result.ScheduledItems.firstWhere( \ e -> e.ScheduleTypeCode  == covTermDscription.Code)
+            scheduledItem.Premium = cost as java.math.BigDecimal
+        })
+      }
+
     }else{
       var coveragesTerms : List<UNACoverageTermDTO> = {}
 
@@ -89,6 +102,7 @@ final class CoveragesUtil {
           result.Value = scheduledPPItem.ExposureValue
           result.ScheduleTypeCode = scheduledPPItem.ScheduleType.Code
           result.Description = scheduledPPItem.Description
+          result.Name = scheduledPPItem.ScheduleType.Description
           break
       case "CoveredLocation_HOE":
           var scheduledLocationItem = scheduledItem as CoveredLocation_HOE
@@ -302,6 +316,6 @@ final class CoveragesUtil {
   }
 
   private static function toggleFloodCoverage(period : PolicyPeriod, coverageDTOs : UNACoverageDTO[]){
-    period.HomeownersLine_HOE.Dwelling.FloodCoverage_Ext = coverageDTOs*.Code.containsIgnoreCase("HODW_FloodCoverage_HOE_Ext")
+    period.HomeownersLine_HOE.Dwelling.FloodCoverage_Ext = coverageDTOs*.Code?.containsIgnoreCase("HODW_FloodCoverage_HOE_Ext")
   }
 }

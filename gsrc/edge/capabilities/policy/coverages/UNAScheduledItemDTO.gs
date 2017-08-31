@@ -4,6 +4,7 @@ uses edge.jsonmapper.JsonProperty
 uses java.util.Date
 uses edge.capabilities.address.dto.AddressDTO
 uses java.lang.Integer
+uses java.math.BigDecimal
 
 /**
  * Created with IntelliJ IDEA.
@@ -51,4 +52,7 @@ class UNAScheduledItemDTO{
 
   @JsonProperty
   var _numberOfFamilies : Integer as NumberOfFamilies
+
+  @JsonProperty
+  var _premium : BigDecimal as Premium
 }

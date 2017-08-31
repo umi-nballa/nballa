@@ -161,7 +161,7 @@ abstract class QuotePageUtil_HOE {
         and s.EffectiveDateRange.includes(cost.ExpDate.addDays(-1)))
       var total: BigDecimal = 0
       itemsPerType.each(\ s -> {total += s.ExposureValue})
-      result.add(new NameValueCostData_HOE(type.DisplayName + " - " + scheduledItem.Description, total.asString(), cost))
+      result.add(new NameValueCostData_HOE(type.DisplayName + " - " + scheduledItem.Description, total.asString(), cost, scheduledItem.ScheduleType.Code))
     }else if(coverage.PatternCode == "HODW_SpecialLimitsCovC_HOE"){
       // Special Limits Personal Property Coverage
       var schedCost = cost  as ScheduleCovCost_HOE

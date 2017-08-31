@@ -6,6 +6,7 @@ uses edge.util.helper.JurisdictionUtil
 uses edge.capabilities.address.IAddressPlugin
 uses edge.capabilities.quote.draft.dto.DraftDataDTO
 uses org.apache.commons.lang3.StringUtils
+uses edge.capabilities.quote.quoting.util.QuoteUtil
 
 class SubmissionUtil {
 
@@ -29,7 +30,7 @@ class SubmissionUtil {
     if (ratingStyle != null && RatingStyle.get(ratingStyle) != null) {
       branch.BranchName = (RatingStyle.get(ratingStyle)) as String
     } else {
-      branch.BranchName = "CUSTOM"
+      branch.BranchName = QuoteUtil.CUSTOM_BRANCH_NAME
     }
 
     branch.SubmissionProcess.beginEditing()

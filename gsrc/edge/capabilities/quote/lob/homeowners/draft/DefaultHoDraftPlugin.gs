@@ -29,6 +29,9 @@ uses edge.capabilities.reports.dto.clue.PriorLossDTO
 uses edge.capabilities.reports.dto.clue.ClaimPaymentDTO
 uses edge.capabilities.policy.dto.PriorPolicyDTO
 uses edge.capabilities.policy.util.PriorPolicyUtil
+uses edge.capabilities.quote.quoting.util.QuoteUtil
+uses gw.entity.ITypeList
+uses gw.entity.TypeKey
 
 class DefaultHoDraftPlugin implements ILobDraftPlugin<HoDraftDataExtensionDTO>{
   private final static var HO_QUESTION_SET_CODES = {"HO_PreQual_Ext", "HODwellingUWQuestions_Ext"}
@@ -81,15 +84,7 @@ class DefaultHoDraftPlugin implements ILobDraftPlugin<HoDraftDataExtensionDTO>{
     updatePriorPolicy(period,update.PriorPolicy)
     updateConstruction(hoLine.Dwelling, update.Construction)
     setHiddenConstructionFields(hoLine.Dwelling)
-    updateCoverages(period, update)
-    updateConditionsAndExclusions(period, update)
-    updateAdditionalInsureds(period, update)
-    updateAdditionalNamedInsureds(period, update)
-    updateAdditionalInterests(period, update)
-    updateTrusts(period, update)
-    updatePriorLosses(period, update)
     updateRating(hoLine.Dwelling, update.Rating)
-    updateAdditionalParameters(period, update)
   }
 
   override function updateExistingDraftSubmission(period: PolicyPeriod, update: HoDraftDataExtensionDTO) {
@@ -98,17 +93,17 @@ class DefaultHoDraftPlugin implements ILobDraftPlugin<HoDraftDataExtensionDTO>{
     }
     final var hoLine = period.HomeownersLine_HOE
 
-    if(hoLine.HOPolicyType == null){
+    setQuoteFlood(period, update)
 
-      hoLine.HOPolicyType = HOPolicyType_HOE.TC_HO3
-      hoLine.Dwelling.setPolicyTypeAndDefaults()
-      setHiddenConstructionFields(hoLine.Dwelling)
-    }
+    hoLine.HOPolicyType = HOPolicyType_HOE.get(update.PolicyType)
+    hoLine.Dwelling.setPolicyTypeAndDefaults()
+    setHiddenConstructionFields(hoLine.Dwelling)
 
     final var dwelling = hoLine.Dwelling
 
     if(update.PolicyAddress != null) {
         _addressPlugin.updateFromDTO(period.PolicyAddress.Address, update.PolicyAddress)
+        _addressPlugin.updateFromDTO(period.HomeownersLine_HOE.Dwelling.HOLocation.PolicyLocation.AccountLocation, update.PolicyAddress)
     }
 
     var policyQuestionSets = getPolicyQuestionSets(period)
@@ -487,6 +482,7 @@ class DefaultHoDraftPlugin implements ILobDraftPlugin<HoDraftDataExtensionDTO>{
       }
 
       period.CreditInfoExt.CreditLevel = update.CreditLevel
+      period.Submission.IsPortalRequest = true
     }
   }
 
@@ -499,5 +495,29 @@ class DefaultHoDraftPlugin implements ILobDraftPlugin<HoDraftDataExtensionDTO>{
       update.OwnershipEntityTypeOtherDescription = period.Policy.Account.OtherOrgTypeDescription
       update.CreditLevel = period.CreditInfoExt.CreditLevel
     }
+  }
+
+  private function setQuoteFlood(period: PolicyPeriod, hoDraftData : HoDraftDataExtensionDTO) {
+    var floodPropertiesChanged = getTunaValue(FloodZoneOverridden_Ext, hoDraftData.YourHome.FloodZone.Value as String) != period.HomeownersLine_HOE.Dwelling.FloodZoneOrOverride
+                              or !hoDraftData.PolicyAddress.PostalCode?.equalsIgnoreCase(period.HomeownersLine_HOE.Dwelling.HOLocation.PolicyLocation.PostalCode)
+                              or !hoDraftData.PolicyAddress.County?.equalsIgnoreCase(period.HomeownersLine_HOE.Dwelling.HOLocation.PolicyLocation.County)
+                              or getTunaValue(DistBOWOverridden_Ext, hoDraftData.YourHome.DistanceToBodyOfWater.Value as String) != period.HomeownersLine_HOE.Dwelling.HOLocation.DistBOW_Ext
+                              or getTunaValue(DistToCoastOverridden_Ext, hoDraftData.YourHome.DistanceToCoast.Value as String) != period.HomeownersLine_HOE.Dwelling.HOLocation.DistToCoast_Ext
+
+    period.Submission.QuoteFlood_Ext = hoDraftData.FloodDefaults != null and floodPropertiesChanged
+
+  }
+
+  public static function getTunaValue(typeList : ITypeList, alias : String) : TypeKey{
+    var result : TypeKey
+    var internalCode = gw.api.util.TypecodeMapperUtil.getTypecodeMapper().getInternalCodeByAlias(typeList.RelativeName, "tuna", alias)
+
+    if(internalCode == null){
+      result = typeList.getTypeKey(alias)
+    }else{
+      result = typeList.getTypeKey(internalCode)
+    }
+
+    return result
   }
 }

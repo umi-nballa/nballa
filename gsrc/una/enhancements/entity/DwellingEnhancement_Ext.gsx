@@ -6,6 +6,7 @@ uses java.lang.IllegalStateException
 uses una.config.ConfigParamsUtil
 uses java.lang.Integer
 uses gw.api.domain.covterm.TypekeyCovTerm
+uses java.util.Date
 
 /**
  * Created with IntelliJ IDEA.
@@ -116,6 +117,14 @@ enhancement DwellingEnhancement_Ext : entity.Dwelling_HOE {
     }else{
       return this.YearBuilt
     }
+  }
+
+
+  /*
+  * @param date to calculate age off of
+  * */
+  function getAgeOfHome(date: Date): Integer{
+    return date.YearOfDate - this.YearBuiltOrOverride
   }
 
   property get FloodZoneOrOverride() : typekey.FloodZoneOverridden_Ext

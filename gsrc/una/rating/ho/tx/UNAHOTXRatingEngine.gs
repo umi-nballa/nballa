@@ -17,6 +17,7 @@ uses una.rating.ho.common.HOWatercraftLiabilityCovRatingInfo
 uses una.rating.ho.tx.ratinginfos.HODPBasePremiumRatingInfo
 uses java.math.BigDecimal
 uses gw.rating.CostData
+uses una.rating.ho.tx.ratinginfos.HOBasePremiumRatingInfo
 
 /**
  * Created with IntelliJ IDEA.
@@ -31,6 +32,8 @@ class UNAHOTXRatingEngine extends UNAHORatingEngine_HOE<HomeownersLine_HOE> {
   private var _dwellingRatingInfo : HODwellingRatingInfo
   private var _lineRatingInfo : HOLineRatingInfo
   private var _isDPPolicyType : boolean
+  private var _dpDwellingRatingInfo : HODPBasePremiumRatingInfo
+
 
   construct(line: HomeownersLine_HOE) {
     this(line, RateBookStatus.TC_ACTIVE)
@@ -42,6 +45,9 @@ class UNAHOTXRatingEngine extends UNAHORatingEngine_HOE<HomeownersLine_HOE> {
     _dwellingRatingInfo = new HODwellingRatingInfo(line.Dwelling)
     _lineRatingInfo = new HOLineRatingInfo(line)
     _isDPPolicyType = (typekey.HOPolicyType_HOE.TF_FIRETYPES.TypeKeys.contains(line.Dwelling?.HOPolicyType))
+    _dpDwellingRatingInfo = new HODPBasePremiumRatingInfo(line.Dwelling)
+
+
   }
 
   /**
@@ -149,6 +155,8 @@ class UNAHOTXRatingEngine extends UNAHORatingEngine_HOE<HomeownersLine_HOE> {
    */
   override function rateHOLineCosts(dateRange: DateRange) {
     var dwelling = PolicyLine.Dwelling
+    var policyPeriod = dwelling?.PolicyPeriod
+
     if(_isDPPolicyType){
       _discountOrSurchargeRatingInfo.TotalContentsPremium = getDPTotalContentsPremium()
       _discountOrSurchargeRatingInfo.TotalDwellingPremium = getDPTotalDwellingPremium()
@@ -171,10 +179,20 @@ class UNAHOTXRatingEngine extends UNAHORatingEngine_HOE<HomeownersLine_HOE> {
         rateWindstormHurricaneHailExclusion(dateRange)
       }
 
+      if((policyPeriod.includedPerilsCovered_Ext == typekey.IncludedPerilsCovered_Ext.TC_FIRELIGHTNINGEC or policyPeriod.includedPerilsCovered_Ext == typekey.IncludedPerilsCovered_Ext.TC_FIRELIGHTNINGECVMM)
+          and _dwellingRatingInfo.DPPersonalProperty > 0){
+        rateExtendedCoverageContents(dateRange)
+      }
+
+      if(policyPeriod.includedPerilsCovered_Ext == typekey.IncludedPerilsCovered_Ext.TC_FIRELIGHTNINGEC or policyPeriod.includedPerilsCovered_Ext == typekey.IncludedPerilsCovered_Ext.TC_FIRELIGHTNINGECVMM){
+        rateExtendedCoverageDwelling(dateRange)
+      }
+
     } else{
       if (dwelling?.DwellingUsage == typekey.DwellingUsage_HOE.TC_SEC){
         rateSeasonalOrSecondaryResidenceSurcharge(dateRange)
       }
+
       if (_discountOrSurchargeRatingInfo.BurglarAlarmReportPoliceStn || _discountOrSurchargeRatingInfo.BurglarAlarmReportCntlStn || _discountOrSurchargeRatingInfo.CompleteLocalBurglarAlarm){
         rateBurglarProtectiveDevicesCredit(dateRange)
       }
@@ -198,11 +216,13 @@ class UNAHOTXRatingEngine extends UNAHORatingEngine_HOE<HomeownersLine_HOE> {
         rateMultiLineDiscount(dateRange)
       }
 
+
       rateMaximumDiscountAdjustment(dateRange)
     }
     if(!PolicyLine.AdditionalInsureds.IsEmpty)
       rateAdditionalInsuredCoverage(dateRange)
   }
+
 
   /**
    * Rate Wind/Hail Exclusion Credit
@@ -254,6 +274,43 @@ class UNAHOTXRatingEngine extends UNAHORatingEngine_HOE<HomeownersLine_HOE> {
     if(_logger.DebugEnabled)
       _logger.debug("Burglar Protective Devices Credit Rated Successfully", this.IntrinsicType)
   }
+
+  /**
+   * Function to rate Extended Coverage Contents Premium
+  */
+
+  function rateExtendedCoverageDwelling (dateRange: DateRange){
+    if (_logger.DebugEnabled)
+      _logger.debug("Entering " + CLASS_NAME + ":: rateExtendedCoverageContents", this.IntrinsicType)
+    var rateRoutineParameterMap = createDPParameterSet(_dpDwellingRatingInfo)
+    var costData = HOCreateCostDataUtil.createCostDataForHOLineCosts(dateRange, HORateRoutineNames.HO_EXTENDED_COVERAGE_DWELLING_RATE_ROUTINE, HOCostType_Ext.TC_FIREECDWELLING,
+      RateCache, PolicyLine, rateRoutineParameterMap, Executor, this.NumDaysInCoverageRatedTerm)
+    if(costData != null){
+      _hoRatingInfo.ExtendedCoverageContentsPremium = costData?.ActualTermAmount
+      addCost(costData)
+     }
+    if(_logger.DebugEnabled)
+      _logger.debug("Extended Coverage Dwelling Premium Rated Successfully")
+    }
+
+  /**
+   * Function to rate Extended Coverage Contents Premium
+   */
+
+  function rateExtendedCoverageContents (dateRange: DateRange){
+    if (_logger.DebugEnabled)
+      _logger.debug("Entering " + CLASS_NAME + ":: rateExtendedCoverageContents", this.IntrinsicType)
+    var rateRoutineParameterMap = createDPParameterSet(_dpDwellingRatingInfo)
+    var costData = HOCreateCostDataUtil.createCostDataForHOLineCosts(dateRange, HORateRoutineNames.HO_EXTENDED_COVERAGE_CONTENTS_RATE_ROUTINE, HOCostType_Ext.TC_FIREECPERSONALPROPERTY,
+        RateCache, PolicyLine, rateRoutineParameterMap, Executor, this.NumDaysInCoverageRatedTerm)
+    if(costData != null){
+      _hoRatingInfo.ExtendedCoverageDwellingPremium = costData?.ActualTermAmount
+      addCost(costData)
+    }
+    if(_logger.DebugEnabled)
+      _logger.debug("Extended Coverage Contents Premium Rated Successfully")
+  }
+
 
   /**
    *  Function to rate the Affinity discount
@@ -827,6 +884,8 @@ class UNAHOTXRatingEngine extends UNAHORatingEngine_HOE<HomeownersLine_HOE> {
         TC_DISCOUNTORSURCHARGERATINGINFO_EXT -> discountOrSurchargeRatingInfo
     }
   }
+
+
 
   /**
    * Created DP parameter set to execute the base premium routines

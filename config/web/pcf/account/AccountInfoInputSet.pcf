@@ -270,6 +270,18 @@
         <PostOnChange/>
       </Input>
     </InputSet>
+    <InputSet
+      id="selectedPerils">
+      <RangeInput
+        available="period.HomeownersLine_HOE.BaseState == typekey.Jurisdiction.TC_TX &amp;&amp; period.HomeownersLine_HOE.HOPolicyType == typekey.HOPolicyType_HOE.TC_TDP1_EXT"
+        editable="true"
+        id="IncludedPerilsCovered"
+        label="displaykey.Web.PolicyPeriod.IncludedPerilsCovered"
+        required="true"
+        value="period.includedPerilsCovered_Ext"
+        valueRange="typekey.IncludedPerilsCovered_Ext.getTypeKeys(false)"
+        visible="period.HomeownersLine_HOE.BaseState == typekey.Jurisdiction.TC_TX &amp;&amp; period.HomeownersLine_HOE.HOPolicyType == typekey.HOPolicyType_HOE.TC_TDP1_EXT"/>
+    </InputSet>
     <Code><![CDATA[property get OrgTypes() : List<AccountOrgType> {
   return period.Policy.Account.AccountHolderContact typeis Company ? 
       typekey.AccountOrgType.TF_COMPANYENTITYLIST.TypeKeys : typekey.AccountOrgType.TF_PERSONENTITYLIST.TypeKeys    

@@ -69,7 +69,7 @@ class QuoteProcess {
    * @param warningsThrowException Do warnings throw validation exceptions
    */
   function requestQuote(jobWizardHelper : JobWizardHelper, valLevel : ValidationLevel, ratingStyle : RatingStyle, warningsThrowException : boolean) {
-    JobProcessLogger.logInfo("Quote requested for branch " + _branch + "(Rating style: " + ratingStyle + ")")
+    JobProcessLogger.logInfo("Quote requested for branch " + _branch + " with name ${_branch.BranchName} (Rating style: " + ratingStyle + ")")
 /*   // code for Clue Check for Ofac ,Uncomment once data Governance is approved
  if(_branch.HomeownersLine_HOE.ClueHit_Ext)     {*/
 //    if(_branch.NewSubmission){
@@ -102,8 +102,13 @@ class QuoteProcess {
     var errorMessages(list : List<ProductModelSyncIssueWrapper>)
         = \ issues -> addSyncIssueWebMessages(issues, jobWizardHelper)
 
-    // First validate period at EditEffectiveDate
-    PCProfilerTag.QUOTE_VALIDATE.execute(\ -> _validator.validatePrimarySliceForQuote(_branch, valLevel, errorMessages, warningsThrowException))
+    var isNonPortalSubmission = _branch.Job.Subtype == TC_SUBMISSION and !_branch.Submission.IsPortalRequest
+    var isPortalSubmissionFullApp = _branch.Submission.IsPortalRequest and _branch.Submission.QuoteType == TC_FULL
+
+    if(_branch.Job.Subtype != TC_SUBMISSION or  isNonPortalSubmission or isPortalSubmissionFullApp){
+      // First validate period at EditEffectiveDate
+      PCProfilerTag.QUOTE_VALIDATE.execute(\ -> _validator.validatePrimarySliceForQuote(_branch, valLevel, errorMessages, warningsThrowException))
+    }
 
     PCProfilerTag.QUOTE_MERGE.execute(\ -> {
       if (_branch.Job.OOSJob) {

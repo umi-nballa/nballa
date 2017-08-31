@@ -11,11 +11,12 @@ class NameValueCostData_HOE {
 /**
  * Creates an object with detail description, value and low level cost
  */
-  construct(desc: String, val: String, c: HomeownersCost_HOE) {
+  construct(desc: String, val: String, c: HomeownersCost_HOE, code:String = "") {
     description = desc
     value = val
     cost = c
     subDetails = new ArrayList<NameValueCostData_HOE>()
+    this._code = code
   }
   
   // detail description
@@ -29,5 +30,7 @@ class NameValueCostData_HOE {
 
   // lower level details (for Specific Structrures away from the Residence Premises)
   public var subDetails: List<NameValueCostData_HOE>
+
+  var _code : String as Code
 
 }

@@ -73,6 +73,7 @@ class CluePropertyGateway implements CluePropertyInterface {
       _logger.info("finished ordering CLUE")
     }
         catch (wse: WebServiceException) {
+          _logger.error("CluePropertyGateway.gs - Exception occured "+wse)
           throw new DisplayableException(WS_NOT_AVAILABLE, wse)
         }
   }

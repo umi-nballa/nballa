@@ -61,6 +61,7 @@ class CluePropertyGatewayStub implements CluePropertyInterface {
       _logger.debug("finished ordering CLUE")
     }
         catch (wse: WebServiceException) {
+          _logger.error("CluePropertyGatewayStub.gs - Exception occured "+wse)
           throw new DisplayableException(WS_NOT_AVAILABLE, wse)
         }
   }

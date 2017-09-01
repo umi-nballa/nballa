@@ -30,7 +30,7 @@ class DefaultBindingPlugin implements IBindingPlugin {
 
   override function getBindingData(submission : Submission) : BindingDataDTO {
 
-    if(submission.LatestPeriod.SubmissionProcess?.OutputPremiumOnly) {
+    if(submission.PortalSubmissionContext.OutputPremiumOnly) {
       return null
     }
 
@@ -117,7 +117,7 @@ class DefaultBindingPlugin implements IBindingPlugin {
   
   protected function getBindingForQuote(sub : Submission, period : PolicyPeriod) : BindingDataDTO {
     final var res = new BindingDataDTO()
-    if(period.SubmissionProcess.GeneratePaymentPlans){
+    if(sub.PortalSubmissionContext.GeneratePaymentPlans){
       res.PaymentPlans = _paymentPlanPlugin.getAvailablePaymentPlans(period)
     }
     fillContact(res, sub)

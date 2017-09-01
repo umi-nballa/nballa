@@ -482,7 +482,7 @@ class DefaultHoDraftPlugin implements ILobDraftPlugin<HoDraftDataExtensionDTO>{
       }
 
       period.CreditInfoExt.CreditLevel = update.CreditLevel
-      period.Submission.IsPortalRequest = true
+      period.Submission.PortalSubmissionContext.IsPortalRequest = true
     }
   }
 
@@ -504,7 +504,7 @@ class DefaultHoDraftPlugin implements ILobDraftPlugin<HoDraftDataExtensionDTO>{
                               or getTunaValue(DistBOWOverridden_Ext, hoDraftData.YourHome.DistanceToBodyOfWater.Value as String) != period.HomeownersLine_HOE.Dwelling.HOLocation.DistBOW_Ext
                               or getTunaValue(DistToCoastOverridden_Ext, hoDraftData.YourHome.DistanceToCoast.Value as String) != period.HomeownersLine_HOE.Dwelling.HOLocation.DistToCoast_Ext
 
-    period.Submission.QuoteFlood_Ext = hoDraftData.FloodDefaults != null and floodPropertiesChanged
+    period.Submission.PortalSubmissionContext.QuoteFlood = hoDraftData.FloodDefaults != null and floodPropertiesChanged
 
   }
 

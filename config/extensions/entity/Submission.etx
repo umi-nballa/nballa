@@ -2,14 +2,9 @@
 <extension
   xmlns="http://guidewire.com/datamodel"
   entityName="Submission">
-  <column
-    desc="Captures runtime data on whether or not a quote request came from Portal"
-    name="IsPortalRequest"
-    nullok="true"
-    type="bit"/>
-  <column
-    desc="Whether to quote for the flood  premium"
-    name="QuoteFlood_Ext"
-    nullok="true"
-    type="bit"/>
+  <foreignkey
+    desc="Meta data related to a portal request"
+    fkentity="PortalSubmissionContext_Ext"
+    name="PortalSubmissionContext"
+    nullok="true"/>
 </extension>

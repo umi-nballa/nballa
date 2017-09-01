@@ -21,7 +21,7 @@ abstract class NewTermProcess extends JobProcess {
 
   override function setPaymentInfoWithNewQuote() {
 
-    if(this.GeneratePaymentPlans == false){
+    if(this._branch.Submission.PortalSubmissionContext.GeneratePaymentPlans == false){
       return
     }
 

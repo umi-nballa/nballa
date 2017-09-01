@@ -102,8 +102,8 @@ class QuoteProcess {
     var errorMessages(list : List<ProductModelSyncIssueWrapper>)
         = \ issues -> addSyncIssueWebMessages(issues, jobWizardHelper)
 
-    var isNonPortalSubmission = _branch.Job.Subtype == TC_SUBMISSION and !_branch.Submission.IsPortalRequest
-    var isPortalSubmissionFullApp = _branch.Submission.IsPortalRequest and _branch.Submission.QuoteType == TC_FULL
+    var isNonPortalSubmission = _branch.Job.Subtype == TC_SUBMISSION and !_branch.Submission.PortalSubmissionContext.IsPortalRequest
+    var isPortalSubmissionFullApp = _branch.Submission.PortalSubmissionContext.IsPortalRequest and _branch.Submission.QuoteType == TC_FULL
 
     if(_branch.Job.Subtype != TC_SUBMISSION or  isNonPortalSubmission or isPortalSubmissionFullApp){
       // First validate period at EditEffectiveDate

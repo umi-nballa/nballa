@@ -28,6 +28,7 @@ class CluePropertyCommunicator {
       return result
     }
         catch (wse: WebServiceException) {
+          _logger.error("CluePropertyCommunicator.gs - Exception occured "+wse)
           throw new DisplayableException(WS_NOT_AVAILABLE, wse)
         }
   }

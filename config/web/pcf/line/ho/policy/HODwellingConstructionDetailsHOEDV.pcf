@@ -720,8 +720,15 @@
         value="dwelling.WHurricaneHailExclusion_Ext"
         visible="gw.lob.ho.HODwellingUtil_HOE.isWindstormHurricaneAndHailExclusionVisible(dwelling)">
         <PostOnChange
-          onChange="if(dwelling.WHurricaneHailExclusion_Ext){dwelling.WindMitigation_Ext = null gw.lob.ho.HODwellingUtil_HOE.resetDefaults(dwelling)}"/>
+          onChange="if(dwelling.WHurricaneHailExclusion_Ext){dwelling.WindMitigation_Ext = null gw.lob.ho.HODwellingUtil_HOE.resetDefaults(dwelling)};  gw.lob.ho.HODwellingUtil_HOE.setDwellingWindstormExclusionOccupancyType(dwelling)"/>
       </BooleanRadioInput>
+      <Input
+        id="windstormHurricaneExclusionOccupancyType"
+        label="displaykey.una.dwellingconsructiondetails.PrimarySecondary"
+        required="dwelling.HOPolicyType == TC_TDP3_Ext and dwelling.WHurricaneHailExclusion_Ext"
+        value="dwelling.WindHailExclusionOccupancyType_Ext"
+        visible="dwelling.HOPolicyType == TC_TDP3_Ext and dwelling.WHurricaneHailExclusion_Ext"/>
+      <InputSet/>
       <BooleanRadioInput
         editable="true"
         id="mitigationFormDatedWithinLast5Years"

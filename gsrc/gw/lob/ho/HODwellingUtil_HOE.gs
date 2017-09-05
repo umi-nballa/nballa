@@ -628,7 +628,16 @@ class HODwellingUtil_HOE {
       dwelling.RoofCover_Ext = null
       dwelling.RoofDeckAttachment_Ext = null
       dwelling.DoorStrength_Ext = null
+  }
 
+  static function setDwellingWindstormExclusionOccupancyType(dwelling: Dwelling_HOE){
+    if(dwelling.HOPolicyType == TC_TDP3_Ext){
+      if(dwelling.WHurricaneHailExclusion_Ext){
+        dwelling.WindHailExclusionOccupancyType_Ext = TC_PRIMARY
+      }else{
+        dwelling.WindHailExclusionOccupancyType_Ext = null
+      }
+    }
   }
   /*
 *  Author: uim-svallabhapurapu
@@ -770,8 +779,6 @@ class HODwellingUtil_HOE {
     // These are mandatory for rating and these are not being shown in screen
     dwelling.WindClass = typekey.WindRating.TC_RESISTIVE
     dwelling.ConstructionCode = "other"
-    //apply changes for windpool eligible policies  - applied during exit from dwelling screen
-    //applyChangesIfWindPoolEligible(dwelling)
   }
 
   /*

@@ -21,6 +21,8 @@ uses java.util.Map
 uses una.rating.ho.common.HOScheduledPersonalPropertyRatingInfo
 uses gw.rating.CostData
 uses java.lang.Integer
+uses una.config.ConfigParamsUtil
+uses una.rating.ho.group1.ratinginfos.HORenovationCreditRatingInfo
 
 /**
  * Created with IntelliJ IDEA.
@@ -322,9 +324,15 @@ class UNAHOGroup1RatingEngine extends UNAHORatingEngine_HOE<HomeownersLine_HOE> 
          }
         if(_discountsOrSurchargeRatingInfo.PriorLosses > 0){
          rateLossHistoryCredit(dateRange)
+        }
+        if((dwelling.getAgeOfHome(PolicyLine.Branch.EditEffectiveDate)) > ConfigParamsUtil.getInt(typekey.ConfigParameterType_Ext.TC_RENOVATIONCREDITAGEOFHOME, PolicyLine.BaseState)){
+          var renovationCreditRatingInfo = new HORenovationCreditRatingInfo(dwelling)
+          if(renovationCreditRatingInfo.renovationCreditApplies()){
+            rateRenovationCredit(dateRange)
+          }
+        }
 
       }
-        }
 
     }
 
@@ -464,6 +472,22 @@ class UNAHOGroup1RatingEngine extends UNAHORatingEngine_HOE<HomeownersLine_HOE> 
     if (_logger.DebugEnabled)
       _logger.debug("Loss History Credit Rated Successfully", this.IntrinsicType)
   }
+
+  /**
+   *  Function to rate rateRenovationCredit
+   */
+  function rateRenovationCredit(dateRange: DateRange) {
+    if (_logger.DebugEnabled)
+      _logger.debug("Entering " + CLASS_NAME + ":: rateProtectiveDeviceCredit", this.IntrinsicType)
+    var rateRoutineParameterMap = getHOLineDiscountsOrSurchargesParameterSet(PolicyLine, _discountsOrSurchargeRatingInfo, PolicyLine.BaseState)
+    var costData = HOCreateCostDataUtil.createCostDataForHOLineCosts(dateRange, HORateRoutineNames.RENOVATION_CREDIT_RATE_ROUTINE, HOCostType_Ext.TC_RENOVATIONCREDIT,
+        RateCache, PolicyLine, rateRoutineParameterMap, Executor, this.NumDaysInCoverageRatedTerm)
+    if (costData != null)
+      addCost(costData)
+    if (_logger.DebugEnabled)
+      _logger.debug("Renovation Credit Rated Successfully", this.IntrinsicType)
+  }
+
 
   /**
    *  Function to rate Protection Devices Credit

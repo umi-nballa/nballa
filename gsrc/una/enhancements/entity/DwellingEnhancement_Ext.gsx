@@ -124,7 +124,11 @@ enhancement DwellingEnhancement_Ext : entity.Dwelling_HOE {
   * @param date to calculate age off of
   * */
   function getAgeOfHome(date: Date): Integer{
-    return date.YearOfDate - this.YearBuiltOrOverride
+    if(date.YearOfDate != null and this.YearBuiltOrOverride != null){
+      return date.YearOfDate - this.YearBuiltOrOverride
+    }else{
+      return null
+    }
   }
 
   property get FloodZoneOrOverride() : typekey.FloodZoneOverridden_Ext

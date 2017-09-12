@@ -259,11 +259,6 @@
     name="SecondaryHeatingExists"
     nullok="true"
     type="bit"/>
-  <typekey
-    desc="Plumbing Type"
-    name="PlumbingType"
-    nullok="true"
-    typelist="PlumbingType_HOE"/>
   <column
     desc="Description of plumbing for type Other"
     name="PlumbingTypeDescription"
@@ -1245,4 +1240,9 @@
     name="WindHailExclusionOccupancyType_Ext"
     nullok="true"
     typelist="WindHailExclOccType_Ext"/>
+  <foreignkey
+    desc="A list of plumbing types"
+    fkentity="TypekeyArray_Ext"
+    name="PlumbingTypes_Ext"
+    nullok="true"/>
 </entity>

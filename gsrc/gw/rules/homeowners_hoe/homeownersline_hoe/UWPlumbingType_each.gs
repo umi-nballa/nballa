@@ -12,10 +12,10 @@ uses gw.accelerator.ruleeng.RuleEvaluationResult
  */
 class UWPlumbingType_each implements IRuleCondition<HomeownersLine_HOE>{
   override function evaluateRuleCriteria(homeowners : HomeownersLine_HOE) : RuleEvaluationResult {
-    if(homeowners.Dwelling.PlumbingType == PlumbingType_HOE.TC_STEEL_EXT ||
-        homeowners.Dwelling.PlumbingType == PlumbingType_HOE.TC_GALV ||
-        homeowners.Dwelling.PlumbingType == PlumbingType_HOE.TC_POLYBUTYLENE_EXT||
-        homeowners.Dwelling.PlumbingType == PlumbingType_HOE.TC_CASTIRON_EXT){
+    if(homeowners.Dwelling.HasSteelPlumbingType
+    or homeowners.Dwelling.HasGalvanizedPlumbingType
+    or homeowners.Dwelling.HasPolybutylenePlumbingType
+    or homeowners.Dwelling.HasCastIronPlumbingType){
         return RuleEvaluationResult.execute()
       }
    return RuleEvaluationResult.skip()

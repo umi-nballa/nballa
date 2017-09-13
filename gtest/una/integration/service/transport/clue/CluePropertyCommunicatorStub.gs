@@ -28,6 +28,7 @@ class CluePropertyCommunicatorStub {
       return result
     }
         catch (e: Exception) {
+          _logger.error("CluePropertyCommunicatorStub.gs - Exception occured "+e)
           return null
         }
   }

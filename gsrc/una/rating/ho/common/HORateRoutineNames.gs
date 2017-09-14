@@ -135,6 +135,7 @@ public final class HORateRoutineNames {
   public static final var ADDITIONAL_INSURED_PROPERTY_MANAGER_RATE_ROUTINE : String = "UNADPAdditionalInsuredPropertyManagerCovRateRoutine"
   public static final var EQ_COVERAGE_RATE_ROUTINE : String = "UNAHOEarthquakeCoverageRateRoutine"
   public static final var LOSS_ASSESSMENT_EQ_COVERAGE_RATE_ROUTINE : String = "UNAHOLossAssessmentEQCoverageRateRoutine"
+  public static final var RENOVATION_CREDIT_RATE_ROUTINE : String = "UNAHORenovationCreditRateRoutine"
 
   //base premium rate routines for DP
   public static final var BASE_PREMIUM_DWELLING_FIRE_RATE_ROUTINE : String = "UNAHODwellingFireBasePremiumRateRoutine"

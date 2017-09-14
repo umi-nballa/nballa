@@ -17,6 +17,11 @@ uses java.lang.Exception
 uses dynamic.Dynamic
 uses java.lang.Class
 uses java.text.SimpleDateFormat
+uses java.math.BigDecimal
+uses java.lang.Integer
+uses gw.api.util.TypecodeMapper
+uses java.util.Date
+uses edge.util.helper.UserUtil
 
 /**
  * Created with IntelliJ IDEA.
@@ -26,17 +31,13 @@ uses java.text.SimpleDateFormat
  * To change this template use File | Settings | File Templates.
  */
 @Export
-class PolicyRefreshTransportImpl extends AbstractMessageTransport implements InitializablePlugin {
+class PolicyRefreshTransport extends AbstractMessageTransport implements InitializablePlugin {
 
   public static var DEST_ID : int = 31
 
-  public static final var CREATEPERIOD_MSG : String = "CreatePeriod"
-  public static final var CANCELPERIOD_MSG : String = "CancelPeriod"
-  public static final var CHANGEPERIOD_MSG : String = "ChangePeriod"
-  public static final var ISSUEPERIOD_MSG : String = "IssuePeriod"
-  public static final var REINSTATEPERIOD_MSG : String = "ReinstatePeriod"
-  public static final var RENEWPERIOD_MSG : String = "RenewPeriod"
-  public static final var REWRITEPERIOD_MSG : String = "RewritePeriod"
+    public static final var REFRESH_MSG : String = "PolicyRefreshChange"
+    public static final var FUTURE_REFRESH_MSG : String = "PolicyRefreshFutureDatedChange"
+
 
   private var _userName: String = null
   private var _password: String = null
@@ -48,9 +49,10 @@ class PolicyRefreshTransportImpl extends AbstractMessageTransport implements Ini
 
   override function send(message: Message, payload: String) {
     var policyPeriod = message.PolicyPeriod
+
     try {
       if(policyPeriod.Policy.Product.ProductType == ProductType.TC_PERSONAL) {
-        sendPersonalPolicyUPSERT(policyPeriod)
+        sendPersonalPolicyUPSERT(message)
       } else if(policyPeriod.Policy.Product.ProductType == ProductType.TC_COMMERCIAL) {
         //TODO send commercialUPSERT
               // GROUP LINE CODES
@@ -65,17 +67,17 @@ class PolicyRefreshTransportImpl extends AbstractMessageTransport implements Ini
         message.reportNonRetryableError()
         message.reportError(ErrorCategory.TC_SYSTEM_ERROR, 2)
       }
-      message.reportAck()
     } catch(e: Exception) {
       _logger.error("PolicyRefresh Integration Error", e)
       message.ErrorDescription = e.Message
       message.reportError(ErrorCategory.TC_SYSTEM_ERROR)
     }
+
   }
 
-  public function sendPersonalPolicyUPSERT(policyPeriod: PolicyPeriod) { //message: Message) {
+  public  function sendPersonalPolicyUPSERT(message: Message) { //policyPeriod: PolicyPeriod) { //
 
-    //var policyPeriod = message.PolicyPeriod
+    var policyPeriod = message.PolicyPeriod
 
     var service = new wsi.remote.una.portalpolicyservice.policyservice.PolicyService()
     var authHeader = getAuthHeader()
@@ -84,8 +86,8 @@ class PolicyRefreshTransportImpl extends AbstractMessageTransport implements Ini
     policies.PersonalPolicy = getPersonalPolicyRequest(policyPeriod)
     policies.PolicyEdition = (policyPeriod.TermNumber?:1) - 1//Policy Edition is 0 based on the portal side
     policies.PremiumAmt = policyPeriod.TotalPremiumRPT
-    policies.BalanceTotal = "0"
-    policies.BalanceDue = "0"
+    policies.BalanceTotal = new BigDecimal("0")
+    policies.BalanceDue = new BigDecimal("0")
     policies.BalanceDueDate = new XmlDateTime()
 
     policies.CallingCenter = "PC"
@@ -99,14 +101,15 @@ class PolicyRefreshTransportImpl extends AbstractMessageTransport implements Ini
     if(response == null) {
       var description = "No response recieved from Portal"
       _logger.error("PolicyRefresh Integration Error", description)
-      //message.ErrorDescription = description
-     // message.reportError(ErrorCategory.TC_SYSTEM_ERROR)
+      message.ErrorDescription = description
+      message.reportError(ErrorCategory.TC_SYSTEM_ERROR)
     } else if(response.Status == 0) {
       _logger.debug(response.Result)
+        message.reportAck()
     } else {
       _logger.error(response.Error)
-      //message.ErrorDescription = response.Error
-      // message.reportError(ErrorCategory.TC_SYSTEM_ERROR)
+      message.ErrorDescription = response.Error
+      message.reportError(ErrorCategory.TC_SYSTEM_ERROR)
     }
   }
 
@@ -125,7 +128,7 @@ class PolicyRefreshTransportImpl extends AbstractMessageTransport implements Ini
         :PolicyNum = policyPeriod.PolicyNumber,
         :Agency = getAgencyDetails(policyPeriod),
         :Cust = getCustomerDetails(policyPeriod),
-        :IsGWPolicy = "true",
+        :IsGWPolicy = true,
         :Home = getHome(policyPeriod),
 //        :BillingInfo = getBillingInfo(policyPeriod),//TODO: Moving to BC
 //        :Installments = getInstallments(policyPeriod), //TODO: Moving to BC
@@ -163,21 +166,33 @@ class PolicyRefreshTransportImpl extends AbstractMessageTransport implements Ini
   public function getCustomerDetails(policyPeriod: PolicyPeriod) : List<Policy_Cust> {
 
     var primaryNamedInsured = policyPeriod.PrimaryNamedInsured.ContactDenorm
-    var primaryAddress = primaryNamedInsured.PrimaryAddress
+    var primaryNamedInsuredName = ""
+      if(policyPeriod.PrimaryNamedInsured.AccountContactRole.AccountContact.Contact typeis Company)  {
+         primaryNamedInsuredName = policyPeriod.PrimaryNamedInsured.DisplayName
+      } else {
+          primaryNamedInsuredName = policyPeriod.PrimaryNamedInsured.FirstName + " " + policyPeriod.PrimaryNamedInsured.LastName
+      }
+
+      var primaryAddress = primaryNamedInsured.PrimaryAddress
+
+    var additionalNamedInsuredContacts = policyPeriod.PolicyContactRoles.whereTypeIs(PolicyAddlNamedInsured)
 
     var customerList = new ArrayList<Policy_Cust>()
         {
             new Policy_Cust()
                 {
                     :Addr = mapAddress(primaryAddress, Cust_Addr),
-                    //:CoApplFirstName = policyPeriod., //TODO: what does this map to?
+                    //:CompanionAcctDisc = new BigDecimal("0"),//remove
                     :Company = primaryNamedInsured.ContactCompany.Name,
                     :EffDt = policyPeriod.PeriodStart.XmlDateTime.toString(),
                     :Email = primaryNamedInsured.EmailAddress1,
-                    :ExpDt = policyPeriod.PeriodEnd.XmlDateTime.toString(),
+                    :ExpDt = policyPeriod.PeriodEnd.XmlDateTime,
                     :GroupLine = policyPeriod.Policy.Product.Name,
                     :GroupLineCode = getGroupLineCode(policyPeriod),
-                    :Name = primaryNamedInsured.Name,
+                    :Name = primaryNamedInsuredName,
+                    :Name2 = additionalNamedInsuredContacts?.first()?.DisplayName,
+                    :NextBillAct = "P",
+                    :NextBillActDt = "08/30/2017",
                     :PhoneInfo = new ArrayList<Cust_PhoneInfo>(),
                     :RatingState = policyPeriod.PolicyAddress.State?.Description,
                     :RatingStateCode = policyPeriod.PolicyAddress.State?.Code,
@@ -199,7 +214,7 @@ class PolicyRefreshTransportImpl extends AbstractMessageTransport implements Ini
     return customerList
   }
 
-  public function getGroupLineCode(policyPeriod: PolicyPeriod): String {
+  public function getGroupLineCode(policyPeriod: PolicyPeriod): Integer {
     var groupLineCode = ""
     if(policyPeriod.Policy.Product.ProductType == ProductType.TC_PERSONAL) {
 
@@ -233,12 +248,12 @@ class PolicyRefreshTransportImpl extends AbstractMessageTransport implements Ini
     var loans = new ArrayList<Policy_PolicyLoan>()
 
     additionalInterests.each( \ loan ->  {
-      loans.add(new Policy_PolicyLoan()
-          {
-              :LoanName = loan.PolicyAddlInterest.DisplayName, :LoanName2 = loan.PolicyAddlInterest.DBAs?.first()?.DisplayName, :LoanNum = loan.ContractNumber, :LoanType = loan.AdditionalInterestType.Code,
+        loans.add(new Policy_PolicyLoan()
+            {
+              :LoanName = loan.PolicyAddlInterest.DisplayName, :LoanNum = loan.ContractNumber, :LoanType = loan.AdditionalInterestType.Description,
               :Addr = mapAddress(loan.PolicyAddlInterest.ContactDenorm.PrimaryAddress, PolicyLoan_Addr)
-          }
-      )
+            }
+        )
     })
     return loans
   }
@@ -247,37 +262,45 @@ class PolicyRefreshTransportImpl extends AbstractMessageTransport implements Ini
     var line = policyPeriod.HomeownersLine_HOE
     var dwelling = line.Dwelling
 
+    var typeCodeMapper = gw.api.util.TypecodeMapperUtil.getTypecodeMapper()
+    var mappingNamespace = "tuna"
+
     var home = new Policy_Home(){
         : Props = new Home_Props()
             {
                 : Prop = new ArrayList<Props_Prop>()
                     {
                         new Props_Prop(){
-                            :ConstructType = dwelling.ConstructionType.Code,
-                            :Form = "3",// TODO:  Need mapping
+                            :ConstructType = dwelling.ConstructionType?.DisplayName,
+                            :Form = mapPolicyTypeToForm(line.HOPolicyType),
                             :FtToHydrant = dwelling.HOLocation.DistanceToFireHydrant?.toString(),
                             :HeatYr = dwelling.HeatingUpgradeDate?.toString(),
-                            :LossFree = "4",// TODO:  Need mapping
+                            //:LossFree = "4",// NOT USED
                             :MilesToFireDept = dwelling.HOLocation.DistanceToFireStation?.toString(),
-                            //:NumApts = "0",TODO:Number of Apartments
-                            :NumFamilies =  "1",// TODO:  Need mapping
-                            //:NumRooms = "0", //TODO: Number of Rooms
-                            :NumStories = dwelling.NumberStoriesOrOverride?.Code,
-                            :NumUnits = dwelling.UnitsNumber?.Code,
-                            :Occupancy = dwelling.Occupancy?.Code,
+                            //:NumApts = "0",//NOT USED
+                            //:NumFamilies =  1,// NOT USED
+                            //:NumRooms = "0", //NOT USED
+                            :NumStories = getAliasByTypeCode(typeCodeMapper, typekey.NumberOfStories_HOE, mappingNamespace, dwelling.NumberStoriesOrOverride),//2,//dwelling.NumberStoriesOrOverride?.DisplayName,
+                            :NumUnits = convertUnitsNumber(dwelling.UnitsNumber),
+                            :Occupancy = dwelling.Occupancy?.DisplayName,
                             :PlumbingYr = dwelling.PlumbingUpgradeDate?.toString(),
-                            :ProtectClass = dwelling.HOLocation.protectionClassOrOverride,
-                            :RatePlan = "S",// TODO:  Need mapping
-                            :ReplaceCost = dwelling.ReplacementCost?.toString(),// TODO:  Need mapping
+                            :ProtectClass = dwelling.HOLocation.protectionClassOrOverride?.toString(),
+                            //:RatePlan = "S",// NOT USED
+                            :ReplaceCost = dwelling.CoverageAEstRepCostValue_Ext,
                             :RoofType = dwelling.RoofTypeOrOverride?.Code,
                             :RoofYr = dwelling.RoofingUpgradeDate?.toString(),
-                            :Territory = dwelling.HOLocation.territoryCodeOrOverride,
+                            :Territory = dwelling.HOLocation.territoryCodeOrOverride?.toString(),
                             :TotalSqFt = dwelling.SquareFootageOrOverride,
                             :UnitNum = "1",// TODO: Need mapping
-                            :UserLineCode = "24",
+                            :UserLineCode = getGroupLineCode(policyPeriod),
                             :WiringYr = dwelling.ElectricalSystemUpgradeDate?.toString(),
                             :YrBuilt = dwelling.YearBuiltOrOverride?.toString(),
-                            :HurricaneDollar = "NOCALC",// TODO: Dependent on DE2608
+                            :NSDed = "",
+                            :NSDollar = "",
+                            :EQDed = "",
+                            :EQDollar = "",
+                            :WHDollar = "",
+                            :HurricaneDollar = "98989890000",// TODO: Dependent on DE2608
 
                             : Coverage = new ArrayList<Prop_Coverage>() {
                             },
@@ -312,7 +335,7 @@ class PolicyRefreshTransportImpl extends AbstractMessageTransport implements Ini
 
     //  Add Notes
     var notes = policyPeriod.Policy.Account.Notes
-    notes.each( \ note -> home.Props.Prop.first().ItemNotes.Note.add(new ItemNotes_Note() { : EnteredDt = note.AuthoringDate?.toString(), : Remarks = note.Body, : Title = note.Subject, : UserId = note.Author.DisplayName }))
+    notes.each( \ note -> home.Props.Prop.first().ItemNotes.Note.add(new ItemNotes_Note() { : EnteredDt = note.AuthoringDate.XmlDateTime.toString(), : Remarks = note.Body, : Title = note.Subject, : UserId = note.Author.DisplayName }))
 
     var covList = line.CoveragesFromCoverable.where( \ elt -> line.hasCoverageConditionOrExclusion(elt.PatternCode)).toList()
     covList.addAll(dwelling.CoveragesFromCoverable.where( \ elt -> dwelling.hasCoverageConditionOrExclusion(elt.PatternCode)).toList())
@@ -338,25 +361,33 @@ class PolicyRefreshTransportImpl extends AbstractMessageTransport implements Ini
             propCov = new Prop_Coverage() { : CovDLimit = costModel.LimitValue, : CovDPrem = costModel.Premium }
 
           }
-          else if(costModel.Coverage.PatternCode  ==  "HODW_SectionI_Ded_HOE") {
-            costModel.Coverage.CovTerms.each( \ term -> {
-              print("${term.PatternCode} :: ${term.Pattern.Name} :: ${term.DisplayValue}")
-              if(term.PatternCode.equals("HODW_OtherPerils_Ded_HOE")){ //HODW_AllPeril_HOE_Ext
-                propCov = new Prop_Coverage() { :AllPerilDeduct = term.ValueAsString }
-              } else if(term.PatternCode.equals("HODW_Hurricane_Ded_HOE")) {
-                propCov = new Prop_Coverage() { :HurricaneDeduct = term.ValueAsString }
-              }
-              if(propCov != null) {
-                home.Props.Prop.first().Coverage.add(propCov)
-              }
-               propCov = null
-            })
-          }
           if(propCov != null) {
             home.Props.Prop.first().Coverage.add(propCov)
           }
         })
     })
+
+      //Add Hurricane Deductible
+      if(dwelling.HODW_SectionI_Ded_HOE.HasHODW_Hurricane_Ded_HOETerm) {
+        home.Props.Prop.first().Coverage.add(new Prop_Coverage() { :HurricaneDeduct = dwelling.HODW_SectionI_Ded_HOE.HODW_Hurricane_Ded_HOETerm.ValueAsString })
+      }
+      //Add AllPerils/AOP deductible
+      if(dwelling.HODW_SectionI_Ded_HOE.HasHODW_OtherPerils_Ded_HOETerm or dwelling.HODW_SectionI_Ded_HOE.HasHODW_AllPeril_HOE_ExtTerm){
+        home.Props.Prop.first().Coverage.add(new Prop_Coverage() { :AllPerilDeduct = dwelling.AllPerilsOrAllOtherPerilsCovTerm.ValueAsString })
+      }
+
+      //Add NamedStorm deductible
+      if(dwelling.HODW_SectionI_Ded_HOE.HasHODW_NamedStrom_Ded_HOE_ExtTerm){
+          //if gt 0 and LT 1 multiple by COVA for $AMOUNT else is DOllar amt
+          home.Props.Prop.first().NSDed = dwelling.HODW_SectionI_Ded_HOE.HODW_NamedStrom_Ded_HOE_ExtTerm.ValueAsString
+          home.Props.Prop.first().NSDollar = "999999"//term.ValueAsString
+      }
+
+      //Add Wind/Hail deductible
+      if(dwelling.HODW_SectionI_Ded_HOE.HasHODW_WindHail_Ded_HOETerm){
+          home.Props.Prop.first().WHDollar = dwelling.HODW_SectionI_Ded_HOE.HODW_WindHail_Ded_HOETerm.ValueAsString
+      }
+
     print("Section II")
     covList.where( \ elt -> elt.CoverageCategory.Code.equals("HODW_SectionII_HOE")).each( \ cov -> {
         var costModelList = una.pageprocess.QuoteScreenPCFController.getCostModels(cov)
@@ -377,16 +408,34 @@ class PolicyRefreshTransportImpl extends AbstractMessageTransport implements Ini
         })
     })
 
+    var slksd = dwelling.OtherStructuresLimitCovTerm
+      // Get EQ Deductible
+
+
+      var eqDed = covList.where( \ elt -> elt.CoverageCategory.Code.equals("HODW_Optional_HOE"))?.where( \ cov -> cov.PatternCode.equals("HODW_Earthquake_HOE"))?.CovTerms
+          ?.where(\ term -> term.PatternCode.equals("HODW_EarthquakeDed_HOE"))
+
+      eqDed?.each(\ ded -> {
+          home.Props.Prop.first().EQDed = ded.ValueAsString
+          home.Props.Prop.first().EQDollar = "999999"
+      })
+
+
 
     policyPeriod.Forms.each( \ form -> {
       print("${form.Pattern.Code} :: ${form.Pattern.FormDescription} :: ${form.Pattern.ClausePattern} ")
+
+       var clausePatternId = form.Pattern.ClausePattern?.CodeIdentifier
+       if(clausePatternId != null) {
+          // var cov = covList.where( \ elt -> elt.Pattern.CodeIdentifier == clausePatternId).map( \ elt -> elt. )
+       }
 
       //var addCosts = una.pageprocess.QuoteScreenPCFController.getAdditionalCoverageCosts(dwelling)
       //addCosts.each( \ elt -> form.Pattern.ClausePattern })
 
       var endorsement =  new Endorsements_Endorsement()
           {
-              : Description = form.FormDescription, : EditionDt = form.Pattern.EditionAsDate, : EndNum = "0", : ItemNum = "0", : Limit = "0", : Premium = "0"
+              : Description = form.FormDescription, : EditionDt = form.Pattern.Edition.replaceAll(" ", ""), : EndNum = form.FormNumber, : ItemNum = "0", : Limit = "0", : Premium = "0"
           }
 
       home.Endorsements.Endorsement.add(endorsement)
@@ -394,21 +443,62 @@ class PolicyRefreshTransportImpl extends AbstractMessageTransport implements Ini
 
     policyPeriod.HomeownersLine_HOE.HOPriorLosses_Ext.each( \ priorLoss -> {
 
+
       var lossAmt = priorLoss.ClaimPayment?.sum( \ claimPayment -> claimPayment.ClaimAmount)
 
       var lossHist = new Prop_LossHist() {
-          : LossAmt = lossAmt != null ? lossAmt.toString() : "",
-          : LossDt = priorLoss.ClaimDate,
+          : LossAmt = lossAmt,
+          : LossDt = priorLoss.ClaimDate?.toString(),
           : LossType = priorLoss.ClaimType.Code.toString(),
-          : PaidClaim = priorLoss.ClaimPayment?.countWhere( \ pay -> typekey.Status_Ext.TC_CLOSED.equals(pay.ClaimDisposition_Ext.Code) and pay.ClaimAmount > 0)
+          : PaidClaim = (priorLoss.ClaimPayment?.hasMatch( \ pay -> pay.ClaimAmount > 0) and priorLoss.PaymentDate != null)
       }
 
       home.Props.Prop.first().LossHist.add(lossHist)
     })
 
-
-   //home.Endorsements.Endorsement.
     return home
+  }
+
+  private function getAliasByTypeCode(mapper: TypecodeMapper, typeList : String, namespace : String, code : String) : String {
+    var aliases = mapper.getAliasesByInternalCode(typeList, namespace, code)
+    return aliases.Count != 0 ? aliases[0] : null
+  }
+
+
+  private function mapPolicyTypeToForm(policyType: HOPolicyType_HOE): String {
+    var form = ""
+
+    switch(policyType) {
+        case TC_HO3:
+        case TC_DP3_Ext:
+        case TC_TDP3_Ext:
+        case TC_LPP_Ext:
+          form = "3"
+          break
+        case TC_HO4:
+          form = "4"
+          break
+        case TC_HO6:
+          form = "6"
+          break
+        case TC_HOA_Ext:
+            form = "A"
+            break
+        case TC_HOB_Ext:
+            form = "H"
+            break
+        case TC_HCONB_Ext:
+            form = "C"
+            break
+        case TC_TDP1_Ext:
+            form = "H"
+            break
+        case TC_TDP2_Ext:
+            form = "2"
+            break
+    }
+
+    return form
   }
 
   /**
@@ -427,6 +517,46 @@ class PolicyRefreshTransportImpl extends AbstractMessageTransport implements Ini
     addrToMap.Zip = address.PostalCode
     addrToMap.AddrTypeCd = address.AddressType.Code
     return addrToMap
+  }
+
+  private function convertUnitsNumber(unitsNum: typekey.NumUnits_HOE): Integer {
+    var convertedUnitsNum: Integer
+
+    switch(unitsNum) {
+      case NumUnits_HOE.TC_ONE:
+        convertedUnitsNum = 1
+        break
+      case NumUnits_HOE.TC_TWO:
+          convertedUnitsNum = 2
+          break
+      case NumUnits_HOE.TC_THREE:
+          convertedUnitsNum = 3
+          break
+      case NumUnits_HOE.TC_FOUR:
+          convertedUnitsNum = 4
+          break
+      case NumUnits_HOE.TC_FIVETOFIFTEEN:
+          convertedUnitsNum = 5
+          break
+      case NumUnits_HOE.TC_SIXTEEENTOTWENTYFIVE:
+          convertedUnitsNum = 16
+          break
+      case NumUnits_HOE.TC_TWENTYSIXPLUS:
+          convertedUnitsNum = 26
+          break
+      default:
+          convertedUnitsNum = 0
+          break
+    }
+
+    return convertedUnitsNum
+  }
+
+  public static function addFutureChange(policyPeriod: PolicyPeriod) {
+      var futureChange = new PolicyRefreshFutureChange()
+      futureChange.JobNumber = policyPeriod.Job.JobNumber
+      futureChange.EffectiveDate = policyPeriod.EditEffectiveDate
+      _logger.debug("Creating a new future dated record for ${futureChange.JobNumber} on ${futureChange.EffectiveDate}")
   }
 
 }

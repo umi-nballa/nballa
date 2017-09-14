@@ -11,6 +11,7 @@ uses una.integration.batch.TenantInspectionBatchProcess
 uses una.integration.batch.outbound.lexisfirst.LexisFirstOutboundBatchProcess
 uses una.integration.batch.renewal.OpenRenewalsAutomationBatchProcess
 uses una.integration.batch.renewal.RenewalAutoCompleteBatchProcess
+uses una.integration.batch.PolicyRefreshBatchProcess
 
 @Export
 class ProcessesPlugin implements IProcessesPlugin {
@@ -42,7 +43,10 @@ class ProcessesPlugin implements IProcessesPlugin {
         return new TenantInspectionBatchProcess()
       case BatchProcessType.TC_OPENRENEWALSAUTOMATION:
         return new OpenRenewalsAutomationBatchProcess()
-        default:
+      case BatchProcessType.TC_POLICYREFRESHFUTUREDATEDTRANS:
+        return new PolicyRefreshBatchProcess()
+
+      default:
         return null
     }
   }

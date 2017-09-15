@@ -24,10 +24,12 @@ class CluePropertyCommunicator {
   function invokeCluePropertyService(orderXml: String): String {
     try {
       var clueAPI = new InteractiveOrderHandler()
+      _logger.info(orderXml)
       var result = clueAPI.handleInteractiveOrder(orderXml)
       return result
     }
         catch (wse: WebServiceException) {
+          _logger.error("CluePropertyCommunicator.gs - Exception occured "+wse)
           throw new DisplayableException(WS_NOT_AVAILABLE, wse)
         }
   }

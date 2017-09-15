@@ -94,7 +94,7 @@ class DefaultQuotePlugin implements IQuotePlugin {
   private function fromPeriods(periods : PolicyPeriod[]) : QuotingDTO {
     periods.sort(\ p1, p2 -> isPreferred(p1, p2))
     final var res = new QuotingDTO()
-    res.OfferedQuotes = periods.map(\p -> toQuoteDTO(p))
+    res.OfferedQuotes = periods.where( \ p -> p.BranchName == QuoteUtil.CUSTOM_BRANCH_NAME).map(\p -> toQuoteDTO(p))
     return res
   }
   

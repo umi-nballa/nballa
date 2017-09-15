@@ -24,10 +24,12 @@ class CluePropertyCommunicatorStub {
   function invokeCluePropertyService(orderXml: String): String {
     try {
       var clueAPI = new InteractiveOrderHandler()
+      _logger.info(orderXml)
       var result = clueAPI.handleInteractiveOrder(orderXml)
       return result
     }
         catch (e: Exception) {
+          _logger.error("CluePropertyCommunicatorStub.gs - Exception occured "+e)
           return null
         }
   }

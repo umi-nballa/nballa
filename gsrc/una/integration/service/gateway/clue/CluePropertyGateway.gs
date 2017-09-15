@@ -65,6 +65,7 @@ class CluePropertyGateway implements CluePropertyInterface {
     var result: String
     _logger.info("CLUE Request or sending order :" + orderXml)
     try {
+      _logger.info(orderXml)
       result = cluePropertyCommunicator.invokeCluePropertyService(orderXml)
       pPeriod.createCustomHistoryEvent(CustomHistoryType.TC_CLUE_ORDERED_EXT, \-> displaykey.Web.SubmissionWizard.Clue.EventMsg)
       _logger.info("CLUE Response or received result :" + result)

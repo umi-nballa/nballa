@@ -170,7 +170,7 @@ class DefaultDraftSubmissionPlugin implements IDraftSubmissionPlugin {
 
   override function toDTO(period : PolicyPeriod) : DraftDataDTO {
 
-    if(period.SubmissionProcess?.OutputPremiumOnly){
+    if(period.Submission.PortalSubmissionContext.OutputPremiumOnly){
       return null
     }
 

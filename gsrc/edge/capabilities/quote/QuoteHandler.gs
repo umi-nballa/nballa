@@ -11,24 +11,21 @@ uses edge.capabilities.quote.mailing.IQuoteMailingPlugin
 uses edge.capabilities.quote.mailing.dto.QuoteEmailDTO
 uses edge.capabilities.quote.quoting.util.QuoteUtil
 uses edge.capabilities.quote.quoting.IQuotePlugin
-uses edge.jsonrpc.exception.JsonRpcSecurityException
 uses edge.jsonrpc.annotation.JsonRpcUnauthenticatedMethod
 uses edge.capabilities.quote.dto.QuoteDataDTO
 uses edge.capabilities.quote.dto.QuoteRetrievalDTO
 uses edge.webapimodel.dto.PCWebApiModelDTO
 uses edge.capabilities.quote.questionset.util.QuestionSetUtil
 uses edge.capabilities.quote.lob.ILobMetadataPlugin
-uses java.lang.Exception
 uses edge.capabilities.quote.quoting.exception.UnderwritingException
 uses edge.security.authorization.IAuthorizerProviderPlugin
 uses edge.security.authorization.Authorizer
 uses edge.el.Expr
 uses edge.aspects.validation.annotations.Context
-uses edge.PlatformSupport.Bundle
 uses edge.capabilities.quote.draft.util.SubmissionUtil
 uses edge.capabilities.quote.binding.dto.BindingDataDTO
-uses edge.capabilities.address.dto.AddressDTO
 uses una.logging.UnaLoggerCategory
+uses edge.capabilities.quote.quoting.UNAMultiVersionPlugin
 
 /**
  * Quoting handler. Manages quoting session.
@@ -69,6 +66,9 @@ class QuoteHandler implements IRpcHandler  {
    */
   private var _lobMetadataPlugin: ILobMetadataPlugin
 
+
+  private var _multiVersionPlugin : UNAMultiVersionPlugin
+
   /**
   *  Authorizer
   */
@@ -90,7 +90,8 @@ class QuoteHandler implements IRpcHandler  {
         bindingPlugin : IBindingPlugin,
         quoteMailingPlugin : IQuoteMailingPlugin,
         lobMetadataPlugin : ILobMetadataPlugin,
-        authorizer:IAuthorizerProviderPlugin) {
+        authorizer:IAuthorizerProviderPlugin,
+        multiVersionPlugin : UNAMultiVersionPlugin) {
     this._draftPlugin = draftPlugin
     this._sessionPlugin = sessionPlugin
     this._quotingPlugin = quotingPlugin
@@ -98,6 +99,7 @@ class QuoteHandler implements IRpcHandler  {
     this._quoteMailingPlugin = quoteMailingPlugin
     this._lobMetadataPlugin = lobMetadataPlugin
     this._submissionAuthorizer = authorizer.authorizerFor(Submission)
+    this._multiVersionPlugin = multiVersionPlugin
   }
 
   @JsonRpcUnauthenticatedMethod
@@ -271,11 +273,18 @@ class QuoteHandler implements IRpcHandler  {
       return s
     })
 
+    Bundle.transaction( \ bundle -> {
+      if(sub.SelectedVersion.SubmissionProcess.canEdit().Okay){
+        sub.SelectedVersion.SubmissionProcess.edit()
+      }
+
+      sub = bundle.add(sub)
+      _multiVersionPlugin.createMultiVersion(sub.SelectedVersion, qdd.DraftData)
+    })
+
     /* Quote in a different bundle so draft data is saved even
      * if quote fails.
      */
-    var uwExceptionEncounteredFlag = false
-    var uwException: UnderwritingException = null
     Bundle.transaction(\ bundle -> {
       sub = bundle.add(sub)
       try{
@@ -412,7 +421,6 @@ class QuoteHandler implements IRpcHandler  {
   /* PRIVATE IMPLEMENTATION. */
   protected function updateDraft(sub : Submission, qdd : QuoteDataDTO) {
     sub.SelectedVersion = QuoteUtil.getBasePeriod(sub)
-    sub.SelectedVersion.SubmissionProcess.withdrawOtherActivePeriods()
     _draftPlugin.updateSubmission(sub, qdd.DraftData)
     if(sub.SelectedVersion.SubmissionProcess.canEdit().Okay){
       //If updateDraft is called with a quoted submission we want to put it back into edit mode as that previous quote
@@ -420,7 +428,6 @@ class QuoteHandler implements IRpcHandler  {
       sub.SelectedVersion.SubmissionProcess.edit()
     }
   }
-
 
 
   protected function toDTO(sessId : String, submission : Submission) : QuoteDataDTO {

@@ -220,10 +220,10 @@ class HPXClueReportMapper {
 
   function createLossLocation(priorLoss : HOPriorLoss_Ext) : wsi.schema.una.hpx.hpx_application_request.types.complex.LossLocationType {
     var lossLocationType = new wsi.schema.una.hpx.hpx_application_request.types.complex.LossLocationType()
-    lossLocationType.AddressLine1 = priorLoss.Address != null ? priorLoss.Address : ""
-    lossLocationType.City = priorLoss.City != null ? priorLoss.City : ""
-    lossLocationType.State = priorLoss.State != null ? priorLoss.State : ""
-    lossLocationType.PostalCode = priorLoss.Zip != null ? priorLoss.Zip : ""
+    lossLocationType.AddressLine1 = priorLoss.Address != null ? priorLoss.Address : null
+    lossLocationType.City = priorLoss.City != null ? priorLoss.City : null
+    lossLocationType.State = priorLoss.State != null ? priorLoss.State : null
+    lossLocationType.PostalCode = priorLoss.Zip != null ? priorLoss.Zip : null
     lossLocationType.ClueMatchIndicator = priorLoss.CluePropertyMatch.LocationOfLossMatchIndicator  != null ?  priorLoss.CluePropertyMatch.LocationOfLossMatchIndicator.Code : typekey.ClueMatchIndicator_Ext.TC_NOMATCH
     return lossLocationType
   }

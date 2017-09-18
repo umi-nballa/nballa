@@ -498,13 +498,14 @@ class DefaultHoDraftPlugin implements ILobDraftPlugin<HoDraftDataExtensionDTO>{
   }
 
   private function setQuoteFlood(period: PolicyPeriod, hoDraftData : HoDraftDataExtensionDTO) {
-    var floodPropertiesChanged = getTunaValue(FloodZoneOverridden_Ext, hoDraftData.YourHome.FloodZone.Value as String) != period.HomeownersLine_HOE.Dwelling.FloodZoneOrOverride
+    period.Submission.PortalSubmissionContext.QuoteFlood = hoDraftData.FloodDefaults != null  and
+                            (
+                              getTunaValue(FloodZoneOverridden_Ext, hoDraftData.YourHome.FloodZone.Value as String) != period.HomeownersLine_HOE.Dwelling.FloodZoneOrOverride
                               or !hoDraftData.PolicyAddress.PostalCode?.equalsIgnoreCase(period.HomeownersLine_HOE.Dwelling.HOLocation.PolicyLocation.PostalCode)
                               or !hoDraftData.PolicyAddress.County?.equalsIgnoreCase(period.HomeownersLine_HOE.Dwelling.HOLocation.PolicyLocation.County)
                               or getTunaValue(DistBOWOverridden_Ext, hoDraftData.YourHome.DistanceToBodyOfWater.Value as String) != period.HomeownersLine_HOE.Dwelling.HOLocation.DistBOW_Ext
                               or getTunaValue(DistToCoastOverridden_Ext, hoDraftData.YourHome.DistanceToCoast.Value as String) != period.HomeownersLine_HOE.Dwelling.HOLocation.DistToCoast_Ext
-
-    period.Submission.PortalSubmissionContext.QuoteFlood = hoDraftData.FloodDefaults != null and floodPropertiesChanged
+                            )
 
   }
 

@@ -482,7 +482,7 @@ class DefaultHoDraftPlugin implements ILobDraftPlugin<HoDraftDataExtensionDTO>{
       }
 
       period.CreditInfoExt.CreditLevel = update.CreditLevel
-      period.Submission.PortalSubmissionContext.IsPortalRequest = true
+      period.Submission.PortalSubmissionContext.IsPortalRequest = update.IsPortalRequest
     }
   }
 
@@ -498,25 +498,31 @@ class DefaultHoDraftPlugin implements ILobDraftPlugin<HoDraftDataExtensionDTO>{
   }
 
   private function setQuoteFlood(period: PolicyPeriod, hoDraftData : HoDraftDataExtensionDTO) {
-    period.Submission.PortalSubmissionContext.QuoteFlood = hoDraftData.FloodDefaults != null  and
-                            (
-                              getTunaValue(FloodZoneOverridden_Ext, hoDraftData.YourHome.FloodZone.Value as String) != period.HomeownersLine_HOE.Dwelling.FloodZoneOrOverride
-                              or !hoDraftData.PolicyAddress.PostalCode?.equalsIgnoreCase(period.HomeownersLine_HOE.Dwelling.HOLocation.PolicyLocation.PostalCode)
-                              or !hoDraftData.PolicyAddress.County?.equalsIgnoreCase(period.HomeownersLine_HOE.Dwelling.HOLocation.PolicyLocation.County)
-                              or getTunaValue(DistBOWOverridden_Ext, hoDraftData.YourHome.DistanceToBodyOfWater.Value as String) != period.HomeownersLine_HOE.Dwelling.HOLocation.DistBOW_Ext
-                              or getTunaValue(DistToCoastOverridden_Ext, hoDraftData.YourHome.DistanceToCoast.Value as String) != period.HomeownersLine_HOE.Dwelling.HOLocation.DistToCoast_Ext
-                            )
 
+    if(hoDraftData.FloodDefaults == null) {
+      return
+    }
+
+    var floodZoneChanged = getTunaValue(FloodZoneOverridden_Ext, hoDraftData.YourHome.FloodZone.Value as String) != period.HomeownersLine_HOE.Dwelling.FloodZoneOrOverride
+    var postalCodeChanged = !hoDraftData.PolicyAddress.PostalCode?.equalsIgnoreCase(period.HomeownersLine_HOE.Dwelling.HOLocation.PolicyLocation.PostalCode)
+    var countyChanged = !hoDraftData.PolicyAddress.County?.equalsIgnoreCase(period.HomeownersLine_HOE.Dwelling.HOLocation.PolicyLocation.County)
+    var bodyOfWaterChanged = getTunaValue(DistBOWOverridden_Ext, hoDraftData.YourHome.DistanceToBodyOfWater.Value as String) != period.HomeownersLine_HOE.Dwelling.HOLocation.DistBOW_Ext
+    var distanceToCoastChanged = getTunaValue(DistToCoastOverridden_Ext, hoDraftData.YourHome.DistanceToCoast.Value as String) != period.HomeownersLine_HOE.Dwelling.HOLocation.DistToCoast_Ext
+
+    period.Submission.PortalSubmissionContext.QuoteFlood  = floodZoneChanged or postalCodeChanged or countyChanged or bodyOfWaterChanged or distanceToCoastChanged
   }
 
   public static function getTunaValue(typeList : ITypeList, alias : String) : TypeKey{
     var result : TypeKey
-    var internalCode = gw.api.util.TypecodeMapperUtil.getTypecodeMapper().getInternalCodeByAlias(typeList.RelativeName, "tuna", alias)
 
-    if(internalCode == null){
-      result = typeList.getTypeKey(alias)
-    }else{
-      result = typeList.getTypeKey(internalCode)
+    if(alias != null){
+      var internalCode = gw.api.util.TypecodeMapperUtil.getTypecodeMapper().getInternalCodeByAlias(typeList.RelativeName, "tuna", alias)
+
+      if(internalCode == null){
+        result = typeList.getTypeKey(alias)
+      }else{
+        result = typeList.getTypeKey(internalCode)
+      }
     }
 
     return result

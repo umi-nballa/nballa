@@ -17,6 +17,8 @@ uses java.lang.Exception
 uses gw.api.profiler.PCProfilerTag
 uses gw.job.JobProcessValidator
 uses java.util.concurrent.CountDownLatch
+uses edge.util.helper.UserUtil
+uses una.config.ConfigParamsUtil
 
 /**
  * Default implementation of quoting plugin.
@@ -164,7 +166,7 @@ class DefaultQuotePlugin implements IQuotePlugin {
     if(submission.SelectedVersion.HomeownersLine_HOEExists and submission.PortalSubmissionContext.QuoteFlood){
       //run in separate threads to save time
       var doneSignal = new CountDownLatch(1)
-      var quoter = new ConcurrentSubmissionQuoter (submission.Periods.atMostOneWhere( \ period -> period.BranchName == QuoteUtil.HO_FLOOD_BRANCH_NAME), doneSignal)
+      var quoter = new ConcurrentSubmissionQuoter (submission.Periods.atMostOneWhere( \ period -> period.BranchName == QuoteUtil.HO_FLOOD_BRANCH_NAME), doneSignal, User.util.CurrentUser)
       new java.util.Timer().schedule(quoter, java.util.Date.CurrentDate)
       quoteSinglePeriod(submission.Periods.atMostOneWhere( \ period -> period.BranchName == QuoteUtil.CUSTOM_BRANCH_NAME))
 

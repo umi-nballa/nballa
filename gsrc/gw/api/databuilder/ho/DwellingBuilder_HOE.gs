@@ -480,7 +480,7 @@ class DwellingBuilder_HOE extends DataBuilder<Dwelling_HOE, DwellingBuilder_HOE>
   }
 
   final function withPlumbingType(plumbingType : PlumbingType_HOE) : DwellingBuilder_HOE {
-    set(Dwelling_HOE.Type.TypeInfo.getProperty("PlumbingType"), plumbingType)
+    set(Dwelling_HOE.Type.TypeInfo.getProperty("PlumbingTypes_Ext"), {plumbingType.Code})
     return this
   }
 

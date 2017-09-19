@@ -87,6 +87,28 @@ class CovTermInputSetPCFController {
       case "HODW_FungiSectionILimit_HOE":
         hoLine.Dwelling.HODW_FungiCov_HOE.HODW_FungiSectionII_HOETerm.matchOptionValue(term)
         break
+      case "HODW_EarthquakeDed_HOE":
+        if(hoLine.Dwelling.HODW_LossAssEQEndorsement_HOE_ExtExists){
+          var eqLossAssessmentAvailableOptions = hoLine.Dwelling.HODW_LossAssEQEndorsement_HOE_Ext.HODW_LossAssEQDeductible_HOETerm.AvailableOptions
+          var selectedEarthquakeDeductibleValue = hoLine.Dwelling.HODW_Earthquake_HOE.HODW_EarthquakeDed_HOETerm.Value
+          var optionToSelect = eqLossAssessmentAvailableOptions.atMostOneWhere( \ option -> option.Value == selectedEarthquakeDeductibleValue)
+
+          if(optionToSelect != null){
+            hoLine.Dwelling.HODW_LossAssEQEndorsement_HOE_Ext.HODW_LossAssEQDeductible_HOETerm.setOptionValue(optionToSelect)
+          }
+        }
+        break
+      case "HODW_LossAssEQDeductible_HOE":
+        if(hoLine.Dwelling.HODW_Earthquake_HOEExists){
+          var availableEarthquakeDeductibleOptions = hoLine.Dwelling.HODW_Earthquake_HOE.HODW_EarthquakeDed_HOETerm.AvailableOptions
+          var selectedLossAssessmentDeductible = hoLine.Dwelling.HODW_LossAssEQEndorsement_HOE_Ext.HODW_LossAssEQDeductible_HOETerm.Value
+          var optionToSelect = availableEarthquakeDeductibleOptions.atMostOneWhere( \ option -> option.Value == selectedLossAssessmentDeductible)
+
+          if(optionToSelect != null){
+            hoLine.Dwelling.HODW_Earthquake_HOE.HODW_EarthquakeDed_HOETerm.setOptionValue(optionToSelect)
+          }
+        }
+      break
     }
   }
 

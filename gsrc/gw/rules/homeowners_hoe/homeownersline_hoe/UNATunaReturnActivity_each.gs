@@ -92,7 +92,7 @@ class UNATunaReturnActivity_each implements IRuleCondition<HomeownersLine_HOE> {
 
     //If the return is Null  then activity for post bind to validate year built.
 
-        if(holine.Dwelling.YearBuilt==null)
+    if(holine.Dwelling.YearBuilt==null)
     {
       var activityPattern = ActivityPattern.finder.getActivityPatternByCode("TUNA_YearBuiltWasNullFromTuna")
 

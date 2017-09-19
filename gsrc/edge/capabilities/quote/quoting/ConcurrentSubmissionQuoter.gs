@@ -16,11 +16,13 @@ uses una.logging.UnaLoggerCategory
 class ConcurrentSubmissionQuoter extends TimerTask{
   private var _period : PolicyPeriod
   private var _doneSignal : CountDownLatch
+  private var _user : User
   private final static var _LOGGER = UnaLoggerCategory.UNA_EDGE_API
 
-  construct(p : PolicyPeriod, doneSignal : CountDownLatch){
+  construct(p : PolicyPeriod, doneSignal : CountDownLatch, user : User){
     this._period = p
     this._doneSignal = doneSignal
+    this._user = user
   }
 
   override function run(){
@@ -40,6 +42,6 @@ class ConcurrentSubmissionQuoter extends TimerTask{
       } finally{
         _doneSignal.countDown()
       }
-    }, "su")
+    }, _user)
   }
 }

@@ -75,9 +75,16 @@ final class ConstructionUtil extends BaseTunaValueUtil {
   /*  if (data.PrimaryHeating == typekey.HeatingType_HOE.TC_NONE_EXT) {   //TC_OTHER --Portal
       dto.PrimaryHeatingTypeDescription = data.PrimaryHeatingDescription
     }*/
+    dto.HasSteelPlumbingType = data.HasSteelPlumbingType
+    dto.HasPEXPlumbingType = data.HasPEXPlumbingType
+    dto.HasCopperPlumbingType = data.HasCopperPlumbingType
+    dto.HasCastIronPlumbingType = data.HasCastIronPlumbingType
+    dto.HasPolybutylenePlumbingType = data.HasPolybutylenePlumbingType
+    dto.HasGalvanizedPlumbingType = data.HasGalvanizedPlumbingType
+    dto.HasPVCPlumbingType = data.HasPVCPlumbingType
+    dto.HasOtherPlumbingType = data.HasOtherPlumbingType
 
-    dto.PlumbingType = data.PlumbingType
-    if (data.PlumbingType == typekey.PlumbingType_HOE.TC_OTHER) {
+    if (data.HasOtherPlumbingType) {
       dto.PlumbingTypeDescription = data.PlumbingTypeDescription
     }
     dto.PlumbingUpgradeExists = data.PlumbingUpgrade
@@ -187,8 +194,16 @@ final class ConstructionUtil extends BaseTunaValueUtil {
     data.OpeningProtection_Ext = dto.OpeningProtection
     data.PanelManufacturer_Ext = dto.PanelManufacturer
 
-    data.PlumbingType = dto.PlumbingType
-    if (dto.PlumbingType == typekey.PlumbingType_HOE.TC_OTHER) {
+    data.HasSteelPlumbingType = dto.HasSteelPlumbingType
+    data.HasPEXPlumbingType = dto.HasPEXPlumbingType
+    data.HasCopperPlumbingType = dto.HasCopperPlumbingType
+    data.HasCastIronPlumbingType = dto.HasCastIronPlumbingType
+    data.HasPolybutylenePlumbingType = dto.HasPolybutylenePlumbingType
+    data.HasGalvanizedPlumbingType = dto.HasGalvanizedPlumbingType
+    data.HasPVCPlumbingType = dto.HasPVCPlumbingType
+    data.HasOtherPlumbingType = dto.HasOtherPlumbingType
+
+    if (dto.HasOtherPlumbingType) {
       data.PlumbingTypeDescription = dto.PlumbingTypeDescription
     }
     data.PlumbingUpgrade = dto.PlumbingUpgradeExists

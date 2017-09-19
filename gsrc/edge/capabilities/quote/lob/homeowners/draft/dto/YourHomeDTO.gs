@@ -252,6 +252,7 @@ class YourHomeDTO {
 
   @JsonProperty
   private var _floodRiskType : FloodRiskType_Ext as FloodRiskType
+
   @JsonProperty
   var _coastLocation : CoastLocation_Ext as CoastLocation
 
@@ -264,4 +265,27 @@ class YourHomeDTO {
   @JsonProperty
   private var _estimatedReplacementCost : BigDecimal as EstimatedReplacementCost
 
+  @JsonProperty
+  private var _hasSteelPlumbingType : Boolean as HasSteelPlumbingType
+
+  @JsonProperty
+  private var _hasCopperPlumbingType : Boolean as HasCopperPlumbingType
+
+  @JsonProperty
+  private var _hasCastIronPlumbingType : Boolean as HasCastIronPlumbingType
+
+  @JsonProperty
+  private var _hasPolybutylenePlumbingType : Boolean as HasPolybutylenePlumbingType
+
+  @JsonProperty
+  private var _hasPEXPlumbingType : Boolean as HasPEXPlumbingType
+
+  @JsonProperty
+  private var _hasGalvanizedPlumbingType : Boolean as HasGalvanizedPlumbingType
+
+  @JsonProperty
+  private var _hasPVCPlumbingType : Boolean as HasPVCPlumbingType
+
+  @JsonProperty
+  private var _hasOtherPlumbingType : Boolean as HasOtherPlumbingType
 }

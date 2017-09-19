@@ -12,7 +12,7 @@ uses gw.accelerator.ruleeng.RuleEvaluationResult
  */
 class UWPlumbingTypeOTH_each implements IRuleCondition<HomeownersLine_HOE>{
   override function evaluateRuleCriteria(homeowners : HomeownersLine_HOE) : RuleEvaluationResult {
-    if(homeowners.Dwelling.PlumbingType == PlumbingType_HOE.TC_OTHER){
+    if(homeowners.Dwelling.HasOtherPlumbingType){
         return RuleEvaluationResult.execute()
       }
    return RuleEvaluationResult.skip()

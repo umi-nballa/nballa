@@ -313,9 +313,14 @@ final class CoveragesUtil {
 
   private static function executeCoveragesPostUpdate(period : PolicyPeriod, coverageDTOs : UNACoverageDTO[]){
     toggleFloodCoverage(period, coverageDTOs)
+    toggleEarthquakeCoverage(period, coverageDTOs)
   }
 
   private static function toggleFloodCoverage(period : PolicyPeriod, coverageDTOs : UNACoverageDTO[]){
     period.HomeownersLine_HOE.Dwelling.FloodCoverage_Ext = coverageDTOs*.Code?.containsIgnoreCase("HODW_FloodCoverage_HOE_Ext")
+  }
+
+  private static function toggleEarthquakeCoverage(period : PolicyPeriod, coverageDTOs : UNACoverageDTO[]){
+    period.HomeownersLine_HOE.Dwelling.EarthquakeCoverage_Ext = coverageDTOs*.Code?.containsIgnoreCase("HODW_Earthquake_HOE")
   }
 }

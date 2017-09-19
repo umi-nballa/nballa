@@ -84,4 +84,7 @@ class HoDraftDataExtensionDTO extends UnaLobDataDTO implements IDraftLobExtensio
 
   @JsonProperty
   var _quoteFlood : UNACoverageDTO as FloodDefaults
+
+  @JsonProperty
+  var _isPortalRequest : Boolean as IsPortalRequest
 }

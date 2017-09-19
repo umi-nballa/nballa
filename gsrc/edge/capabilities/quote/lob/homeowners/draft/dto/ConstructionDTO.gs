@@ -155,12 +155,31 @@ class ConstructionDTO {
   @JsonProperty
   var _panelManufacturer: PanelManufacturer_Ext as PanelManufacturer
 
-  /** Type of plumbing in the building. */
   @JsonProperty
-  var _plumbingType: PlumbingType_HOE as PlumbingType
+  private var _hasSteelPlumbingType : Boolean as HasSteelPlumbingType
 
   @JsonProperty
-  @DetailOf("PlumbingType", PlumbingType_HOE.TC_OTHER)
+  private var _hasCopperPlumbingType : Boolean as HasCopperPlumbingType
+
+  @JsonProperty
+  private var _hasCastIronPlumbingType : Boolean as HasCastIronPlumbingType
+
+  @JsonProperty
+  private var _hasPolybutylenePlumbingType : Boolean as HasPolybutylenePlumbingType
+
+  @JsonProperty
+  private var _hasPEXPlumbingType : Boolean as HasPEXPlumbingType
+
+  @JsonProperty
+  private var _hasGalvanizedPlumbingType : Boolean as HasGalvanizedPlumbingType
+
+  @JsonProperty
+  private var _hasPVCPlumbingType : Boolean as HasPVCPlumbingType
+
+  @JsonProperty
+  private var _hasOtherPlumbingType : Boolean as HasOtherPlumbingType
+
+  @JsonProperty
   var _plumbingTypeDescription: String as PlumbingTypeDescription
 
   @JsonProperty

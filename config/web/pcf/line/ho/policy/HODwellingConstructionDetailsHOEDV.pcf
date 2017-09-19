@@ -582,7 +582,7 @@
         label="gw.api.web.HtmlUtil.indent(displaykey.Web.Homeowners.DescribeOther, ScriptParameters.HOChildQuestionIndent)"
         required="true"
         value="dwelling.PlumbingTypeDescription"
-        visible="(dwelling.PlumbingTypes_Ext.TypeCodes?.contains(PlumbingType_HOE.TC_OTHER) and dwelling.HOLine.HOPolicyType == HOPolicyType_HOE.TC_HO3)"/>
+        visible="dwelling.HOLine.HOPolicyType == HOPolicyType_HOE.TC_HO3 and dwelling.PlumbingTypes_Ext.TypeCodes?.contains(PlumbingType_HOE.TC_OTHER)"/>
       <RangeInput
         editable="true"
         id="wiringRangeInput"

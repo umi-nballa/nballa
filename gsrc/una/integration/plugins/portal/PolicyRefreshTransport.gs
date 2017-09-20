@@ -167,16 +167,17 @@ class PolicyRefreshTransport extends AbstractMessageTransport implements Initial
 
     var primaryNamedInsured = policyPeriod.PrimaryNamedInsured.ContactDenorm
     var primaryNamedInsuredName = ""
-      if(policyPeriod.PrimaryNamedInsured.AccountContactRole.AccountContact.Contact typeis Company)  {
-         primaryNamedInsuredName = policyPeriod.PrimaryNamedInsured.DisplayName
-      } else {
-          primaryNamedInsuredName = policyPeriod.PrimaryNamedInsured.FirstName + " " + policyPeriod.PrimaryNamedInsured.LastName
-      }
 
-      var primaryAddress = primaryNamedInsured.PrimaryAddress
+    if(policyPeriod.PrimaryNamedInsured.AccountContactRole.AccountContact.Contact typeis Company)  {
+         primaryNamedInsuredName = policyPeriod.PrimaryNamedInsured.DisplayName
+    } else {
+          primaryNamedInsuredName = policyPeriod.PrimaryNamedInsured.FirstName + " " + policyPeriod.PrimaryNamedInsured.LastName
+    }
+
+    var primaryAddress = primaryNamedInsured.PrimaryAddress
 
     var additionalNamedInsuredContacts = policyPeriod.PolicyContactRoles.whereTypeIs(PolicyAddlNamedInsured)
-
+    // TODO: How to add additional insureds?
     var customerList = new ArrayList<Policy_Cust>()
         {
             new Policy_Cust()
@@ -190,7 +191,7 @@ class PolicyRefreshTransport extends AbstractMessageTransport implements Initial
                     :GroupLine = policyPeriod.Policy.Product.Name,
                     :GroupLineCode = getGroupLineCode(policyPeriod),
                     :Name = primaryNamedInsuredName,
-                    :Name2 = additionalNamedInsuredContacts?.first()?.DisplayName,
+                    //:Name2 = additionalNamedInsuredContacts?.first()?.DisplayName,
                     :NextBillAct = "P",
                     :NextBillActDt = "08/30/2017",
                     :PhoneInfo = new ArrayList<Cust_PhoneInfo>(),

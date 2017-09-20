@@ -5,7 +5,6 @@ uses una.logging.UnaLoggerCategory
 uses gw.api.util.DateUtil
 uses gw.api.database.Query
 uses gw.api.database.Relop
-uses gw.plugin.Plugins
 uses una.integration.plugins.portal.PolicyRefreshTransport
 uses java.util.Date
 
@@ -36,7 +35,7 @@ class PolicyRefreshBatchProcess extends BatchProcessBase {
         var jobsToSendToPortal = Query.make(PolicyRefreshFutureChange)
                                     .compare(PolicyRefreshFutureChange#EffectiveDate, Relop.LessThan, startTime.addDays(1).trimToMidnight())
                                     .compare(PolicyRefreshFutureChange#Processed, Relop.Equals, false)
-                                    .select()?.toList()
+                                    .select().orderBy( \ row -> row.EffectiveDate).thenBy( \ row -> row.UpdateTime)?.toList()
 
         this.OperationsExpected = jobsToSendToPortal.Count
 
@@ -47,10 +46,12 @@ class PolicyRefreshBatchProcess extends BatchProcessBase {
                     jobToSend = batchBundle.add(jobToSend)
                     _logger.debug("Processing Job: ${jobToSend.JobNumber}")
                     var job = Job.finder.findJobByJobNumber(jobToSend.JobNumber)
+
                     var period = batchBundle.add(job.SelectedVersion)
                     period.addEvent(PolicyRefreshTransport.REFRESH_MSG)
                     jobToSend.Processed = true
                     jobToSend.ProcessedDate = new Date()
+                    jobToSend.remove()
                     this.incrementOperationsCompleted()
                 })
 

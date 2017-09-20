@@ -45,7 +45,6 @@ class ProcessesPlugin implements IProcessesPlugin {
         return new OpenRenewalsAutomationBatchProcess()
       case BatchProcessType.TC_POLICYREFRESHFUTUREDATEDTRANS:
         return new PolicyRefreshBatchProcess()
-
       default:
         return null
     }

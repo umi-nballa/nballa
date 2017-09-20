@@ -31,6 +31,10 @@
       name="setNCWindpool"
       recalculateOnRefresh="true"
       type="String"/>
+    <Variable
+      initialValue="gw.lob.ho.HODwellingUtil_HOE.getPlumbingRange(dwelling)"
+      name="plumbingTypes"
+      type="List&lt;PlumbingType_HOE&gt;"/>
     <InputColumn
       labelWidth="350">
       <!-- <InputSet
@@ -52,7 +56,7 @@
           label="displaykey.Web.Homeowners.HOLocation.YearbuiltMatchlevel_Ext"
           value="dwelling.YearbuiltMatchLevel_Ext"/>
         <BooleanRadioInput
-          editable="true"
+          editable="&lt;?xml version=&quot;1.0&quot;?&gt;     &lt;CheckBoxInput id=&quot;isSteel&quot; label=&quot;&amp;quot;Steel&amp;quot;&quot; value=&quot;dwelling.IsSteel&quot; visible=&quot;plumbingTypes.contains(PlumbingType_HOE.TC_STEEL_EXT)&quot;/&gt;&lt;?xml version=&quot;1.0&quot;?&gt; &lt;CheckBoxInput id=&quot;isSteel&quot; label=&quot;&amp;quot;Steel&amp;quot;&quot; value=&quot;dwelling.IsSteel&quot; visible=&quot;plumbingTypes.contains(PlumbingType_HOE.TC_STEEL_EXT)&quot;/&gt;true"
           id="OverRideYearbuilt_Ext"
           label="displaykey.Web.Homeowners.HOLocation.YearbuiltOverride_Ext"
           value="dwelling.OverrideYearbuilt_Ext">
@@ -518,20 +522,67 @@
         id="heat7"
         label="&quot;Portable - All Fuel Types&quot;"
         value="dwelling.HeatSrcPortableAllFuelTypes"/>
-      <RangeInput
+      <Label
+        id="PlumbingTypesLabel"
+        label="displaykey.una.dwellingconstruction.PlumbingTypesHeader"/>
+      <CheckBoxInput
         editable="true"
-        id="plumbing"
-        label="displaykey.Web.Homeowners.DwellingConstruction.PlumbingSystem"
-        required="false"
-        value="dwelling.PlumbingType"
-        valueRange="gw.lob.ho.HODwellingUtil_HOE.getPlumbingRange(dwelling)"/>
+        id="isSteel"
+        label="displaykey.una.dwellingconstruction.Steel"
+        value="dwelling.HasSteelPlumbingType"
+        visible="plumbingTypes?.contains(PlumbingType_HOE.TC_STEEL_EXT)"/>
+      <CheckBoxInput
+        editable="true"
+        id="isCastIron"
+        label="displaykey.una.dwellingconstruction.CastIron"
+        value="dwelling.HasCastIronPlumbingType"
+        visible="plumbingTypes?.contains(PlumbingType_HOE.TC_CASTIRON_EXT)"/>
+      <CheckBoxInput
+        editable="true"
+        id="isPolybutylene"
+        label="displaykey.una.dwellingconstruction.Polybutylene"
+        value="dwelling.HasPolybutylenePlumbingType"
+        visible="plumbingTypes?.contains(PlumbingType_HOE.TC_POLYBUTYLENE_EXT)"/>
+      <CheckBoxInput
+        editable="true"
+        id="isPEX"
+        label="displaykey.una.dwellingconstruction.PEX"
+        value="dwelling.HasPEXPlumbingType"
+        visible="plumbingTypes?.contains(PlumbingType_HOE.TC_PEX_EXT)"/>
+      <CheckBoxInput
+        editable="true"
+        id="isGalvanzed"
+        label="displaykey.una.dwellingconstruction.Galvanized"
+        value="dwelling.HasGalvanizedPlumbingType"
+        visible="plumbingTypes?.contains(PlumbingType_HOE.TC_GALV)"/>
+      <CheckBoxInput
+        editable="true"
+        id="isCopper"
+        label="displaykey.una.dwellingconstruction.Copper"
+        value="dwelling.HasCopperPlumbingType"
+        visible="plumbingTypes?.contains(PlumbingType_HOE.TC_COPPER)"/>
+      <CheckBoxInput
+        editable="true"
+        id="isPVC"
+        label="displaykey.una.dwellingconstruction.pvc"
+        value="dwelling.HasPVCPlumbingType"
+        visible="plumbingTypes?.contains(PlumbingType_HOE.TC_PVC)"/>
+      <CheckBoxInput
+        editable="true"
+        id="isOther"
+        label="displaykey.una.dwellingconstruction.Other"
+        value="dwelling.HasOtherPlumbingType"
+        visible="plumbingTypes?.contains(PlumbingType_HOE.TC_OTHER)">
+        <PostOnChange
+          target="PlumbingTypeDesc"/>
+      </CheckBoxInput>
       <Input
         editable="true"
         id="PlumbingTypeDesc"
         label="gw.api.web.HtmlUtil.indent(displaykey.Web.Homeowners.DescribeOther, ScriptParameters.HOChildQuestionIndent)"
         required="true"
         value="dwelling.PlumbingTypeDescription"
-        visible="(dwelling.PlumbingType == PlumbingType_HOE.TC_OTHER and dwelling.HOLine.HOPolicyType == HOPolicyType_HOE.TC_HO3)"/>
+        visible="dwelling.HOLine.HOPolicyType == HOPolicyType_HOE.TC_HO3 and dwelling.PlumbingTypes_Ext.TypeCodes?.contains(PlumbingType_HOE.TC_OTHER)"/>
       <RangeInput
         editable="true"
         id="wiringRangeInput"
@@ -720,8 +771,15 @@
         value="dwelling.WHurricaneHailExclusion_Ext"
         visible="gw.lob.ho.HODwellingUtil_HOE.isWindstormHurricaneAndHailExclusionVisible(dwelling)">
         <PostOnChange
-          onChange="if(dwelling.WHurricaneHailExclusion_Ext){dwelling.WindMitigation_Ext = null gw.lob.ho.HODwellingUtil_HOE.resetDefaults(dwelling)}"/>
+          onChange="if(dwelling.WHurricaneHailExclusion_Ext){dwelling.WindMitigation_Ext = null gw.lob.ho.HODwellingUtil_HOE.resetDefaults(dwelling)};  gw.lob.ho.HODwellingUtil_HOE.setDwellingWindstormExclusionOccupancyType(dwelling)"/>
       </BooleanRadioInput>
+      <Input
+        id="windstormHurricaneExclusionOccupancyType"
+        label="displaykey.una.dwellingconsructiondetails.PrimarySecondary"
+        required="dwelling.HOPolicyType == TC_TDP3_Ext and dwelling.WHurricaneHailExclusion_Ext"
+        value="dwelling.WindHailExclusionOccupancyType_Ext"
+        visible="dwelling.HOPolicyType == TC_TDP3_Ext and dwelling.WHurricaneHailExclusion_Ext"/>
+      <InputSet/>
       <BooleanRadioInput
         editable="true"
         id="mitigationFormDatedWithinLast5Years"

@@ -1,0 +1,28 @@
+<?xml version="1.0"?>
+<entity
+  xmlns="http://guidewire.com/datamodel"
+  desc="Container for meta data related to a Submission.  Used primarily to control flow between UNA Portal and PC"
+  entity="PortalSubmissionContext_Ext"
+  table="portalsubcontext_ext"
+  type="versionable">
+  <column
+    desc="Captures runtime data on whether or not a quote request came from Portal"
+    name="IsPortalRequest"
+    nullok="true"
+    type="bit"/>
+  <column
+    desc="Whether to quote a separate flood version of the policy"
+    name="QuoteFlood"
+    nullok="true"
+    type="bit"/>
+  <column
+    desc="Whether to generate a payment plan for a portal response"
+    name="GeneratePaymentPlans"
+    nullok="true"
+    type="bit"/>
+  <column
+    desc="Whether to return only the premium on a portal request"
+    name="OutputPremiumOnly"
+    nullok="true"
+    type="bit"/>
+</entity>

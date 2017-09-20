@@ -21,6 +21,7 @@ uses edge.capabilities.policy.coverages.UNACoverageDTO
 uses edge.capabilities.quote.lob.homeowners.draft.util.CoveragesUtil
 uses edge.capabilities.quote.lob.homeowners.quoting.dto.AdditionalChargeDTO
 uses java.math.BigDecimal
+uses edge.capabilities.quote.quoting.util.QuoteUtil
 
 class HoQuotingPlugin implements ILobQuotingPlugin < HOPremiumCostsDTO > {
   // Coverage codes contributing to the base premium
@@ -86,6 +87,9 @@ class HoQuotingPlugin implements ILobQuotingPlugin < HOPremiumCostsDTO > {
     res.AdditionalCoverages = getAdditionalCoverages(hoeLine)
     res.DiscountsAndSurcharges = getDiscountsAndSurcharges(hoeLine)
     res.Fees = getFees(hoeLine)
+    res.FloodPremium = pp.Submission.Periods.atMostOneWhere( \ floodVersion ->
+                                                               floodVersion.BranchName ==  QuoteUtil.HO_FLOOD_BRANCH_NAME)
+                                            .HomeownersLine_HOE.Dwelling.HODW_FloodCoverage_HOE_Ext.Cost.ActualAmount.Amount
     return res
   }
 

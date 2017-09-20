@@ -8,7 +8,6 @@ package una.rating.ho.group1.ratinginfos
  */
 class HORenovationCreditRatingInfo {
   var _roofMaterial : typekey.RoofType
-  var _plumbingMaterial : typekey.PlumbingType_HOE
   var _furnaceOrHeatingUnitsReplacementYear : int
   var _wiring : typekey.WiringType_HOE
   var _electricalSystem : typekey.BreakerType_HOE
@@ -20,7 +19,6 @@ class HORenovationCreditRatingInfo {
     _dwelling = dwelling
     _roofMaterial = dwelling.RoofTypeOrOverride
     _roofReplacementYear =  dwelling?.RoofingUpgradeDate
-    _plumbingMaterial = dwelling.PlumbingType
     _furnaceOrHeatingUnitsReplacementYear = dwelling?.HeatingUpgradeDate
     _wiring = dwelling.WiringType
     _electricalSystem = dwelling.ElectricalType
@@ -54,7 +52,7 @@ class HORenovationCreditRatingInfo {
 
     }
 
-    creditApplies = _plumbingMaterial == typekey.PlumbingType_HOE.TC_COPPER and
+    creditApplies = _dwelling.HasCopperPlumbingType and
         (_dwelling.HeatingUpgrade ? ((_dwelling.Branch.EditEffectiveDate.YearOfDate - _furnaceOrHeatingUnitsReplacementYear) < 20) : false) and
         _wiring == typekey.WiringType_HOE.TC_COPPER and
         _electricalSystem == typekey.BreakerType_HOE.TC_CIRCUITBREAKER and

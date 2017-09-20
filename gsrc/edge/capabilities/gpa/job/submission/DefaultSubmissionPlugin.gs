@@ -11,6 +11,7 @@ uses edge.capabilities.gpa.job.DefaultJobPlugin
 uses edge.capabilities.gpa.policy.IPolicyPlugin
 uses edge.capabilities.gpa.job.IUWIssuePlugin
 uses edge.capabilities.gpa.job.dto.UWIssueDTO
+uses edge.capabilities.quote.quoting.util.QuoteUtil
 
 class DefaultSubmissionPlugin implements ISubmissionPlugin {
 
@@ -67,7 +68,7 @@ class DefaultSubmissionPlugin implements ISubmissionPlugin {
     if (ratingStyle != null && RatingStyle.get(dto.RatingStyle) != null) {
       branch.BranchName = (RatingStyle.get(dto.RatingStyle)) as String
     } else {
-      branch.BranchName = "CUSTOM"
+      branch.BranchName = QuoteUtil.CUSTOM_BRANCH_NAME
     }
 
     branch.SubmissionProcess.beginEditing()

@@ -14,6 +14,7 @@ uses edge.capabilities.quote.binding.IBindingPlugin
 uses edge.capabilities.quote.mailing.IQuoteMailingPlugin
 uses edge.capabilities.quote.lob.ILobMetadataPlugin
 uses edge.security.authorization.IAuthorizerProviderPlugin
+uses edge.capabilities.quote.quoting.UNAMultiVersionPlugin
 
 /**
  * Created with IntelliJ IDEA.
@@ -41,8 +42,9 @@ class AgentQuoteHandler extends QuoteHandler{
       bindingPlugin : IBindingPlugin,
       quoteMailingPlugin : IQuoteMailingPlugin,
       lobMetadataPlugin : ILobMetadataPlugin,
-      authorizer:IAuthorizerProviderPlugin) {
-    super(draftPlugin, sessionPlugin, quotingPlugin, bindingPlugin, quoteMailingPlugin, lobMetadataPlugin, authorizer)
+      authorizer:IAuthorizerProviderPlugin,
+      multiVersionPlugin : UNAMultiVersionPlugin) {
+    super(draftPlugin, sessionPlugin, quotingPlugin, bindingPlugin, quoteMailingPlugin, lobMetadataPlugin, authorizer, multiVersionPlugin)
   }
 
   /**

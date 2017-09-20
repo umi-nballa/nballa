@@ -81,7 +81,7 @@ class JobProcessUWIssueEvaluator {
           evaluateUWIssues(ooseSlice, checkingSet)
         }
       }else{//on submissions, we only run uw issues if the quote type is full for portal.  At that time we run ALL UW issues
-        if(branch.Submission.IsPortalRequest){
+        if(branch.Submission.PortalSubmissionContext.IsPortalRequest){
           if(branch.Submission.QuoteType == TC_FULL){
             _PORTAL_CHECKING_SETS.each( \ portalCheckingSet -> {
               evaluateUWIssues(ooseSlice, portalCheckingSet)

@@ -27,7 +27,6 @@ uses una.integration.plugins.portal.PolicyRefreshTransport
 class SubmissionProcess extends NewTermProcess {
 
   var jobWizardToolBarPCFController = new JobWizardToolBarPCFController()
-  var _outputPremiumOnly : boolean as OutputPremiumOnly
 
   construct(period : PolicyPeriod) {
     super(period, new SubmissionPermissions(period.Job))
@@ -195,7 +194,7 @@ class SubmissionProcess extends NewTermProcess {
 
     PCProfilerTag.BIND_VALIDATE.execute(\ -> new JobProcessValidator().validatePeriodForUI(_branch, validationLevel))
 
-    if(!_branch.Submission.IsPortalRequest){
+    if(!_branch.Submission.PortalSubmissionContext.IsPortalRequest){
       PCProfilerTag.BIND_CHECK_UW_ISSUES.execute(\ -> JobProcessEvaluator.evaluateAndCheckForBlockingUWIssues(_branch, blockingPoint))
     }
     // Do AccountSyncable validation

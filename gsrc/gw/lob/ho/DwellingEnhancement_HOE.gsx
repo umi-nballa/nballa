@@ -216,7 +216,7 @@ enhancement DwellingEnhancement_HOE : entity.Dwelling_HOE {
     {
       this.PrimaryHeatingDescription = null
     }
-    if(this.PlumbingType == null or this.PlumbingType != PlumbingType_HOE.TC_OTHER)
+    if(this.PlumbingTypes_Ext == null or !this.PlumbingTypes_Ext.TypeCodes.contains(PlumbingType_HOE.TC_OTHER))
     {
       this.PlumbingTypeDescription = null
     }

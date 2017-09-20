@@ -16,6 +16,9 @@ uses edge.capabilities.quote.lob.dto.QuoteLobDataDTO
 uses java.lang.Exception
 uses gw.api.profiler.PCProfilerTag
 uses gw.job.JobProcessValidator
+uses java.util.concurrent.CountDownLatch
+uses edge.util.helper.UserUtil
+uses una.config.ConfigParamsUtil
 
 /**
  * Default implementation of quoting plugin.
@@ -75,12 +78,12 @@ class DefaultQuotePlugin implements IQuotePlugin {
       return null
     }
     
-    return fromPeriods(submission.ActivePeriods)
+    return fromPeriods({submission.SelectedVersion})//only need to return the selected version for display
   }
 
   override function toQuoteDTO(period : PolicyPeriod) : QuoteDTO {
     final var res = new QuoteDTO()
-    if(period.SubmissionProcess?.OutputPremiumOnly == false) {
+    if(period.Submission.PortalSubmissionContext.OutputPremiumOnly == false) {
       QuoteUtil.fillBaseProperties(res, period)
       res.IsCustom = period == QuoteUtil.getBasePeriod(period.Submission)
       res.Lobs = _lobPlugin.getQuoteDetails(period)
@@ -93,7 +96,7 @@ class DefaultQuotePlugin implements IQuotePlugin {
   private function fromPeriods(periods : PolicyPeriod[]) : QuotingDTO {
     periods.sort(\ p1, p2 -> isPreferred(p1, p2))
     final var res = new QuotingDTO()
-    res.OfferedQuotes = periods.map(\p -> toQuoteDTO(p))
+    res.OfferedQuotes = periods.where( \ p -> p.BranchName == QuoteUtil.CUSTOM_BRANCH_NAME).map(\p -> toQuoteDTO(p))
     return res
   }
   
@@ -160,8 +163,16 @@ class DefaultQuotePlugin implements IQuotePlugin {
    * Get a quote for each period/offering on the submission.
    */
   protected function quotePeriods(submission : Submission) {
-    for (period in submission.ActivePeriods) {
-      quoteSinglePeriod(period)
+    if(submission.SelectedVersion.HomeownersLine_HOEExists and submission.PortalSubmissionContext.QuoteFlood){
+      //run in separate threads to save time
+      var doneSignal = new CountDownLatch(1)
+      var quoter = new ConcurrentSubmissionQuoter (submission.Periods.atMostOneWhere( \ period -> period.BranchName == QuoteUtil.HO_FLOOD_BRANCH_NAME), doneSignal, User.util.CurrentUser)
+      new java.util.Timer().schedule(quoter, java.util.Date.CurrentDate)
+      quoteSinglePeriod(submission.Periods.atMostOneWhere( \ period -> period.BranchName == QuoteUtil.CUSTOM_BRANCH_NAME))
+
+      doneSignal.await()
+    }else{
+      quoteSinglePeriod(submission.SelectedVersion)//we really ever only have one period for a PC Submission
     }
   }
   
@@ -176,7 +187,6 @@ class DefaultQuotePlugin implements IQuotePlugin {
     var cond = proc.canRequestQuote()
     if (cond.Okay){
       try {
-        period.Submission.IsPortalRequest = true
         proc.requestQuote(_validationLevelPlugin.getValidationLevel(), RatingStyle.TC_DEFAULT)
 
       } catch (e : Exception) {

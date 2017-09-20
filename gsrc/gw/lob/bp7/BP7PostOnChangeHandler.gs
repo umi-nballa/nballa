@@ -111,7 +111,7 @@ class BP7PostOnChangeHandler {
 
     handleBuildingCoverage(term)
 
-    handleOptOutdoorSignsCoverage(term as DirectCovTerm)
+    handleOptOutdoorSignsCoverage(term)
     
     // data model dependencies
     var coverable = term.Clause.OwningCoverable
@@ -172,12 +172,12 @@ class BP7PostOnChangeHandler {
   }
 
   //BP7 Optional Outdoor Signs Coverage DirectCovTerm increment of 1000 validation method and value set for Outdoor Signs Coverage - Optional Outdoor Signs Covterm
-  private static function handleOptOutdoorSignsCoverage(covTerm : DirectCovTerm){
-    if(covTerm.PatternCode=="OptOutdoorSignsCovLimit_Ext"){
-      if((covTerm.Value).remainder(1000)!=0){
-        throw new DisplayableException(displaykey.una.productmodel.validation.AllowedLimitValidationMessage(covTerm.Clause.Pattern.DisplayName,covTerm.DisplayName))
+  private static function handleOptOutdoorSignsCoverage(term : CovTerm){
+    if(term.PatternCode=="OptOutdoorSignsCovLimit_Ext"){
+      if((term.BigDecimalValue).remainder(1000)!=0){
+        throw new DisplayableException(displaykey.una.productmodel.validation.AllowedLimitValidationMessage(term.Clause.Pattern.DisplayName,term.DisplayName))
       }else{
-        (covTerm.Clause.OwningCoverable as BP7Building).BP7LocationOutdoorSigns_EXT.OptoutdoorSignsCovTerm_ExtTerm.Value =  covTerm.Value
+        (term.Clause.OwningCoverable as BP7Building).BP7LocationOutdoorSigns_EXT.OptoutdoorSignsCovTerm_ExtTerm.Value =  term.BigDecimalValue
       }
     }
   }

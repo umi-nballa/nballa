@@ -13,6 +13,8 @@ uses gw.api.web.job.JobWizardHelper
 uses java.util.HashMap
 uses java.util.Map
 uses java.math.BigDecimal
+uses gw.api.domain.covterm.DirectCovTerm
+uses gw.api.util.DisplayableException
 
 class BP7PostOnChangeHandler {
   static function clearOutScheduleItems(term : CovTerm) {
@@ -77,7 +79,8 @@ class BP7PostOnChangeHandler {
       "BP7OrdinanceOrLawCov" -> {"BP7Limit22", "BP7Limit23", "BP7Limit24"},
       "BP7LocationComputerFraudFundsTransferFraud" -> {"BP7ComputerFraudNumEmployees"},
       "BP7LocationEmployeeDishty" -> {"BP7NumEmployees1"},
-      "BP7CondoCommlUnitOwnersOptionalCovs" -> {"BP7SubLimitForCondominiumAssociationDeductible"}
+      "BP7CondoCommlUnitOwnersOptionalCovs" -> {"BP7SubLimitForCondominiumAssociationDeductible"},
+      "OptOutdoorSignsCov_Ext" -> {"OptOutdoorSignsCovLimit_Ext"}
   }
 
   static function handleClause(coverable : Coverable, clausePattern : ClausePattern, value : boolean, helper : JobWizardHelper){
@@ -93,7 +96,6 @@ class BP7PostOnChangeHandler {
   }
 
   static function handleTerm(term : CovTerm, helper : JobWizardHelper) {
-    print("BP7PostOnChangeHandler - handleTerm method!!!")
     // product model dependencies
     if (doesCovTermHaveDependent(term)) {
       sync(term, helper)
@@ -108,6 +110,8 @@ class BP7PostOnChangeHandler {
     handleBPPCoverage(term)
 
     handleBuildingCoverage(term)
+
+    handleOptOutdoorSignsCoverage(term as DirectCovTerm)
     
     // data model dependencies
     var coverable = term.Clause.OwningCoverable
@@ -163,6 +167,17 @@ class BP7PostOnChangeHandler {
       var blanket = coverable.BP7Structure.Blanket
       if (blanket <> null) {
         blanket.evictNonEligibleCoverages()
+      }
+    }
+  }
+
+  //BP7 Optional Outdoor Signs Coverage DirectCovTerm increment of 1000 validation method and value set for Outdoor Signs Coverage - Optional Outdoor Signs Covterm
+  private static function handleOptOutdoorSignsCoverage(covTerm : DirectCovTerm){
+    if(covTerm.PatternCode=="OptOutdoorSignsCovLimit_Ext"){
+      if((covTerm.Value).remainder(1000)!=0){
+        throw new DisplayableException(displaykey.una.productmodel.validation.AllowedLimitValidationMessage(covTerm.Clause.Pattern.DisplayName,covTerm.DisplayName))
+      }else{
+        (covTerm.Clause.OwningCoverable as BP7Building).BP7LocationOutdoorSigns_EXT.OptoutdoorSignsCovTerm_ExtTerm.Value =  covTerm.Value
       }
     }
   }

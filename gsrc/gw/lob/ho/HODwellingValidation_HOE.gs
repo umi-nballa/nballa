@@ -117,7 +117,7 @@ class HODwellingValidation_HOE extends PCValidationBase {
       addErrorOrWarning("PrimaryHeating", displaykey.Web.Policy.HomeownersLine.Validation.PrimaryHeatingRequired, "HomeownersDwellingConstruction")
     }*/
     if (HODwelling.PlumbingTypes_Ext == null or HODwelling.PlumbingTypes_Ext.TypeCodes.Empty) {
-      addErrorOrWarning("PlumbingType", displaykey.Web.Policy.HomeownersLine.Validation.PlumbingTypeRequired, "HomeownersDwellingConstruction")
+      addErrorOrWarning("PlumbingTypes_Ext", displaykey.Web.Policy.HomeownersLine.Validation.PlumbingTypeRequired, "HomeownersDwellingConstruction")
     }
     if (HODwelling.WiringType == null) {
       addErrorOrWarning("WiringType", displaykey.Web.Policy.HomeownersLine.Validation.WiringTypeRequired, "HomeownersDwellingConstruction")
@@ -168,7 +168,7 @@ class HODwellingValidation_HOE extends PCValidationBase {
       addErrorOrWarning("PrimaryHeatingFuelLineLocation", displaykey.Web.Policy.HomeownersLine.Validation.FuelLineLocation, "HomeownersDwellingConstruction")
     if (HODwelling.PrimaryHeating == HeatingType_HOE.TC_HEATINGOIL and HODwelling.PrimaryHeatingFuelTankLocation == null)
       addErrorOrWarning("PrimaryHeatingFuelTankLocation", displaykey.Web.Policy.HomeownersLine.Validation.FuelTankLocation, "HomeownersDwellingConstruction")*/
-    if (HODwelling.PlumbingTypes_Ext.TypeCodes.contains(typekey.PlumbingType_HOE.TC_OTHER) and HODwelling.PlumbingTypeDescription == null)
+    if (HODwelling.HasOtherPlumbingType and HODwelling.PlumbingTypeDescription == null)
       addErrorOrWarning("PlumbingTypeDescription", displaykey.Web.Policy.HomeownersLine.Validation.PlumbingTypeDesc, "HomeownersDwellingConstruction")
     if (HODwelling.WiringType == WiringType_HOE.TC_OTHER and HODwelling.WiringTypeDescription == null)
       addErrorOrWarning("WiringTypeDescription", displaykey.Web.Policy.HomeownersLine.Validation.WiringTypeDesc, "HomeownersDwellingConstruction")

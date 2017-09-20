@@ -424,7 +424,7 @@ enhancement DwellingEnhancement_Ext : entity.Dwelling_HOE {
       }
       this.PlumbingTypes_Ext.addToTypeCodes(plumbingType)
     }else{
-      this.PlumbingTypes_Ext.removeFromTypeCodes(plumbingType)
+      this.PlumbingTypes_Ext?.removeFromTypeCodes(plumbingType)
     }
   }
 }

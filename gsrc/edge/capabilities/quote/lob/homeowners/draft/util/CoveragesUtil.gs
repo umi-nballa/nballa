@@ -42,7 +42,7 @@ final class CoveragesUtil {
             var structureDataDetails = structureData.atMostOneWhere( \ e -> e.SpecialCoverage and e.LowLevelCost).Details
             var covTermDscription = structureDataDetails.atMostOne()
             var cost = una.pageprocess.QuoteScreenPCFController.getPremiumDisplayValue(covTermDscription.cost)
-            var scheduledItem =  result.ScheduledItems.firstWhere( \ e -> e.ScheduleTypeCode  == covTermDscription.Code or e.Description == covTermDscription.description)
+            var scheduledItem =  result.ScheduledItems.atMostOneWhere( \ e -> e.ScheduleTypeCode  == covTermDscription.Code or e.Description == covTermDscription.description)
             scheduledItem.Premium = cost as java.math.BigDecimal
         })
       }

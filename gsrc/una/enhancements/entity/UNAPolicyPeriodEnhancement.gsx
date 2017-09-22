@@ -100,6 +100,8 @@ enhancement UNAPolicyPeriodEnhancement : entity.PolicyPeriod {
       }
       if(primNamedInsuredAgeOver60 || coInsuredAgeOver60){
         this.Aged60OrOver_Ext = true
+      }else{
+        this.Aged60OrOver_Ext = false
       }
     }
   }

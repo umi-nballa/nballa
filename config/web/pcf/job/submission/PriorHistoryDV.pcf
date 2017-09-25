@@ -33,9 +33,9 @@
                 id="CarrierTypenew"
                 label="displaykey.Web.Policy.PriorPolicy.CarrierType "
                 value="priorPolicy.CarrierType"
-                valueRange="getValuesByFilter()">
+                valueRange="priorPolicy.getValuesByFilter(policyPeriod)">
                 <PostOnChange
-                  onChange="CarrierReq();otherReq();noPriorIns()"/>
+                  onChange="priorPolicy.CarrierReq(policyPeriod);otherReq();priorPolicy.noPriorIns(policyPeriod)"/>
               </RangeCell>
               <Cell
                 editable="true"
@@ -49,13 +49,13 @@
                 id="PolicyNumber"
                 label="displaykey.Web.Policy.PriorPolicy.PolicyNumber"
                 numCols="15"
-                required="CarrierReq()"
+                required="priorPolicy.CarrierReq(policyPeriod)"
                 value="priorPolicy.PolicyNumber"/>
               <TypeKeyCell
                 editable="true"
                 id="tenure"
                 label="displaykey.Web.Policy.PriorPolicy.Tenure"
-                required="CarrierReq()"
+                required="priorPolicy.CarrierReq(policyPeriod)"
                 value="priorPolicy.Tenure_Ext"/>
               <DateCell
                 editable="true"
@@ -68,19 +68,19 @@
                 editable="true"
                 id="ExpirationDate"
                 label="displaykey.Web.Policy.PriorPolicy.ExpirationDate"
-                required="!noPriorIns()"
+                required="!priorPolicy.noPriorIns(policyPeriod)"
                 value="priorPolicy.ExpirationDate"/>
               <!-- <TypeKeyCell
                 editable="true"
                 id="nopriorins"
                 label="displaykey.Web.Policy.PriorPolicy.ReasonNoPriorIns"
-                required="noPriorIns()"
+                required="priorPolicy.noPriorIns(policyPeriod)"
                 value="priorPolicy.ReasonNoPriorIns_Ext"/> -->
               <RangeCell
                 editable="true"
                 id="nopriorins"
                 label="displaykey.Web.Policy.PriorPolicy.ReasonNoPriorIns"
-                required="noPriorIns()"
+                required="priorPolicy.noPriorIns(policyPeriod)"
                 value="priorPolicy.ReasonNoPriorIns_Ext"
                 valueRange="typekey.ReasonNoPriorIns_Ext.Type.getTypeKeysByCategory(policyPeriod.BaseState)"/>
               <MonetaryAmountCell
@@ -126,79 +126,17 @@
       </ListViewInput>
     </InputColumn>
     <Code><![CDATA[function validate():String{
-  if (policyPeriod.Policy.PriorPolicies.HasElements &&  policyPeriod.Policy.PriorPolicies.first()?.EffectiveDate  == null)
-    return "Please enter Prior Policy Information"
-  else return null
-}
+    if (policyPeriod.Policy.PriorPolicies.HasElements &&  policyPeriod.Policy.PriorPolicies.first()?.EffectiveDate  == null)
+      return "Please enter Prior Policy Information"
+    else return null
+  }
 
-function CarrierReq() : boolean{
-  for(pp in policyPeriod.Policy.PriorPolicies.CarrierType)   {
-     if(pp == typekey.CarrierType_Ext.TC_UNA)
-       return true
-   }
-   return false 
-                      
-}
 function otherReq() : boolean{
-  
-  for(p in policyPeriod.Policy.PriorPolicies.CarrierType){
+  for(p in policyPeriod.Policy.PriorPolicies*.CarrierType){
     if(p == typekey.CarrierType_Ext.TC_OTHER)
       return true
   }
   return false
-} 
-
-function noPriorIns() : boolean{
-  for(p1 in policyPeriod.Policy.PriorPolicies.CarrierType){
-    if(p1 == typekey.CarrierType_Ext.TC_NOPRIORINS)
-      return true
-  }
-  return false
-}
-
-
-
-
-//author aranajan
-
-  static function getValuesByFilter() :  List<typekey.CarrierType_Ext> {
-    if(policyPeriod.BaseState==typekey.Jurisdiction.TC_FL) {
-     if(policyPeriod.HomeownersLine_HOE.HOPolicyType==HOPolicyType_HOE.TC_HO3 || policyPeriod.HomeownersLine_HOE.HOPolicyType==HOPolicyType_HOE.TC_HO4 || policyPeriod.HomeownersLine_HOE.HOPolicyType==HOPolicyType_HOE.TC_HO6 ||
-         policyPeriod.HomeownersLine_HOE.HOPolicyType==HOPolicyType_HOE.TC_DP3_EXT)
-    return typekey.CarrierType_Ext.TF_FL_HO_DP.TypeKeys
-   } else if (policyPeriod.BaseState==typekey.Jurisdiction.TC_CA) {
-      if(policyPeriod.HomeownersLine_HOE.HOPolicyType==HOPolicyType_HOE.TC_HO3 || policyPeriod.HomeownersLine_HOE.HOPolicyType==HOPolicyType_HOE.TC_HO4 || policyPeriod.HomeownersLine_HOE.HOPolicyType==HOPolicyType_HOE.TC_HO6 ||
-          policyPeriod.HomeownersLine_HOE.HOPolicyType==HOPolicyType_HOE.TC_DP3_EXT)
-          return typekey.CarrierType_Ext.TF_CA_HO_TDP.TypeKeys
-       } else if (policyPeriod.BaseState==typekey.Jurisdiction.TC_NV){
-         if(policyPeriod.HomeownersLine_HOE.HOPolicyType==HOPolicyType_HOE.TC_HO3 || policyPeriod.HomeownersLine_HOE.HOPolicyType==HOPolicyType_HOE.TC_HO4 || policyPeriod.HomeownersLine_HOE.HOPolicyType==HOPolicyType_HOE.TC_HO6)
-           return typekey.CarrierType_Ext.TF_NV_HO.TypeKeys
-       } else if (policyPeriod.BaseState==typekey.Jurisdiction.TC_SC){
-           if(policyPeriod.HomeownersLine_HOE.HOPolicyType==HOPolicyType_HOE.TC_HO3 || policyPeriod.HomeownersLine_HOE.HOPolicyType==HOPolicyType_HOE.TC_HO4 || policyPeriod.HomeownersLine_HOE.HOPolicyType==HOPolicyType_HOE.TC_HO6)
-             return typekey.CarrierType_Ext.TF_SC_HO.TypeKeys
-       } else if (policyPeriod.BaseState==typekey.Jurisdiction.TC_HI){
-             if(policyPeriod.HomeownersLine_HOE.HOPolicyType==HOPolicyType_HOE.TC_HO3 || policyPeriod.HomeownersLine_HOE.HOPolicyType==HOPolicyType_HOE.TC_HO4 || policyPeriod.HomeownersLine_HOE.HOPolicyType==HOPolicyType_HOE.TC_HO6 ||
-                 policyPeriod.HomeownersLine_HOE.HOPolicyType==HOPolicyType_HOE.TC_DP3_EXT)
-               return typekey.CarrierType_Ext.TF_HI_HO_DP.TypeKeys
-       } else if (policyPeriod.BaseState==typekey.Jurisdiction.TC_TX) {
-           if(policyPeriod.HomeownersLine_HOE.HOPolicyType==HOPolicyType_HOE.TC_HOA_EXT || policyPeriod.HomeownersLine_HOE.HOPolicyType==HOPolicyType_HOE.TC_HOB_EXT || policyPeriod.HomeownersLine_HOE.HOPolicyType==HOPolicyType_HOE.TC_HCONB_EXT ||
-               policyPeriod.HomeownersLine_HOE.HOPolicyType==HOPolicyType_HOE.TC_TDP1_EXT || policyPeriod.HomeownersLine_HOE.HOPolicyType==HOPolicyType_HOE.TC_TDP2_EXT || policyPeriod.HomeownersLine_HOE.HOPolicyType==HOPolicyType_HOE.TC_TDP3_EXT){
-             return typekey.CarrierType_Ext.TF_TX_HO_TDP.TypeKeys
-       }
-
-      }
-    else if(policyPeriod.BaseState == typekey.Jurisdiction.TC_NC){
-        if(policyPeriod.HomeownersLine_HOE.HOPolicyType==HOPolicyType_HOE.TC_HO3 || policyPeriod.HomeownersLine_HOE.HOPolicyType==HOPolicyType_HOE.TC_HO4 || policyPeriod.HomeownersLine_HOE.HOPolicyType==HOPolicyType_HOE.TC_HO6 ||policyPeriod.HomeownersLine_HOE.HOPolicyType == HOPolicyType_HOE.TC_LPP_EXT)
-          return typekey.CarrierType_Ext.TF_NC_HO_LPP.TypeKeys
-      }
-      if(policyPeriod.BaseState==typekey.Jurisdiction.TC_FL and policyPeriod.HomeownersLine_HOEExists=="false")
-
-     return typekey.CarrierType_Ext.TF_FL_BOP_CRP.TypeKeys
-
-    return null
-
-
-      }
- ]]></Code>
+}]]></Code>
   </DetailViewPanel>
 </PCF>

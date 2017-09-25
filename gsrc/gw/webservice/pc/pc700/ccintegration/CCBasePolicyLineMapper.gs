@@ -161,7 +161,8 @@ class CCBasePolicyLineMapper {
               // Set the coverage-level exposure limit field if one is found (per incident, per accident, per injury, etc.)
               if( ccCovTerm.ModelAggregation.equalsIgnoreCase(CovTermModelAgg.TC_PC.Code)
                     or ccCovTerm.ModelAggregation.equalsIgnoreCase(CovTermModelAgg.TC_EA.Code)
-                    or ccCovTerm.ModelAggregation.equalsIgnoreCase(CovTermModelAgg.TC_PO.Code) ) {
+                    or ccCovTerm.ModelAggregation.equalsIgnoreCase(CovTermModelAgg.TC_PO.Code)
+                    or ccCovTerm.ModelAggregation.equalsIgnoreCase(CovTermModelAgg.TC_AG.Code)) {
 
                 ccCov.IncidentLimit = ccCovTerm.FinancialAmount
               }

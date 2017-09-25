@@ -116,7 +116,7 @@ class HPXDwellingCoverageMapper extends HPXCoverageMapper{
     var value = currentCovTerm.OptionValue.Value
     var valueType = currentCovTerm.OptionValue.CovTermPattern.ValueType
     limit.CurrentTermAmt.Amt = getCovTermAmount(value, valueType)
-    limit.NetChangeAmt.Amt = coverage.OwningCoverable.BasedOnUntyped != null ? currentCovTerm.LimitDifference : 0
+    limit.NetChangeAmt.Amt = coverage.OwningCoverable.BasedOnUntyped != null ? (currentCovTerm.LimitDifference!= null ? currentCovTerm.LimitDifference : 0) : 0
     limit.FormatPct = 0
     limit.Rate = 0.00
     limit.FormatText = ""
@@ -134,7 +134,7 @@ class HPXDwellingCoverageMapper extends HPXCoverageMapper{
     var value = currentCovTerm.Value
     var valueType = currentCovTerm.OptionValue.CovTermPattern.ValueType
     var max = currentCovTerm.AvailableOptions.max()
-    limit.NetChangeAmt.Amt = coverage.OwningCoverable.BasedOnUntyped != null ? currentCovTerm.LimitDifference : 0
+    limit.NetChangeAmt.Amt = coverage.OwningCoverable.BasedOnUntyped != null ? (currentCovTerm.LimitDifference!= null ? currentCovTerm.LimitDifference : 0) : 0
     limit.FormatPct = getCovTermPercentage(value, valueType)
     limit.CurrentTermAmt.Amt = coverage.PolicyLine.AssociatedPolicyPeriod.HomeownersLine_HOE.Dwelling.DwellingLimitCovTerm != null ?
         coverage.PolicyLine.AssociatedPolicyPeriod.HomeownersLine_HOE.Dwelling.DwellingLimitCovTerm.Value * limit.FormatPct /100 : 0
@@ -156,7 +156,7 @@ class HPXDwellingCoverageMapper extends HPXCoverageMapper{
     var valueType = currentCovTerm.OptionValue.CovTermPattern.ValueType
     var max = currentCovTerm.AvailableOptions.max()
     limit.CurrentTermAmt.Amt = 0
-    limit.NetChangeAmt.Amt = coverage.OwningCoverable.BasedOnUntyped != null ? currentCovTerm.LimitDifference : 0
+    limit.NetChangeAmt.Amt = coverage.OwningCoverable.BasedOnUntyped != null ? (currentCovTerm.LimitDifference!= null ? currentCovTerm.LimitDifference : 0) : 0
     limit.FormatPct = getCovTermPercentage(value, valueType)
     limit.Rate = 0.00
     limit.FormatText = ""
@@ -174,7 +174,7 @@ class HPXDwellingCoverageMapper extends HPXCoverageMapper{
     limit.Description = currentCovTerm.Pattern.Name
     var value = currentCovTerm.Value
     var valueType = currentCovTerm.OptionValue.CovTermPattern.ValueType
-    limit.NetChangeAmt.Amt = coverage.OwningCoverable.BasedOnUntyped != null ? currentCovTerm.LimitDifference : 0
+    limit.NetChangeAmt.Amt = coverage.OwningCoverable.BasedOnUntyped != null ? (currentCovTerm.LimitDifference!= null ? currentCovTerm.LimitDifference : 0) : 0
     limit.FormatPct = getCovTermPercentage(value, valueType)
     limit.CurrentTermAmt.Amt = coverage.PolicyLine.AssociatedPolicyPeriod.HomeownersLine_HOE.Dwelling.DwellingLimitCovTerm != null ?
         coverage.PolicyLine.AssociatedPolicyPeriod.HomeownersLine_HOE.Dwelling.DwellingLimitCovTerm.Value * limit.FormatPct /100 : 0
@@ -195,7 +195,8 @@ class HPXDwellingCoverageMapper extends HPXCoverageMapper{
       var personalPropertyLimit = coverage.PolicyLine.AssociatedPolicyPeriod.HomeownersLine_HOE.Dwelling.HODW_Personal_Property_HOE.HODW_PersonalPropertyLimit_HOETerm
       var value = currentCovTerm.Value != null ? new BigDecimal(currentCovTerm.Value as double - personalPropertyLimit.Value as double *0.10) : 0.00
       limit.CurrentTermAmt.Amt = value
-      limit.NetChangeAmt.Amt = coverage.OwningCoverable.BasedOnUntyped != null ? currentCovTerm.LimitDifference - (personalPropertyLimit.LimitDifference != null ? personalPropertyLimit.LimitDifference*(0.10 as BigDecimal) : 0) : 0
+      limit.NetChangeAmt.Amt = coverage.OwningCoverable.BasedOnUntyped != null ? (currentCovTerm.LimitDifference!= null ? currentCovTerm.LimitDifference : 0)
+          - (personalPropertyLimit.LimitDifference != null ? personalPropertyLimit.LimitDifference*(0.10 as BigDecimal) : 0) : 0
       limit.FormatPct = 0
       limit.Rate = 0.00
       limit.CoverageCd = coverage.PatternCode
@@ -217,7 +218,7 @@ class HPXDwellingCoverageMapper extends HPXCoverageMapper{
       var value = currentCovTerm.Value
       var valueType = currentCovTerm.Pattern.ValueType
       limit.CurrentTermAmt.Amt = getCovTermAmount(value, valueType)
-      limit.NetChangeAmt.Amt = coverage.OwningCoverable.BasedOnUntyped != null ? currentCovTerm.LimitDifference : 0
+      limit.NetChangeAmt.Amt = coverage.OwningCoverable.BasedOnUntyped != null ? (currentCovTerm.LimitDifference!= null ? currentCovTerm.LimitDifference : 0) : 0
       limit.FormatPct = 0
       limit.Rate = 0.00
       limit.FormatText = ""

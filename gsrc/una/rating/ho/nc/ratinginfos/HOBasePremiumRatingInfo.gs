@@ -41,6 +41,9 @@ class HOBasePremiumRatingInfo extends HOCommonBasePremiumRatingInfo{
   var _numOfTimesRenewed : int as NumOfTimesRenewed
   var _numOfLosses : int as NumOfLosses
   var _affinityDiscountAgeOfHome : int as AffinityDiscountAgeOfHome
+  var _paidWeather : int as PaidWeather
+  var _paidNonWeather : int as PaidNonWeather
+
 
   construct(dwelling: Dwelling_HOE) {
     super(dwelling)
@@ -68,6 +71,14 @@ class HOBasePremiumRatingInfo extends HOCommonBasePremiumRatingInfo{
       if(_increasedPersonalProperty){
         _increasedPersonalPropertyValue = dwelling.HODW_Personal_Property_HOE.HODW_PersonalPropertyLimit_HOETerm.LimitDifference
       }
+    }
+
+    if(dwelling.PaidWeatherClaims_Ext !=null){
+      PaidWeather = dwelling.PaidWeatherClaims_Ext.toInt()
+    }
+
+    if(dwelling.PaidNonWeatherClaims_Ext !=null){
+      PaidNonWeather = dwelling.PaidNonWeatherClaims_Ext.toInt()
     }
 
     _ordinanceOrLawValue = dwelling?.HODW_OrdinanceCov_HOE.HODW_OrdinanceLimit_HOETerm?.Value
@@ -128,4 +139,9 @@ class HOBasePremiumRatingInfo extends HOCommonBasePremiumRatingInfo{
     }
     return false
   }
+
+
+
+
+
 }

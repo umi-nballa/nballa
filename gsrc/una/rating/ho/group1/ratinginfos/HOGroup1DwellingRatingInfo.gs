@@ -4,6 +4,7 @@ uses una.rating.ho.common.HOCommonDwellingRatingInfo
 uses java.math.BigDecimal
 uses una.config.ConfigParamsUtil
 
+
 /**
  * Created with IntelliJ IDEA.
  * User: bduraiswamy
@@ -40,6 +41,8 @@ class HOGroup1DwellingRatingInfo extends HOCommonDwellingRatingInfo {
   var _higherEQDeductible: boolean as HigherEQDeductible = false
   var caUnitOwnersCovASpecialBaseLimit: int as CAUnitOwnersCovASpecialBaseLimit
   var _modifiedReplacementCost : BigDecimal as ModifiedReplacementCost
+  var _retrofitCreditApplies : boolean as RetrofitCreditApplies = false
+
 
 
   construct(dwelling: Dwelling_HOE) {
@@ -133,6 +136,11 @@ class HOGroup1DwellingRatingInfo extends HOCommonDwellingRatingInfo {
       _modifiedReplacementCost = dwelling.HODW_SpecificAddAmt_HOE_Ext.HODW_AdditionalAmtInsurance_HOETerm.Value
     }
 
+    if(dwelling.YearBuilt < 1930 and dwelling.Dwellingbolted_Ext == true and (dwelling.Cripplewalls_Ext == "Yes" or dwelling.Cripplewalls_Ext == "NotApplicable")
+          and (dwelling.Masonrychimney_Ext == "Yes" or dwelling.Masonrychimney_Ext == "NotApplicable")) {
+      _retrofitCreditApplies = true
+    }
+
 
 
     if(dwelling?.HODW_Earthquake_HOEExists){
@@ -144,8 +152,9 @@ class HOGroup1DwellingRatingInfo extends HOCommonDwellingRatingInfo {
       _earthquakeDeductible = dwelling?.HODW_Earthquake_HOE?.HODW_EarthquakeDed_HOETerm?.Value
       _earthquakeTerritoryValueInt = dwelling?.EarthQuakeTerritoryOrOverride?.toInt()
       _earthquakeGrading = dwelling?.BCEGOrOverride?.Value
+
       if(dwelling?.HODW_SpecificOtherStructure_HOE_ExtExists and
-          dwelling?.HODW_SpecificOtherStructure_HOE_Ext?.HasHODW_IncreasedLimit_HOETerm){
+         dwelling?.HODW_SpecificOtherStructure_HOE_Ext?.HasHODW_IncreasedLimit_HOETerm){
         _otherStructuresRentedToOthersLimit = dwelling?.HODW_SpecificOtherStructure_HOE_Ext?.HODW_IncreasedLimit_HOETerm?.Value
       }
       if(dwelling?.HODW_LossAssEQEndorsement_HOE_ExtExists and

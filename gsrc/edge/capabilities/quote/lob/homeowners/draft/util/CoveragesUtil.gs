@@ -35,14 +35,14 @@ final class CoveragesUtil {
     if(coverage.Scheduled){
       result.ScheduledItems = getScheduledItemDTOs(coverage)
 
-      if(coverage.PatternCode == "HODW_ScheduledProperty_HOE"){
+      if(coverage.PatternCode == "HODW_ScheduledProperty_HOE" or coverage.PatternCode == "HOLI_AddResidenceRentedtoOthers_HOE" ){
             var costModel = una.pageprocess.QuoteScreenPCFController.getCostModels(coverage)
             costModel.each( \ c ->  {
             var structureData = gw.lob.ho.rating.QuotePageUtil_HOE.getStructuredData(c.CostList)
             var structureDataDetails = structureData.atMostOneWhere( \ e -> e.SpecialCoverage and e.LowLevelCost).Details
             var covTermDscription = structureDataDetails.atMostOne()
             var cost = una.pageprocess.QuoteScreenPCFController.getPremiumDisplayValue(covTermDscription.cost)
-            var scheduledItem =  result.ScheduledItems.firstWhere( \ e -> e.ScheduleTypeCode  == covTermDscription.Code)
+            var scheduledItem =  result.ScheduledItems.atMostOneWhere( \ e -> e.ScheduleTypeCode  == covTermDscription.Code or e.Description == covTermDscription.description)
             scheduledItem.Premium = cost as java.math.BigDecimal
         })
       }
@@ -114,6 +114,8 @@ final class CoveragesUtil {
           result.Address.PostalCode = scheduledLocationItem.PolicyLocation.PostalCode
           result.Address.Country = scheduledLocationItem.PolicyLocation.Country
           result.Address.AddressType = scheduledLocationItem.PolicyLocation.AddressType
+          result.Description = scheduledLocationItem?.PolicyLocation?.DisplayName
+          result.Name = scheduledLocationItem?.PolicyLocation?.CompactName
           break
       case "HOscheduleItem_HOE_Ext":
           var scheduledWatercraft = scheduledItem as HOscheduleItem_HOE_Ext

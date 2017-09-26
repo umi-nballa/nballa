@@ -479,6 +479,7 @@ class SubmissionProcess extends NewTermProcess {
   private function finalizeBeforeIssuing() {
     prepareBranchForFinishingJob()
     createBillingEventMessages()
+    createPortalRefreshEventMessages()
     _branch.scheduleAllAudits()
     _branch.updatePolicyTermDepositAmount()
   }

@@ -106,19 +106,15 @@ enhancement UNAPolicyPeriodEnhancement : entity.PolicyPeriod {
     }
   }
 
-  static function CarrierReq(policyPeriod:PolicyPeriod) : boolean{
-    for(pp in policyPeriod.Policy.PriorPolicies*.CarrierType)   {
-      if(pp == typekey.CarrierType_Ext.TC_UNA)
-        return true
-    }
-    return false
+  property get HasUNAPriorCarrier() : boolean{
+    return this.Policy.PriorPolicies*.CarrierType?.contains(TC_UNA)
   }
 
-  static function noPriorIns(policyPeriod:PolicyPeriod) : boolean{
-    for(p1 in policyPeriod.Policy.PriorPolicies*.CarrierType){
-      if(p1 == typekey.CarrierType_Ext.TC_NOPRIORINS)
-        return true
-    }
-    return false
+  property get HasOtherCarrier() : boolean{
+    return this.Policy.PriorPolicies*.CarrierType?.contains(TC_OTHER)
+  }
+
+  property get HasNoPriorInsurance() : boolean{
+    return this.Policy.PriorPolicies*.CarrierType?.contains(TC_NOPRIORINS)
   }
 }

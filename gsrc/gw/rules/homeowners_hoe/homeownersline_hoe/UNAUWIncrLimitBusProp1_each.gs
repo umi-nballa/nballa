@@ -2,6 +2,7 @@ package gw.rules.homeowners_hoe.homeownersline_hoe
 
 uses gw.accelerator.ruleeng.IRuleCondition
 uses gw.accelerator.ruleeng.RuleEvaluationResult
+uses una.config.ConfigParamsUtil
 
 /**
  * Created with IntelliJ IDEA.
@@ -12,26 +13,16 @@ uses gw.accelerator.ruleeng.RuleEvaluationResult
  */
 class UNAUWIncrLimitBusProp1_each implements IRuleCondition<HomeownersLine_HOE>{
   override function evaluateRuleCriteria(homeowner : HomeownersLine_HOE) : RuleEvaluationResult {
-
-
-
-    if((homeowner.AssociatedPolicyPeriod.BaseState.Code=="AZ"
-    || homeowner.AssociatedPolicyPeriod.BaseState.Code=="CA"
-        || homeowner.AssociatedPolicyPeriod.BaseState.Code=="FL"
-        || homeowner.AssociatedPolicyPeriod.BaseState.Code=="HI"
-        || homeowner.AssociatedPolicyPeriod.BaseState.Code=="NC"
-        || homeowner.AssociatedPolicyPeriod.BaseState.Code=="SC"
-        || homeowner.AssociatedPolicyPeriod.BaseState.Code=="NV") &&
-        (homeowner.HOPolicyType==typekey.HOPolicyType_HOE.TC_HO3 ||
-            homeowner.HOPolicyType==typekey.HOPolicyType_HOE.TC_HO4 ||
-        homeowner.HOPolicyType==typekey.HOPolicyType_HOE.TC_HO6)&&
-       // (homeowner?.Dwelling.Occupancy==typekey.DwellingOccupancyType_HOE.TC_SEASONALRES ||
-      //  homeowner?.Dwelling.Occupancy==typekey.DwellingOccupancyType_HOE.TC_SECONDARYRES)&&
-    homeowner.Dwelling.HODW_BusinessProperty_HOE_ExtExists)
+    if(shouldExecuteRule(homeowner)){
       return RuleEvaluationResult.execute()
-
-   return RuleEvaluationResult.skip()
+    }else{
+      return RuleEvaluationResult.skip()
+    }
   }
 
-
+  private function shouldExecuteRule(hoLine : HomeownersLine_HOE) : boolean{
+    return hoLine.Dwelling.HODW_BusinessProperty_HOE_ExtExists
+       and hoLine.Dwelling.HODW_BusinessProperty_HOE_Ext.HODW_OnPremises_Limit_HOETerm.LimitDifference > 0
+       and ConfigParamsUtil.getList(tc_IncreasedBusinessPropertyUWIssueStates, hoLine.BaseState)?.contains(hoLine.BaseState.Code)
+  }
 }

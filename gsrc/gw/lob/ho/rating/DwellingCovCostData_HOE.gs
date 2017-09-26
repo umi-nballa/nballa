@@ -28,6 +28,7 @@ class DwellingCovCostData_HOE<T extends DwellingCovCost_HOE> extends HOCostData_
   construct(cost : T, rateCache : PolicyPeriodFXRateCache){
     super(cost, rateCache)
     _covID = cost.Coverage.FixedId
+    _costType = cost.CostType
   }
   
   override function setSpecificFieldsOnCost(line : HomeownersLine_HOE, cost : T) {

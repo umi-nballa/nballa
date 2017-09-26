@@ -483,6 +483,7 @@ class DefaultHoDraftPlugin implements ILobDraftPlugin<HoDraftDataExtensionDTO>{
 
       period.CreditInfoExt.CreditLevel = update.CreditLevel
       period.Submission.PortalSubmissionContext.IsPortalRequest = update.IsPortalRequest
+      period.includedPerilsCovered_Ext = update.SelectedPeril
     }
   }
 
@@ -494,6 +495,7 @@ class DefaultHoDraftPlugin implements ILobDraftPlugin<HoDraftDataExtensionDTO>{
       update.OwnershipEntityType = period.Policy.Account.AccountOrgType
       update.OwnershipEntityTypeOtherDescription = period.Policy.Account.OtherOrgTypeDescription
       update.CreditLevel = period.CreditInfoExt.CreditLevel
+      update.SelectedPeril = period.includedPerilsCovered_Ext
     }
   }
 

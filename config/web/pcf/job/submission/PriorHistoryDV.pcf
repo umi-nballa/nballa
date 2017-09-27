@@ -34,7 +34,8 @@
                 label="displaykey.Web.Policy.PriorPolicy.CarrierType "
                 value="priorPolicy.CarrierType"
                 valueRange="priorPolicy.getValuesByFilter(policyPeriod)">
-                <PostOnChange/>
+                <PostOnChange
+                  onChange="priorPolicy.CarrierReq(policyPeriod);otherReq();priorPolicy.noPriorIns(policyPeriod)"/>
               </RangeCell>
               <Cell
                 editable="true"
@@ -42,19 +43,19 @@
                 label="displaykey.Web.Policy.PriorPolicy.Carrier"
                 required="true"
                 value="priorPolicy.Carrier"
-                visible="policyPeriod.HasOtherCarrier"/>
+                visible="otherReq()"/>
               <TextCell
                 editable="true"
                 id="PolicyNumber"
                 label="displaykey.Web.Policy.PriorPolicy.PolicyNumber"
                 numCols="15"
-                required="policyPeriod.HasUNAPriorCarrier"
+                required="priorPolicy.CarrierReq(policyPeriod)"
                 value="priorPolicy.PolicyNumber"/>
               <TypeKeyCell
                 editable="true"
                 id="tenure"
                 label="displaykey.Web.Policy.PriorPolicy.Tenure"
-                required="policyPeriod.HasUNAPriorCarrier"
+                required="priorPolicy.CarrierReq(policyPeriod)"
                 value="priorPolicy.Tenure_Ext"/>
               <DateCell
                 editable="true"
@@ -67,7 +68,7 @@
                 editable="true"
                 id="ExpirationDate"
                 label="displaykey.Web.Policy.PriorPolicy.ExpirationDate"
-                required="!policyPeriod.HasNoPriorInsurance"
+                required="!priorPolicy.noPriorIns(policyPeriod)"
                 value="priorPolicy.ExpirationDate"/>
               <!-- <TypeKeyCell
                 editable="true"
@@ -79,7 +80,7 @@
                 editable="true"
                 id="nopriorins"
                 label="displaykey.Web.Policy.PriorPolicy.ReasonNoPriorIns"
-                required="policyPeriod.HasNoPriorInsurance"
+                required="priorPolicy.noPriorIns(policyPeriod)"
                 value="priorPolicy.ReasonNoPriorIns_Ext"
                 valueRange="typekey.ReasonNoPriorIns_Ext.Type.getTypeKeysByCategory(policyPeriod.BaseState)"/>
               <MonetaryAmountCell
@@ -128,6 +129,14 @@
     if (policyPeriod.Policy.PriorPolicies.HasElements &&  policyPeriod.Policy.PriorPolicies.first()?.EffectiveDate  == null)
       return "Please enter Prior Policy Information"
     else return null
-  }]]></Code>
+  }
+
+function otherReq() : boolean{
+  for(p in policyPeriod.Policy.PriorPolicies*.CarrierType){
+    if(p == typekey.CarrierType_Ext.TC_OTHER)
+      return true
+  }
+  return false
+}]]></Code>
   </DetailViewPanel>
 </PCF>

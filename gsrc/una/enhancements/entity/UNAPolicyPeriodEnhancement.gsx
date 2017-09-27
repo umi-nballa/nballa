@@ -105,16 +105,4 @@ enhancement UNAPolicyPeriodEnhancement : entity.PolicyPeriod {
       }
     }
   }
-
-  property get HasUNAPriorCarrier() : boolean{
-    return this.Policy.PriorPolicies*.CarrierType?.contains(TC_UNA)
-  }
-
-  property get HasOtherCarrier() : boolean{
-    return this.Policy.PriorPolicies*.CarrierType?.contains(TC_OTHER)
-  }
-
-  property get HasNoPriorInsurance() : boolean{
-    return this.Policy.PriorPolicies*.CarrierType?.contains(TC_NOPRIORINS)
-  }
 }

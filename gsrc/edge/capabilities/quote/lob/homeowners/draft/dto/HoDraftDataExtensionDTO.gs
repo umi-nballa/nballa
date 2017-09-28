@@ -87,4 +87,7 @@ class HoDraftDataExtensionDTO extends UnaLobDataDTO implements IDraftLobExtensio
 
   @JsonProperty
   var _isPortalRequest : Boolean as IsPortalRequest
+
+  @JsonProperty
+  var _includedPerilsCovered : typekey.IncludedPerilsCovered_Ext as SelectedPeril
 }

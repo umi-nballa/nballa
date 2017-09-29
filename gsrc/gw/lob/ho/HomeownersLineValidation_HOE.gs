@@ -73,7 +73,6 @@ class HomeownersLineValidation_HOE extends PolicyLineValidation<entity.Homeowner
       lineValidation.validatePolicyType()
       var dwellingValidation = new HODwellingValidation_HOE(context, hoLine.Dwelling)
       dwellingValidation.validateDwellingMainFields()
-      dwellingValidation.validateDwellingProtectionFields()
     })
   }
 

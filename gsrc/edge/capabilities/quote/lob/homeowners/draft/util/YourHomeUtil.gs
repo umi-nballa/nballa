@@ -69,14 +69,7 @@ final class YourHomeUtil extends BaseTunaValueUtil {
     dto.OnBarrierIsland = data.BarrierIsland_Ext
     dto.ElectricalType = data.ElectricalType
     dto.EstimatedReplacementCost = data.CoverageAEstRepCostValue_Ext?.toBigDecimal()
-    dto.HasSteelPlumbingType = data.HasSteelPlumbingType
-    dto.HasPEXPlumbingType = data.HasPEXPlumbingType
-    dto.HasCopperPlumbingType = data.HasCopperPlumbingType
-    dto.HasCastIronPlumbingType = data.HasCastIronPlumbingType
-    dto.HasPolybutylenePlumbingType = data.HasPolybutylenePlumbingType
-    dto.HasGalvanizedPlumbingType = data.HasGalvanizedPlumbingType
-    dto.HasPVCPlumbingType = data.HasPVCPlumbingType
-    dto.HasOtherPlumbingType = data.HasOtherPlumbingType
+    dto.ConsecutiveMonthsUnoccupied = data.NumOfMonthsConsUnOccupancy_Ext?.toInt()
   }
 
   /**
@@ -146,14 +139,7 @@ final class YourHomeUtil extends BaseTunaValueUtil {
     data.BarrierIsland_Ext = dto.OnBarrierIsland
     data.ElectricalType = dto.ElectricalType
     data.CoverageAEstRepCostValue_Ext = dto.EstimatedReplacementCost?.toPlainString()
-    data.HasSteelPlumbingType = dto.HasSteelPlumbingType
-    data.HasPEXPlumbingType = dto.HasPEXPlumbingType
-    data.HasCopperPlumbingType = dto.HasCopperPlumbingType
-    data.HasCastIronPlumbingType = dto.HasCastIronPlumbingType
-    data.HasPolybutylenePlumbingType = dto.HasPolybutylenePlumbingType
-    data.HasGalvanizedPlumbingType = dto.HasGalvanizedPlumbingType
-    data.HasPVCPlumbingType = dto.HasPVCPlumbingType
-    data.HasOtherPlumbingType = dto.HasOtherPlumbingType
+    data.NumOfMonthsConsUnOccupancy_Ext = dto.ConsecutiveMonthsUnoccupied?.toString()
   }
 
   private static function addOrRemovePolicyFromMultiDiscount(policyNumber : String, data : Dwelling_HOE, policyType : typekey.TypeofPolicy_Ext){

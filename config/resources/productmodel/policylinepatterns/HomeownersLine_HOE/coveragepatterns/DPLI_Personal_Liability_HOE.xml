@@ -15,7 +15,7 @@
   <OnRemovalScript><![CDATA[if(DPLI_Personal_Liability_HOE.HOLine.DPLI_Med_Pay_HOEExists){
   DPLI_Personal_Liability_HOE.HOLine.DPLI_Med_Pay_HOE.remove()
 }]]></OnRemovalScript>
-  <ExistenceScript><![CDATA[return (HomeownersLine_HOE.Branch.BaseState == TC_TX ? ExistenceType.TC_ELECTABLE : ExistenceType.TC_SUGGESTED)]]></ExistenceScript>
+  <ExistenceScript><![CDATA[return (HomeownersLine_HOE.Branch.BaseState == TC_TX ? ExistenceType.TC_REQUIRED : ExistenceType.TC_ELECTABLE)]]></ExistenceScript>
   <CovTerms>
     <OptionCovTermPattern
       aggregationModel="po"

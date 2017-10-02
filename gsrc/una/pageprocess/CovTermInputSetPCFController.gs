@@ -311,7 +311,9 @@ class CovTermInputSetPCFController {
       hoLine.HOLI_AnimalLiabilityCov_HOE_Ext.HOLI_AnimalLiabLimit_HOETerm.setOptionValue(hoLine.HOLI_AnimalLiabilityCov_HOE_Ext.HOLI_AnimalLiabLimit_HOETerm.AvailableOptions.firstWhere( \ elt -> elt.Value.doubleValue() == 300000))
     }else{
       var covTerm = (HOPolicyType_HOE.TF_FIRETYPES.TypeKeys.contains(hoLine.HOPolicyType)) ? hoLine.DPLI_Personal_Liability_HOE.DPLI_LiabilityLimit_HOETerm : hoLine.HOLI_Personal_Liability_HOE.HOLI_Liability_Limit_HOETerm
-      hoLine.HOLI_PersonalInjury_HOE.HOLI_PersonalInjuryLimit_HOE_ExtTerm.matchOptionValue(covTerm)
+      if(hoLine.HOLI_PersonalInjury_HOEExists){
+        hoLine.HOLI_PersonalInjury_HOE.HOLI_PersonalInjuryLimit_HOE_ExtTerm.matchOptionValue(covTerm)
+      }
     }
   }
 

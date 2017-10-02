@@ -80,7 +80,7 @@ class CoverageTermAvailabilityUtil {
         result = isOptionAvailableForNetworkSecurityLimit(option, coverable as BP7BusinessOwnersLine)
         break
       case "BP7NumberOfMonths_EXT":
-        result = isOptionAvailableForNumberOfMonths(option,coverable as BP7BusinessOwnersLine)
+        result = isOptionAvailableForNumberOfMonths(option,coverable as BP7Classification)
         break
       case "Deductible_EXT":
         result = isOptionAvailableForCyberOneCovDeduct(option, coverable as BP7BusinessOwnersLine)
@@ -445,16 +445,16 @@ class CoverageTermAvailabilityUtil {
     return result
   }
 
-  private static function isOptionAvailableForNumberOfMonths(option : gw.api.productmodel.CovTermOpt, bp7Line:BP7BusinessOwnersLine):boolean{
+  private static function isOptionAvailableForNumberOfMonths(option : gw.api.productmodel.CovTermOpt, bp7Classification:BP7Classification):boolean{
     var result = true
     var restrictiveOptions = {"BP76Months_EXT","BP712Months_EXT"}
 
     if(restrictiveOptions.contains(option.OptionCode)){
-      if(bp7Line.BP7BuildingBusinessIncomeExtraExpense_EXT.BP7AnnualBI_EXTTerm.Value!=null){
+      if(bp7Classification.BP7ClassificationBusiIncomeExtraExpense_EXT.BP7AnnualBI_EXTTerm.Value!=null){
         if(option.OptionCode == "BP712Months_EXT"){
-          result = bp7Line.BP7BuildingBusinessIncomeExtraExpense_EXT.BP7AnnualBI_EXTTerm.Value<=300000
+          result = bp7Classification.BP7ClassificationBusiIncomeExtraExpense_EXT.BP7AnnualBI_EXTTerm.Value<=300000
         }else if(option.OptionCode == "BP76Months_EXT"){
-          result = bp7Line.BP7BuildingBusinessIncomeExtraExpense_EXT.BP7AnnualBI_EXTTerm.Value<=600000
+          result = bp7Classification.BP7ClassificationBusiIncomeExtraExpense_EXT.BP7AnnualBI_EXTTerm.Value<=600000
         }
       }
     }

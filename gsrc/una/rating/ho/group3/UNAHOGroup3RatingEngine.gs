@@ -328,7 +328,7 @@ class UNAHOGroup3RatingEngine extends UNAHORatingEngine_HOE<HomeownersLine_HOE> 
             _discountsOrSurchargeRatingInfo.NumOfUnitsWithinFireDivision = dwelling?.NumUnitsFireDivision_Ext.Numeric ? dwelling?.NumUnitsFireDivision_Ext.toInt() : 0
             rateTownhouseOrRowhouseSurcharge(dateRange, _hoRatingInfo.AdjustedAOPBasePremium, HOCostType_Ext.TC_TOWNHOUSEORROWHOUSESURCHARGEAOP)
           }
-          if (isMatureHomeOwnerDiscountApplicable(PolicyLine) and not dwelling.IsSecondary){
+          if (PolicyLine.AssociatedPolicyPeriod.Aged60OrOver_Ext and not dwelling.IsSecondary){
             rateMatureHomeOwnerDiscount(dateRange, HOCostType_Ext.TC_MATUREHOMEOWNERDISCOUNT)
           }
 
@@ -1180,28 +1180,6 @@ class UNAHOGroup3RatingEngine extends UNAHORatingEngine_HOE<HomeownersLine_HOE> 
         TC_LINERATINGINFO_EXT -> hoLineLevelRatingInfo,
         TC_RATINGINFO -> _hoRatingInfo
     }
-  }
-
-  /**
-   * Return true if the primary named insured or additional named insured age is greater than or equal to 60yrs.
-  */
-  private function isMatureHomeOwnerDiscountApplicable(line: HomeownersLine_HOE) : boolean {
-    var period = line.Dwelling.PolicyPeriod
-    var dateOfBirth : java.util.Date = null
-    var minAgeLimit = ConfigParamsUtil.getInt(TC_MATUREHOMEOWNERMINIMUMAGE, line.Dwelling.CoverableState, line.HOPolicyType.Code)
-    var primaryNamedInsured = period.PolicyContactRoles.whereTypeIs(PolicyPriNamedInsured).first()
-    if(primaryNamedInsured != null){
-      dateOfBirth = primaryNamedInsured.DateOfBirth
-      if(dateOfBirth != null and (determineAge(dateOfBirth?.YearOfDate) >= minAgeLimit))
-        return true
-    }
-    var additionalNamedInsured = period.PolicyContactRoles.whereTypeIs(PolicyAddlNamedInsured)
-    for(addlInsured in additionalNamedInsured){
-      dateOfBirth = addlInsured.DateOfBirth
-      if(dateOfBirth != null and (determineAge(dateOfBirth?.YearOfDate) >= minAgeLimit))
-        return true
-    }
-    return false
   }
 
   /**

@@ -139,7 +139,7 @@ class PolicyRefreshTransport extends AbstractMessageTransport implements Initial
             : PolicyNum = policyPeriod.PolicyNumber,
             : Agency = getAgencyDetails(policyPeriod),
             : Cust = getCustomerDetails(policyPeriod),
-            : IsGWPolicy = true,
+            : IsGWPolicy = "true",
             : Home = getHome(policyPeriod),
             : PolicyLoan = getAdditionalInterests(policyPeriod)
         }
@@ -155,7 +155,7 @@ class PolicyRefreshTransport extends AbstractMessageTransport implements Initial
             {
                 : AgentNum = policyPeriod.EffectiveDatedFields.ProducerCode.Code,
                 : AgentName = agency.Name,
-                : Addr = mapAddress(primaryAddress, Agency_Addr),
+                : Addr = mapAddress(primaryAddress, Agency_Addr, false),
                 : Email = agency.Contact.EmailAddress1,
                 : SubAgentName = ""
             }
@@ -188,8 +188,10 @@ class PolicyRefreshTransport extends AbstractMessageTransport implements Initial
             {
                 new Policy_Cust()
                     {
-                        : Addr = mapAddress(primaryAddress, Cust_Addr),
-                        : Company = primaryNamedInsured.ContactCompany.Name,
+                        : Addr = mapAddress(primaryAddress, Cust_Addr, false),
+                        : Company = policyPeriod.PolicyAddress.State == typekey.State.TC_FL ?
+                            "Universal Insurance Company of North America" : "Universal North American Insurance Company",
+                        : CompanyCode = policyPeriod.PolicyAddress.State == typekey.State.TC_FL ? "02" : "01",
                         : EffDt = policyPeriod.PeriodStart.XmlDateTime.toString(),
                         : Email = primaryNamedInsured.EmailAddress1,
                         : ExpDt = policyPeriod.PeriodEnd.XmlDateTime,
@@ -202,7 +204,7 @@ class PolicyRefreshTransport extends AbstractMessageTransport implements Initial
                         : PhoneInfo = new ArrayList<Cust_PhoneInfo>(),
                         : RatingState = policyPeriod.PolicyAddress.State?.Description,
                         : RatingStateCode = policyPeriod.PolicyAddress.State?.Code,
-                        : Status = policyPeriod.PeriodDisplayStatus,
+                        : Status = policyPeriod.UNAPortalPeriodDisplayStatus,
                         : Term = ((policyPeriod.TermNumber?:1) - 1).toString()
                     }
             }
@@ -220,7 +222,7 @@ class PolicyRefreshTransport extends AbstractMessageTransport implements Initial
         return customerList
     }
 
-    public function getGroupLineCode(policyPeriod: PolicyPeriod): Integer {
+    public function getGroupLineCode(policyPeriod: PolicyPeriod): String {
         var groupLineCode = ""
         if (policyPeriod.Policy.Product.ProductType == ProductType.TC_PERSONAL) {
 
@@ -263,7 +265,7 @@ class PolicyRefreshTransport extends AbstractMessageTransport implements Initial
             loans.add(new Policy_PolicyLoan()
                 {
                     : LoanName = loan.PolicyAddlInterest.DisplayName, : LoanNum = loan.ContractNumber, : LoanType = loan.AdditionalInterestType.Description,
-                    : Addr = mapAddress(loan.PolicyAddlInterest.ContactDenorm.PrimaryAddress, PolicyLoan_Addr)
+                    : Addr = mapAddress(loan.PolicyAddlInterest.ContactDenorm.PrimaryAddress, PolicyLoan_Addr, false)
                 }
             )
         })
@@ -275,7 +277,7 @@ class PolicyRefreshTransport extends AbstractMessageTransport implements Initial
                 {
                     : LoanName = contact typeis Company ? contact.DisplayName : contact.FirstName + " " + contact.LastName,
                     : LoanType = contact.PolicyAdditionalInsuredDetails.AdditionalInsuredType?.first().DisplayName,
-                    : Addr = mapAddress(contact.ContactDenorm.PrimaryAddress, PolicyLoan_Addr)
+                    : Addr = mapAddress(contact.ContactDenorm.PrimaryAddress, PolicyLoan_Addr, false)
                 }
             )
         })
@@ -287,7 +289,7 @@ class PolicyRefreshTransport extends AbstractMessageTransport implements Initial
                 {
                     : LoanName = contact.ContactDenorm typeis Company ? contact.DisplayName : contact.FirstName + " " + contact.LastName,
                     : LoanType = contact.ContactRelationship_Ext.Description,
-                    : Addr = mapAddress(contact.ContactDenorm.PrimaryAddress, PolicyLoan_Addr)
+                    : Addr = mapAddress(contact.ContactDenorm.PrimaryAddress, PolicyLoan_Addr, false)
                 }
             )
         })
@@ -344,7 +346,7 @@ class PolicyRefreshTransport extends AbstractMessageTransport implements Initial
                                 : Coverage = getCoverages(coveragesList, dwelling),
                                 : ItemNotes = getNotes(policyPeriod),
                                 : LossHist = new ArrayList<Prop_LossHist>() {},
-                                : Addr = mapAddress(policyPeriod.PolicyAddress.Address, Prop_Addr)
+                                : Addr = mapAddress(policyPeriod.PolicyAddress.Address, Prop_Addr, true)
                             }
                         }
                 },
@@ -363,7 +365,7 @@ class PolicyRefreshTransport extends AbstractMessageTransport implements Initial
                 }
         }
 
-
+        print("address: " + policyPeriod.HomeownersLine_HOE.HOLocation.PolicyLocation.AddressType)
         //Add NamedStorm deductible
         if (dwelling.HODW_SectionI_Ded_HOE.HasHODW_NamedStrom_Ded_HOE_ExtTerm){
             //if gt 0 and LT 1, multiple by COVA for $AMOUNT else is Dollar amt per shane
@@ -398,13 +400,13 @@ class PolicyRefreshTransport extends AbstractMessageTransport implements Initial
                 var propCov: Prop_Coverage = null
                 //print("${costModel.Coverage.PatternCode} :: ${costModel.Coverage.Pattern.Name} :: ${costModel.LimitDisplayValue ?: costModel.LimitValue} :: ${costModel.PremiumDisplayValue}")
                 if (costModel.Coverage.PatternCode == "HODW_Dwelling_Cov_HOE" || costModel.Coverage.PatternCode == "DPDW_Dwelling_Cov_HOE") {
-                    propCov = new Prop_Coverage() { : CovALimit = costModel.LimitValue, : CovAPrem = costModel.Premium }
+                    propCov = new Prop_Coverage() { : CovALimit = costModel.LimitValue?.intValue(), : CovAPrem = costModel.Premium }
                 } else if (costModel.Coverage.PatternCode == "HODW_Other_Structures_HOE" || costModel.Coverage.PatternCode == "DPDW_Other_Structures_HOE") {
-                    propCov = new Prop_Coverage() { : CovBLimit = costModel.LimitValue, : CovBPrem = costModel.Premium }
+                    propCov = new Prop_Coverage() { : CovBLimit = costModel.LimitValue?.intValue(), : CovBPrem = costModel.Premium }
                 } else if (costModel.Coverage.PatternCode == "HODW_Personal_Property_HOE" || costModel.Coverage.PatternCode == "DPDW_Personal_Property_HOE") {
-                    propCov = new Prop_Coverage() { : CovCLimit = costModel.LimitValue, : CovCPrem = costModel.Premium }
+                    propCov = new Prop_Coverage() { : CovCLimit = costModel.LimitValue?.intValue(), : CovCPrem = costModel.Premium }
                 } else if (costModel.Coverage.PatternCode == "HODW_Loss_Of_Use_HOE" || costModel.Coverage.PatternCode == "DPDW_FairRentalValue_Ext") {
-                    propCov = new Prop_Coverage() { : CovDLimit = costModel.LimitValue, : CovDPrem = costModel.Premium }
+                    propCov = new Prop_Coverage() { : CovDLimit = costModel.LimitValue?.intValue(), : CovDPrem = costModel.Premium }
                 }
                 if (propCov != null) {
                     propCoverages.add(propCov)
@@ -429,9 +431,9 @@ class PolicyRefreshTransport extends AbstractMessageTransport implements Initial
                 //print("${costModel.Coverage.PatternCode} :: ${costModel.Coverage.Pattern.Name} :: ${costModel.LimitDisplayValue ?: costModel.LimitValue} :: ${costModel.PremiumDisplayValue}")
 
                 if (costModel.Coverage.PatternCode == "HOLI_Personal_Liability_HOE" || costModel.Coverage.PatternCode == "DPLI_Personal_Liability_HOE") {
-                    propCov = new Prop_Coverage() { : CovELimit = costModel.LimitValue?.toString(), : CovEPrem = costModel.Premium?.toString() }
+                    propCov = new Prop_Coverage() { : CovELimit = costModel.LimitValue?.intValue(), : CovEPrem = costModel.Premium?.toString() }
                 } else if (costModel.Coverage.PatternCode == "HOLI_Med_Pay_HOE" || costModel.Coverage.PatternCode == "DPLI_Med_Pay_HOE") {
-                    propCov = new Prop_Coverage() { : CovFLimit = costModel.LimitValue?.toString(), : CovFPrem = costModel.Premium?.toString() }
+                    propCov = new Prop_Coverage() { : CovFLimit = costModel.LimitValue?.intValue(), : CovFPrem = costModel.Premium?.toString() }
                 }
                 if (propCov != null) {
                    propCoverages.add(propCov)
@@ -450,18 +452,24 @@ class PolicyRefreshTransport extends AbstractMessageTransport implements Initial
             //print("${form.Pattern.Code} :: ${form.Pattern.FormDescription} :: ${form.Pattern.ClausePattern} ")
             var limit = "0"
             var premium = "0"
+            form.FormAssociations.first()
             var clausePatternId = form.Pattern.ClausePattern?.CodeIdentifier
             if (clausePatternId != null) {
                 var costModel = coverages.where(\elt -> elt.Pattern.CodeIdentifier == clausePatternId).map(\elt -> una.pageprocess.QuoteScreenPCFController.getCostModels(elt)).first()?.first()
                 if (costModel != null) {
-                    limit = costModel.LimitValue
+                    limit = costModel.LimitValue?.intValue()
                     premium = costModel.Premium
                 }
             }
 
             endorsements.Endorsement.add( new Endorsements_Endorsement()
                 {
-                    : Description = form.FormDescription, : EditionDt = form.Pattern.Edition.replaceAll(" ", ""), : EndNum = form.FormNumber, : ItemNum = "0", : Limit = limit, : Premium = premium
+                    : Description = form.FormDescription,
+                    : EditionDt = form.Pattern.Edition.replaceAll(" ", ""),
+                    : EndNum = form.FormNumber,
+                    : ItemNum = "0",
+                    : Limit = limit,
+                    : Premium = premium
                 })
         })
 
@@ -538,7 +546,7 @@ class PolicyRefreshTransport extends AbstractMessageTransport implements Initial
     /**
      *
      */
-    private function mapAddress(address: Address, clazz: Type): Dynamic {
+    private function mapAddress(address: Address, clazz: Type, isRiskAddress: boolean): Dynamic {
         var addrToMap: Dynamic = clazz.TypeInfo.getConstructor({}).Constructor.newInstance({})
         addrToMap.Addr1 = address.AddressLine1
         addrToMap.Addr2 = address.AddressLine2
@@ -548,7 +556,7 @@ class PolicyRefreshTransport extends AbstractMessageTransport implements Initial
         addrToMap.Country = address.Country.Description
         addrToMap.State = address.State.Description
         addrToMap.Zip = address.PostalCode
-        addrToMap.AddrTypeCd = address.AddressType.Code
+        addrToMap.AddrTypeCd = isRiskAddress ? "PropertyAddress" : "MailingAddress"
         return addrToMap
     }
 

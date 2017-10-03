@@ -146,6 +146,13 @@ class DefaultDraftSubmissionPlugin implements IDraftSubmissionPlugin {
     SubmissionUtil.updateSubmission(submission, data)
 
     _lobPlugin.updateExistingDraftSubmission(submission.SelectedVersion, data.Lobs)
+
+    //at this point billing contact, if new, should already be added to the policy via the lobPlugin so we can assume we will always find a contact
+    if(data.PayorHash != null and !data.PayorHash?.equalsIgnoreCase(submission.SelectedVersion.BillingContact.AccountContactRole.AccountContact.Contact.PortalHash_Ext)){
+      //using firstWhere because a contact can have multiple roles on a policy
+      var newBillingContact = submission.SelectedVersion.AllContacts?.firstWhere( \ contact -> contact.PortalHash_Ext?.equalsIgnoreCase(data.PayorHash))
+      submission.SelectedVersion.changeBillingContactTo(newBillingContact)
+    }
   }
 
   /**

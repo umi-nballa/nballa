@@ -70,6 +70,9 @@ final class YourHomeUtil extends BaseTunaValueUtil {
     dto.ElectricalType = data.ElectricalType
     dto.EstimatedReplacementCost = data.CoverageAEstRepCostValue_Ext?.toBigDecimal()
     dto.ConsecutiveMonthsUnoccupied = data.NumOfMonthsConsUnOccupancy_Ext?.toInt()
+    dto.MetricVersion = data.MetricsVersionValue_Ext
+    dto.AddressQueryResultingPrecision = data.ResultingPrecision_Ext
+    dto.AddressQueryResultingNoteDetailed = data.NoteDetail_Ext
   }
 
   /**
@@ -140,6 +143,9 @@ final class YourHomeUtil extends BaseTunaValueUtil {
     data.ElectricalType = dto.ElectricalType
     data.CoverageAEstRepCostValue_Ext = dto.EstimatedReplacementCost?.toPlainString()
     data.NumOfMonthsConsUnOccupancy_Ext = dto.ConsecutiveMonthsUnoccupied?.toString()
+    data.MetricsVersionValue_Ext = dto.MetricVersion
+    data.ResultingPrecision_Ext = dto.AddressQueryResultingPrecision
+    data.NoteDetail_Ext = dto.AddressQueryResultingNoteDetailed
   }
 
   private static function addOrRemovePolicyFromMultiDiscount(policyNumber : String, data : Dwelling_HOE, policyType : typekey.TypeofPolicy_Ext){

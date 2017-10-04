@@ -267,4 +267,13 @@ class YourHomeDTO {
 
   @JsonProperty
   private var _consecutiveMonthsUnoccupied : Integer as ConsecutiveMonthsUnoccupied
+
+  @JsonProperty
+  private var _metricVersion : String as MetricVersion
+
+  @JsonProperty
+  private var _addressQueryResultingPrecision : String as AddressQueryResultingPrecision
+
+  @JsonProperty
+  private var _addressQueryResultingNoteDetailed : String as AddressQueryResultingNoteDetailed
 }

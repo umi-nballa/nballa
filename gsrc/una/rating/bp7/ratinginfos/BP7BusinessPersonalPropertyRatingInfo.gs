@@ -33,8 +33,8 @@ class BP7BusinessPersonalPropertyRatingInfo {
     _protectionClassCode = building?.OverrideDwellingPCCode_Ext? building?.DwellingPCCodeOverridden_Ext : building?.DwellingProtectionClassCode
     _protectionClassCodeInt = (_protectionClassCode == "8B")? 9 : _protectionClassCode?.toInt()
 
-    _businessIncomeExtraExpenseLimit = line?.BP7BuildingBusinessIncomeExtraExpense_EXT?.BP7AnnualBI_EXTTerm?.Value
-    _businessIncomeExtraExpenseNumberOfMonths = line?.BP7BuildingBusinessIncomeExtraExpense_EXT?.BP7NumberOfMonths_EXTTerm?.DisplayValue
+    _businessIncomeExtraExpenseLimit = classification?.BP7ClassificationBusiIncomeExtraExpense_EXT?.BP7AnnualBI_EXTTerm?.Value
+    _businessIncomeExtraExpenseNumberOfMonths = classification?.BP7ClassificationBusiIncomeExtraExpense_EXT?.BP7NumberOfMonths_EXTTerm?.DisplayValue
     _businessLiabilityOccurrenceLimit = line?.BP7BusinessLiability?.BP7EachOccLimitTerm?.Value.intValue()
 
     _businessPersonalPropertyLimit = classificationCov.BP7BusnPrsnlPropLimitTerm?.Value

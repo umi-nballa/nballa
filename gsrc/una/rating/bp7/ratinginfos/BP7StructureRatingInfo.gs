@@ -39,8 +39,9 @@ class BP7StructureRatingInfo {
     _predominantOccupancyType = building?.PropertyType
     _constructionType = building?.ConstructionType
 
-    _businessIncomeExtraExpenseLimit = line?.BP7BuildingBusinessIncomeExtraExpense_EXT?.BP7AnnualBI_EXTTerm?.Value
-    _businessIncomeExtraExpenseNumberOfMonths = line?.BP7BuildingBusinessIncomeExtraExpense_EXT?.BP7NumberOfMonths_EXTTerm?.DisplayValue
+    _businessIncomeExtraExpenseLimit = building.Classifications?.first()?.BP7ClassificationBusiIncomeExtraExpense_EXT?.BP7AnnualBI_EXTTerm?.Value
+    _businessIncomeExtraExpenseNumberOfMonths = building.Classifications?.first()?.BP7ClassificationBusiIncomeExtraExpense_EXT?.BP7NumberOfMonths_EXTTerm?.DisplayValue
+
     _businessLiabilityOccurrenceLimit = line?.BP7BusinessLiability?.BP7EachOccLimitTerm?.Value.intValue()
     _protectionClassCode = building?.OverrideDwellingPCCode_Ext? building?.DwellingPCCodeOverridden_Ext : building?.DwellingProtectionClassCode
     if(_protectionClassCode.contains('/')){

@@ -279,10 +279,10 @@ class CoveragesUtil {
         break
       case "DPLI_Med_Pay_HOE":
         covTermsToInitialize.add((coverable as HomeownersLine_HOE).DPLI_Med_Pay_HOE.DPLI_MedPay_Limit_HOETerm)
-        initDPLIMedPayOrPL_Cov_HOE(coveragePattern,coverable)
+        initDPLIMedPayCov_HOE(coveragePattern,coverable)
         break
       case "DPLI_Personal_Liability_HOE":
-        initDPLIMedPayOrPL_Cov_HOE(coveragePattern,coverable)
+        initDPLIPersLiabCov_HOE(coveragePattern,coverable)
         break
       case "DPDW_FairRentalValue_Ext":
         covTermsToInitialize.add((coverable as Dwelling_HOE).DPDW_FairRentalValue_Ext.DPDW_FairRentalValue_ExtTerm)
@@ -348,12 +348,18 @@ class CoveragesUtil {
     }
   }
 
-  private static function initDPLIMedPayOrPL_Cov_HOE(covPattern:String,coverable:Coverable){
+  private static function initDPLIMedPayCov_HOE(covPattern:String,coverable:Coverable){
     if(coverable.PolicyLine.BaseState == TC_HI && (coverable as HomeownersLine_HOE).HOPolicyType == TC_DP3_Ext){
-      if(covPattern === "DPLI_Personal_Liability_HOE" and !((coverable as HomeownersLine_HOE).DPLI_Med_Pay_HOEExists) ){
-        (coverable as HomeownersLine_HOE).createCoverage("DPLI_Med_Pay_HOE")
-      }else if(covPattern === "DPLI_Med_Pay_HOE" and !((coverable as HomeownersLine_HOE).DPLI_Personal_Liability_HOEExists) ){
+      if(covPattern === "DPLI_Med_Pay_HOE" and (coverable as HomeownersLine_HOE).DPLI_Personal_Liability_HOEExists == false ){
         (coverable as HomeownersLine_HOE).createCoverage("DPLI_Personal_Liability_HOE")
+      }
+    }
+  }
+
+  private static function initDPLIPersLiabCov_HOE(covPattern:String,coverable:Coverable){
+    if(coverable.PolicyLine.BaseState == TC_HI && (coverable as HomeownersLine_HOE).HOPolicyType == TC_DP3_Ext){
+      if(covPattern === "DPLI_Personal_Liability_HOE" and (coverable as HomeownersLine_HOE).DPLI_Med_Pay_HOEExists == false ){
+        (coverable as HomeownersLine_HOE).createCoverage("DPLI_Med_Pay_HOE")
       }
     }
   }
@@ -611,11 +617,13 @@ class CoveragesUtil {
   }
 
   private static function isInterruptionComputerOpsCovAvailable(bp7Line:BP7BusinessOwnersLine):boolean{
-    if(bp7Line.BP7BuildingBusinessIncomeExtraExpense_EXT.BP7NumberOfMonths_EXTTerm.OptionValue!=null &&
-        !bp7Line.BP7BuildingBusinessIncomeExtraExpense_EXT.BP7NumberOfMonths_EXTTerm.OptionValue.OptionCode.equalsIgnoreCase("BP7NoCoverage_EXT")){
-      return true
+    for(classification in bp7Line.AllClassifications){
+      if(classification.BP7ClassificationBusiIncomeExtraExpense_EXT.BP7NumberOfMonths_EXTTerm.OptionValue!=null &&
+          !classification.BP7ClassificationBusiIncomeExtraExpense_EXT.BP7NumberOfMonths_EXTTerm.OptionValue.OptionCode.equalsIgnoreCase("BP7NoCoverage_EXT")){
+        return true
+      }
     }
-    return false
+  return false
   }
 
 

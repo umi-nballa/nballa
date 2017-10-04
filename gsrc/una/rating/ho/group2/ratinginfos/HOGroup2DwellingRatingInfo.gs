@@ -27,6 +27,8 @@ class HOGroup2DwellingRatingInfo extends HOCommonDwellingRatingInfo {
   var _higherEQDeductible: boolean as HigherEQDeductible = false
   var _increasedPersonalPropertyExists : boolean as IncreasedPersonalPropertyExists = false
   var _ho3HigherEQDeductible: boolean as HO3HigherEQDeductibleExists = false
+  var _waterBackupSumpOverflowLimit : BigDecimal as WaterBackupSumpOverflowLimit
+
 
 
 
@@ -68,6 +70,10 @@ class HOGroup2DwellingRatingInfo extends HOCommonDwellingRatingInfo {
 
      _eqZone = dwelling.EarthQuakeTerritoryOrOverride
      _eqConstruction = dwelling.EarthquakeConstrn_Ext
+   }
+
+   if(dwelling.HODW_WaterBackUpSumpOverflow_HOE_ExtExists){
+     _waterBackupSumpOverflowLimit = dwelling.HODW_WaterBackUpSumpOverflow_HOE_Ext.HODW_WaterBackup_Limit_HOETerm.Value
    }
 
 

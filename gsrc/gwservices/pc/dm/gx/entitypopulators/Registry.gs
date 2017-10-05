@@ -145,6 +145,17 @@ uses gwservices.pc.dm.gx.lob.bop.bp7linecovmodel.anonymous.elements.BP7LineCov_C
 uses gwservices.pc.dm.gx.lob.bop.bp7classificationcovmodel.anonymous.elements.BP7ClassificationCov_CovTerms_Entry
 uses gwservices.pc.dm.gx.lob.ho.dwelling_hoemodel.anonymous.elements.Dwelling_HOE_DwellingProtectionDetails
 uses gwservices.pc.dm.gx.lob.ho.DwellingProtctnDetailsPopulator
+uses gwservices.pc.dm.gx.base.policy.policyperiodmodel.anonymous.elements.PolicyPeriod_CreditInfoExt
+uses gwservices.pc.dm.gx.shared.general.CreditInfoExtPopulator
+uses gwservices.pc.dm.gx.shared.general.CreditReportExtPopulator
+uses gwservices.pc.dm.gx.shared.general.creditinfoextmodel.anonymous.elements.CreditInfoExt_CreditReport
+uses gwservices.pc.dm.gx.base.policy.policyperiodmodel.anonymous.elements.PolicyPeriod_SelectedPaymentPlan
+uses gwservices.pc.dm.gx.shared.plan.PaymentPlanPopulator
+uses gwservices.pc.dm.gx.lob.ho.dwelling_hoemodel.anonymous.elements.Dwelling_HOE_PlumbingTypes_Ext
+uses gwservices.pc.dm.gx.base.policy.TypekeyArray_ExtPopulator
+uses gwservices.pc.dm.gx.lob.ho.dwelling_hoemodel.anonymous.attributes.Dwelling_HOE_PolicyLocations_Entry_Action
+uses gwservices.pc.dm.gx.base.policy.typekeyarray_extmodel.anonymous.elements.TypekeyArray_Ext_TypeCodes_Entry
+uses gwservices.pc.dm.gx.shared.plan.paymentplansummarymodel.anonymous.elements.PaymentPlanSummary_AllowedPaymentMethods_Entry
 
 /**
  * Entity populator registry
@@ -218,6 +229,7 @@ class Registry {
       PolicyLine_Entity_HomeownersLine_HOE_HOLineCoverages_Entry -> getConstructor(CoveragePopulator),
       Dwelling_HOE_Coverages_Entry -> getConstructor(CoveragePopulator),
       Dwelling_HOE_DwellingProtectionDetails -> getConstructor(DwellingProtctnDetailsPopulator),
+      Dwelling_HOE_PlumbingTypes_Ext -> getConstructor(TypekeyArray_ExtPopulator),
       CPBuilding_AdditionalInterests_Entry -> getConstructor(CPBldngAddlPopulator),
       CPBuilding_Coverages_Entry -> getConstructor(CoveragePopulator),
       PolicyLine_Entity_CommercialPropertyLine_CPLocations_Entry -> getConstructor(CPLocationPopluator),
@@ -241,9 +253,10 @@ class Registry {
       PolicyLine_Entity_BP7BusinessOwnersLine_AllClassifications_Entry -> getConstructor(BP7AllClassificationPopulator),
       PolicyLine_Entity_BP7BusinessOwnersLine_Blankets_Entry -> getConstructor(BP7BlanketPopulators),
       PolicyLine_Entity_BP7BusinessOwnersLine_BP7LineCoverages_Entry -> getConstructor(CoveragePopulator),
-      BP7Building_BldgUnits_Entry -> getConstructor(BP7BldngUnitsPopulator)
-
-
+      BP7Building_BldgUnits_Entry -> getConstructor(BP7BldngUnitsPopulator),
+      PolicyPeriod_CreditInfoExt -> getConstructor(CreditInfoExtPopulator),
+      CreditInfoExt_CreditReport -> getConstructor(CreditReportExtPopulator),
+      PolicyPeriod_SelectedPaymentPlan -> getConstructor(PaymentPlanPopulator)
   }
   /** Items that should not be populated */
   private var _doNotPopulate: List<IType> as DoNotPopulate = {
@@ -253,7 +266,9 @@ class Registry {
       Policy_Account,
       UWIssue_IssueType,
       Policy_Account,
+      TypekeyArray_Ext_TypeCodes_Entry,
       DwellingCov_HOE_CovTerms_Entry,
+      PaymentPlanSummary_AllowedPaymentMethods_Entry,
       CPBuildingCov_CovTerms_Entry,
       HomeownersLineCov_HOE_CovTerms_Entry,
       BP7LocationCov_CovTerms_Entry,

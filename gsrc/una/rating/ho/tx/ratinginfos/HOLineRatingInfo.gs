@@ -1,8 +1,7 @@
 package una.rating.ho.tx.ratinginfos
 
 uses java.math.BigDecimal
-
-
+uses una.rating.util.HONumberOfFamiliesMapper
 
 /**
  * User: bduraiswamy
@@ -44,8 +43,7 @@ class HOLineRatingInfo {
       _dpPremiseLiabilityLimit = line.DPLI_Premise_Liability_HOE_Ext?.DPLI_Premise_LiabilityLimit_HOETerm?.Value?.intValue()
     }
 
-    //TODO update code when Number of Families is implemented
-    _numberOfFamilies = 1
+    _numberOfFamilies = HONumberOfFamiliesMapper.getNumberOfFamilies(line.Dwelling.ResidenceType)
 
   }
 }

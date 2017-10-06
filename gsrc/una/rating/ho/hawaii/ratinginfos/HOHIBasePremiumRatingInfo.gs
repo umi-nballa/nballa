@@ -1,8 +1,7 @@
 package una.rating.ho.hawaii.ratinginfos
 
 uses una.rating.ho.common.HOCommonBasePremiumRatingInfo
-
-
+uses una.rating.util.HONumberOfFamiliesMapper
 
 /**
  * Created with IntelliJ IDEA.
@@ -30,7 +29,7 @@ class HOHIBasePremiumRatingInfo extends HOCommonBasePremiumRatingInfo{
       } else if(dwelling?.DwellingUsage == typekey.DwellingUsage_HOE.TC_SEC and dwelling?.Occupancy == typekey.DwellingOccupancyType_HOE.TC_NONOWN){
         TownHouseOrRowhouseUsage = TC_TenantSeasonal
       }
-      NumberOfFamilies = dwelling.NumUnitsFireDivision_Ext.toInt()
+      NumberOfFamilies = HONumberOfFamiliesMapper.getNumberOfFamilies(dwelling.ResidenceType)
       if(TownHouseOrRowhouseUsage != null){
         TownHouseOrRowHouse = true
       }

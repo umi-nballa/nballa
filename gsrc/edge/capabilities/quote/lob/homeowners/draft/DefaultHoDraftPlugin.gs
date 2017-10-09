@@ -259,9 +259,6 @@ class DefaultHoDraftPlugin implements ILobDraftPlugin<HoDraftDataExtensionDTO>{
    * calls DwellingUtil.fillBaseProperties on a DTO object.
    */
   protected function toYourHomeDTO(dwelling : Dwelling_HOE) : YourHomeDTO {
-    if (dwelling.ReplacementCost == null){
-      return null
-    }
 
     final var res = new YourHomeDTO()
     YourHomeUtil.fillBaseProperties(res, dwelling)

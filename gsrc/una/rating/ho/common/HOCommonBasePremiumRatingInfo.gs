@@ -6,6 +6,7 @@ uses una.rating.util.HOConstructionTypeMapper
 uses java.math.BigDecimal
 uses java.util.Date
 uses gw.api.util.DateUtil
+uses una.rating.util.HONumberOfFamiliesMapper
 
 /**
  * Created with IntelliJ IDEA.
@@ -67,10 +68,6 @@ class HOCommonBasePremiumRatingInfo {
         }
     }
 
-
-    //var dwellingConstructionType = dwelling.OverrideConstructionType_Ext? dwelling.ConstTypeOverridden_Ext : dwelling.ConstructionType
-    //var exteriorWallFinish = dwelling.OverrideExteriorWFval_Ext? dwelling.ExteriorWFvalueOverridden_Ext : dwelling.ExteriorWallFinish_Ext
-
     _constructionType = HOConstructionTypeMapper.setConstructionType(dwelling, dwelling.HOLine.BaseState)
 
     _keyFactorGreaterLimit = ConfigParamsUtil.getInt(TC_KEYFACTORGREATERLIMIT, dwelling.CoverableState, dwelling.HOLine.HOPolicyType.Code)
@@ -79,12 +76,7 @@ class HOCommonBasePremiumRatingInfo {
     _keyFactorLowerBound = keyFactorRange.LowerBound
     _keyFactorUpperBound = keyFactorRange.UpperBound
 
-    //TODO Update when number of families is implemented
-    if(dwelling?.ResidenceType == ResidenceType_HOE.TC_TOWNHOUSEROWHOUSE_EXT){
-      _numberOfFamilies = dwelling?.NumUnitsFireDivision_Ext?.toInt()
-    }else{
-     _numberOfFamilies = 1
-    }
+    _numberOfFamilies = HONumberOfFamiliesMapper.getNumberOfFamilies(dwelling.ResidenceType)
 
     _protectionClassCode = dwelling.ProtectionClassCodeOrOverride
     _personalPropertyLimit = dwelling?.PersonalPropertyLimitCovTerm?.Value

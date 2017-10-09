@@ -55,12 +55,11 @@ class KeywordAdaptor {
           _keywordMap.put(keyword, k.Value)
         } else {
 
-          if (typeof keywordVal == List) {
-            var list = keywordVal as List<Object>
-            list.add(k.Value)
-          } else {
-            _keywordMap.put(keyword, new ArrayList<Object>({keywordVal, k.Value}))
-          }
+            if(keywordVal typeis List) {
+                keywordVal.add(k.Value)
+            } else {
+                _keywordMap.put(keyword, new ArrayList<Object>({keywordVal, k.Value}))
+            }
         }
       })
     } catch (ex: IllegalArgumentException) {

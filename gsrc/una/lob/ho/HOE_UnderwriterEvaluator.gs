@@ -60,9 +60,9 @@ class HOE_UnderwriterEvaluator extends AbstractUnderwriterEvaluator {
   }
 
   function invokeRulesEngine() {
-//    RulesEngineInterface.evaluatePolicy(
-//        _policyEvalContext,
-//            "HomeownersLine_HOE")
+    RulesEngineInterface.evaluatePolicy(
+        _policyEvalContext,
+            "HomeownersLine_HOE")
   }
 
   override function onPreBind(){

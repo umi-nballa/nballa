@@ -103,7 +103,9 @@ class RenewalAutoCompleteBatchProcess extends AbstractPolicyPeriodBatchProcess {
     {
 
       eligibleRenewalPeriod.Bundle.add(elt)
-      elt.complete()
+      if (elt.canComplete()) {
+        elt.complete()
+      }
 
       completedActivities.add(elt.DisplayName)
     })

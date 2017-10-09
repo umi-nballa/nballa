@@ -16,8 +16,9 @@ class LocalDateDTO {
   @Range(0, 5000)
   private var _year : int as Year
 
+  /** Zero-based month of the year. It is zero-based, same as in JS and Java. January is 0, December is 11. */
   @JsonProperty
-  @Range(0, 12)
+  @Range(0, 11)
   private var _month : int as Month
 
   /** Day of the month. */

@@ -15,13 +15,14 @@
         <s:sequence>
           <s:element minOccurs="0" maxOccurs="1" name="PersonalPolicy" type="s1:PolicyDetailRequest"/>
           <s:element minOccurs="0" maxOccurs="1" name="CommercialPolicy" type="s2:PolicyDetailRequest"/>
-          <s:element minOccurs="1" maxOccurs="1" name="policyEdition" nillable="true" type="s:int"/>
+          <s:element minOccurs="1" maxOccurs="1" name="policyEdition" type="s:int"/>
           <s:element minOccurs="1" maxOccurs="1" name="premiumAmt" nillable="true" type="s:decimal"/>
           <s:element minOccurs="1" maxOccurs="1" name="balanceTotal" nillable="true" type="s:decimal"/>
           <s:element minOccurs="1" maxOccurs="1" name="balanceDue" nillable="true" type="s:decimal"/>
           <s:element minOccurs="1" maxOccurs="1" name="balanceDueDate" nillable="true" type="s:dateTime"/>
           <s:element minOccurs="0" maxOccurs="1" name="Histories" type="tns:ArrayOfPolicyHistoryRequest"/>
           <s:element minOccurs="0" maxOccurs="1" name="callingCenter" type="s:string"/>
+          <s:element minOccurs="0" maxOccurs="1" name="legacyPolicyNumber" type="s:string"/>
         </s:sequence>
       </s:complexType>
       <s:complexType name="ArrayOfPolicyHistoryRequest">
@@ -33,8 +34,8 @@
         <s:sequence>
           <s:element minOccurs="0" maxOccurs="1" name="PolicyNumber" type="s:string"/>
           <s:element minOccurs="1" maxOccurs="1" name="PolicyEdition" type="s:int"/>
-          <s:element minOccurs="1" maxOccurs="1" name="EffectiveDate" nillable="true" type="s:dateTime"/>
-          <s:element minOccurs="1" maxOccurs="1" name="ExpirationDate" nillable="true" type="s:dateTime"/>
+          <s:element minOccurs="1" maxOccurs="1" name="EffectiveDate" type="s:dateTime"/>
+          <s:element minOccurs="1" maxOccurs="1" name="ExpirationDate" type="s:dateTime"/>
           <s:element minOccurs="1" maxOccurs="1" name="ModifiedDate" type="s:dateTime"/>
           <s:element minOccurs="1" maxOccurs="1" name="CreateDate" type="s:dateTime"/>
           <s:element minOccurs="1" maxOccurs="1" name="Success" nillable="true" type="s:boolean"/>
@@ -51,9 +52,9 @@
       <s:complexType name="PolicyHistoryNotesRequest">
         <s:sequence>
           <s:element minOccurs="0" maxOccurs="1" name="Title" type="s:string"/>
-          <s:element minOccurs="1" maxOccurs="1" name="DateEntered" nillable="true" type="s:dateTime"/>
+          <s:element minOccurs="1" maxOccurs="1" name="DateEntered" type="s:dateTime"/>
           <s:element minOccurs="0" maxOccurs="1" name="EnteredBy" type="s:string"/>
-          <s:element minOccurs="1" maxOccurs="1" name="DateLastUpdated" nillable="true" type="s:dateTime"/>
+          <s:element minOccurs="1" maxOccurs="1" name="DateLastUpdated" type="s:dateTime"/>
           <s:element minOccurs="0" maxOccurs="1" name="Remarks" type="s:string"/>
         </s:sequence>
       </s:complexType>
@@ -117,6 +118,33 @@
           </s:sequence>
         </s:complexType>
       </s:element>
+      <s:element name="PersonalQuote_UPSERT">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="model" type="tns:QuoteRequestModel"/>
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:complexType name="QuoteRequestModel">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="1" name="QuoteNumber" type="s:string"/>
+          <s:element minOccurs="1" maxOccurs="1" name="QuoteStatus" type="s:int"/>
+        </s:sequence>
+      </s:complexType>
+      <s:element name="PersonalQuote_UPSERTResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="PersonalQuote_UPSERTResult" type="tns:QuoteResponseModel"/>
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:complexType name="QuoteResponseModel">
+        <s:sequence>
+          <s:element minOccurs="1" maxOccurs="1" name="Status" type="s:int"/>
+          <s:element minOccurs="0" maxOccurs="1" name="Error" type="s:string"/>
+          <s:element minOccurs="0" maxOccurs="1" name="Success" type="s:string"/>
+        </s:sequence>
+      </s:complexType>
     </s:schema>
     <s:schema targetNamespace="PersonalLines" elementFormDefault="qualified">
       <s:complexType name="PolicyDetailRequest">
@@ -200,6 +228,7 @@
         <s:attribute name="prevBalDue" type="s:string"/>
         <s:attribute name="totalPremPaid" type="s:string"/>
         <s:attribute name="totalTermPrem" type="s:string"/>
+        <s:attribute name="payPlan" type="s:string"/>
       </s:complexType>
       <s:complexType name="Agency">
         <s:sequence>
@@ -713,6 +742,15 @@
   <wsdl:message name="CommercialPolicy_UPSERTQuoteAuthenticationHeader">
     <wsdl:part name="QuoteAuthenticationHeader" element="tns:QuoteAuthenticationHeader"/>
   </wsdl:message>
+  <wsdl:message name="PersonalQuote_UPSERTSoapIn">
+    <wsdl:part name="parameters" element="tns:PersonalQuote_UPSERT"/>
+  </wsdl:message>
+  <wsdl:message name="PersonalQuote_UPSERTSoapOut">
+    <wsdl:part name="parameters" element="tns:PersonalQuote_UPSERTResponse"/>
+  </wsdl:message>
+  <wsdl:message name="PersonalQuote_UPSERTQuoteAuthenticationHeader">
+    <wsdl:part name="QuoteAuthenticationHeader" element="tns:QuoteAuthenticationHeader"/>
+  </wsdl:message>
   <wsdl:portType name="PolicyServiceSoap">
     <wsdl:operation name="PersonalPolicy_UPSERT">
       <wsdl:input message="tns:PersonalPolicy_UPSERTSoapIn"/>
@@ -721,6 +759,10 @@
     <wsdl:operation name="CommercialPolicy_UPSERT">
       <wsdl:input message="tns:CommercialPolicy_UPSERTSoapIn"/>
       <wsdl:output message="tns:CommercialPolicy_UPSERTSoapOut"/>
+    </wsdl:operation>
+    <wsdl:operation name="PersonalQuote_UPSERT">
+      <wsdl:input message="tns:PersonalQuote_UPSERTSoapIn"/>
+      <wsdl:output message="tns:PersonalQuote_UPSERTSoapOut"/>
     </wsdl:operation>
   </wsdl:portType>
   <wsdl:binding name="PolicyServiceSoap" type="tns:PolicyServiceSoap">
@@ -745,6 +787,16 @@
         <soap:body use="literal"/>
       </wsdl:output>
     </wsdl:operation>
+    <wsdl:operation name="PersonalQuote_UPSERT">
+      <soap:operation soapAction="http://policyservice.policy.api.uihna.com/PersonalQuote_UPSERT" style="document"/>
+      <wsdl:input>
+        <soap:body use="literal"/>
+        <soap:header message="tns:PersonalQuote_UPSERTQuoteAuthenticationHeader" part="QuoteAuthenticationHeader" use="literal"/>
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal"/>
+      </wsdl:output>
+    </wsdl:operation>
   </wsdl:binding>
   <wsdl:binding name="PolicyServiceSoap12" type="tns:PolicyServiceSoap">
     <soap12:binding transport="http://schemas.xmlsoap.org/soap/http"/>
@@ -763,6 +815,16 @@
       <wsdl:input>
         <soap12:body use="literal"/>
         <soap12:header message="tns:CommercialPolicy_UPSERTQuoteAuthenticationHeader" part="QuoteAuthenticationHeader" use="literal"/>
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal"/>
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="PersonalQuote_UPSERT">
+      <soap12:operation soapAction="http://policyservice.policy.api.uihna.com/PersonalQuote_UPSERT" style="document"/>
+      <wsdl:input>
+        <soap12:body use="literal"/>
+        <soap12:header message="tns:PersonalQuote_UPSERTQuoteAuthenticationHeader" part="QuoteAuthenticationHeader" use="literal"/>
       </wsdl:input>
       <wsdl:output>
         <soap12:body use="literal"/>

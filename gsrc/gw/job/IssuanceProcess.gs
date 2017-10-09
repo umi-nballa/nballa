@@ -6,6 +6,7 @@ uses gw.job.permissions.IssuancePermissions
 uses gw.plugin.messaging.BillingMessageTransport
 uses java.lang.IllegalArgumentException
 uses java.util.Date
+uses una.integration.plugins.portal.PolicyRefreshTransport
 
 /**
  * Encapsulates the actions taken within an Issuance Job.
@@ -82,6 +83,7 @@ class IssuanceProcess extends JobProcess {
     prepareBranchForFinishingJob()
     _branch.Job.copyUsersFromJobToPolicy()
     createBillingEventMessages()
+    createPortalRefreshEventMessages()
     if (_branch.hasScheduledFinalAudit()) {
       if (_branch.PeriodStart != _branch.BasedOn.PeriodStart or _branch.PeriodEnd != _branch.BasedOn.PeriodEnd) {
         _branch.removeScheduledFinalAudit()
@@ -169,10 +171,14 @@ class IssuanceProcess extends JobProcess {
     return internalCanStartCopyPolicyData()
   }
 
-  override function issueJob(bindAndIssue : boolean) {
-    if (not bindAndIssue) {
-      throw new IllegalArgumentException("Bind-only not allowed for Issuance")
+    override function issueJob(bindAndIssue: boolean) {
+        if (not bindAndIssue) {
+            throw new IllegalArgumentException("Bind-only not allowed for Issuance")
+        }
+        issue()
     }
-    issue()
-  }
+
+    override function createPortalRefreshEventMessages() {
+        _branch.addEvent(PolicyRefreshTransport.REFRESH_MSG)
+    }
 }

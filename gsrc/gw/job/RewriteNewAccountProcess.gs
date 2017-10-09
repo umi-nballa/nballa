@@ -10,6 +10,7 @@ uses java.util.Date
 uses gw.api.web.util.TransactionUtil
 uses java.lang.Exception
 uses gw.api.system.PCLoggerCategory
+uses una.integration.plugins.portal.PolicyRefreshTransport
 
 /**
  * Encapsulates the actions taken within a RewriteNewAccount job.
@@ -94,6 +95,7 @@ class RewriteNewAccountProcess extends NewTermProcess {
     _branch.Job.copyUsersFromJobToPolicy()
     prepareBranchForFinishingJob()
     createBillingEventMessages()
+    createPortalRefreshEventMessages()
     _branch.scheduleAllAudits()  // ? need to double check on this
     _branch.updatePolicyTermDepositAmount()
     _branch.PolicyTerm.Bound = true
@@ -152,8 +154,12 @@ class RewriteNewAccountProcess extends NewTermProcess {
   /**
    * Remove RewrittenToNewAccount flag from old Policy.
    */
-  override protected function withdrawWithoutCheckingConditions() {
-    _branch.Policy.clearPolicyLinksForRewriteNewAccount()
-    super.withdrawWithoutCheckingConditions()
-  }
+    override protected function withdrawWithoutCheckingConditions() {
+        _branch.Policy.clearPolicyLinksForRewriteNewAccount()
+        super.withdrawWithoutCheckingConditions()
+    }
+
+    override function createPortalRefreshEventMessages() {
+        _branch.addEvent(PolicyRefreshTransport.REFRESH_MSG)
+    }
 }

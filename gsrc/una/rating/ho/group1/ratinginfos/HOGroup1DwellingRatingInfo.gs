@@ -136,8 +136,8 @@ class HOGroup1DwellingRatingInfo extends HOCommonDwellingRatingInfo {
       _modifiedReplacementCost = dwelling.HODW_SpecificAddAmt_HOE_Ext.HODW_AdditionalAmtInsurance_HOETerm.Value
     }
 
-    if(dwelling.YearBuilt < 1930 and dwelling.Dwellingbolted_Ext == true and (dwelling.Cripplewalls_Ext == "Yes" or dwelling.Cripplewalls_Ext == "NotApplicable")
-          and (dwelling.Masonrychimney_Ext == "Yes" or dwelling.Masonrychimney_Ext == "NotApplicable")) {
+    if(dwelling.YearBuiltOrOverride < 1930 and dwelling.Dwellingbolted_Ext == true and (dwelling.Cripplewalls_Ext == typekey.Cripplewalls_Ext.TC_YES  or dwelling.Cripplewalls_Ext == typekey.Cripplewalls_Ext.TC_NOTAPPLICABLE)
+          and (dwelling.Masonrychimney_Ext == typekey.Masonrychimney_Ext.TC_YES or dwelling.Masonrychimney_Ext == typekey.Masonrychimney_Ext.TC_NOTAPPLICABLE)) {
       _retrofitCreditApplies = true
     }
 

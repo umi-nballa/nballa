@@ -6,6 +6,8 @@ uses gwservices.pc.dm.batch.DataMigrationNonFatalException
 uses gwservices.pc.dm.batch.DataMigrationNonFatalException.CODE
 uses gwservices.pc.dm.gx.entitypopulators.BaseEntityPopulator
 uses gwservices.pc.dm.gx.shared.product.covtermmodel.types.complex.CovTerm
+uses gw.api.web.productmodel.MissingRequiredCoverageIssue
+uses gw.api.web.productmodel.MissingCovTermIssue
 
 abstract class AbstractCovTermPopulator<C extends KeyableBean, P extends KeyableBean> extends BaseEntityPopulator<C, P> {
   /* Logging prefix */
@@ -14,6 +16,7 @@ abstract class AbstractCovTermPopulator<C extends KeyableBean, P extends Keyable
    * Populate a coverage term
    */
   protected function populateCovTerm(covTermModel: CovTerm, coverage: Coverage) {
+    var covTermAvailable = coverage.OwningCoverable.isCovTermAvailable(covTermModel.PatternCode)
     if (covTermModel == null) {
       var msg = "null coverage term"
       throw new DataMigrationNonFatalException(CODE.MISSING_COVERAGE_TERM, msg)
@@ -25,6 +28,13 @@ abstract class AbstractCovTermPopulator<C extends KeyableBean, P extends Keyable
     }
     var covTerm = coverage.getCovTerm(covTermModel.PatternCode)
     if (covTerm == null) {
+      var missingCovSyncIssue = new MissingCovTermIssue(covTermModel.PatternCode, coverage)
+      missingCovSyncIssue.fixIssue(coverage.OwningCoverable.PolicyLine.AssociatedPolicyPeriod)
+      covTerm = coverage.getCovTerm(covTermModel.PatternCode)
+    }
+    if (covTerm == null) {
+      var missingCovSyncIssue = new MissingCovTermIssue(covTermModel.PatternCode, coverage)
+      missingCovSyncIssue.fixIssue(coverage.OwningCoverable.PolicyLine.AssociatedPolicyPeriod)
       var msg = "${covTermModel.PatternCode} not available"
       throw new DataMigrationNonFatalException(CODE.INVALID_COVERAGE_TERM, msg)
     }

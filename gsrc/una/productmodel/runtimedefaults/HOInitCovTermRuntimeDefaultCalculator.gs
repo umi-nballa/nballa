@@ -77,6 +77,10 @@ class HOInitCovTermRuntimeDefaultCalculator extends HOCovTermRuntimeDefaultCalcu
       case "HODW_EQDwellingLimit_HOE_Ext":
         result = line.Dwelling.DwellingLimitCovTerm.Value
         break
+      case "HODW_OnPremises_Limit_HOE":
+        if(line.Dwelling.HODW_Dwelling_Cov_HOE.HODW_ExecutiveCov_HOE_ExtTerm.Value){
+          result = 10000
+        }
       case "HODW_OffPremises_Limit_HOE":
         result = getOffPremisesLimitDefault(line)
         break

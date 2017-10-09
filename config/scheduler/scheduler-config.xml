@@ -140,6 +140,13 @@
     </ProcessSchedule>
     <!-- Lexis First-->
 
+    <!-- Send any pending future dated Policy Refresh changes at every day at 12:45 AM -->
+    <ProcessSchedule process="PolicyRefreshFutureDatedTrans">
+        <CronSchedule hours="0" minutes="45" />
+    </ProcessSchedule>
+    <!-- -->
+
+
     <!-- Delete unused, closed Jobs and Policy Periods at 4:30 AM  Disabled by default -->
     <!--  <ProcessSchedule process="Purge">
         <CronSchedule hours="4" minutes="30"/>

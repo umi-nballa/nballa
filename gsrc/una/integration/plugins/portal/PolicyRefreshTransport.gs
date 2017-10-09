@@ -88,7 +88,7 @@ class PolicyRefreshTransport extends AbstractMessageTransport implements Initial
     }
 
     public  function sendPersonalPolicyUPSERT( message: Message) {
-        _logger.debug("Sending personal policy UPSERT request...")
+
         var policyPeriod = message.PolicyPeriod
 
         var service = new wsi.remote.una.portalpolicyservice.policyservice.PolicyService()
@@ -106,7 +106,8 @@ class PolicyRefreshTransport extends AbstractMessageTransport implements Initial
         //policies.print()
 
         var response = service.PersonalPolicy_UPSERT(policies, authHeader)
-        _logger.debug("Status: ${response.Status} Result: ${response.Result.PolicyNumber} Portal PolicyID:${response.Result.PolicyID} Message:${response.Result.Message}")
+        _logger.debug("Response: {}", response)
+        print("Status: " + response.Status + "\nResult: " + response.Result.PolicyNumber + "\nPolicyID:${response.Result.PolicyID}\nMessage:${response.Result.Message}")
 
         if (response == null) {
             var description = "No response recieved from Portal"
@@ -114,6 +115,7 @@ class PolicyRefreshTransport extends AbstractMessageTransport implements Initial
             message.ErrorDescription = description
             message.reportError(ErrorCategory.TC_SYSTEM_ERROR)
         } else if (response.Status == 0) {
+            _logger.debug(response.Result)
             message.reportAck()
         } else {
             _logger.error(response.Error)
@@ -349,9 +351,21 @@ class PolicyRefreshTransport extends AbstractMessageTransport implements Initial
                         }
                 },
             : Loan = new ArrayList<Home_Loan>() {}, //Leaving this  empty, the Portal team said it is not used - CLM - 08/16/2017
-            : Endorsements = getEndorsements(policyPeriod, coveragesList)
+            : Endorsements = getEndorsements(policyPeriod, coveragesList),
+            //TODO: Move to CC
+            : Claims = new Home_Claims()
+                {
+                    : Claim = new ArrayList<Claims_Claim>()
+                    {
+                        //                      new Claims_Claim()
+                        //                          {
+                        //                             :ClaimNum = "23FEEE5849", :LossDt = "2017-11-11", :LossPd = "300", :ReportedDt = "2017-11-11", :Status = "Closed"
+                        //                          }
+                    }
+                }
         }
 
+        print("address: " + policyPeriod.HomeownersLine_HOE.HOLocation.PolicyLocation.AddressType)
         //Add NamedStorm deductible
         if (dwelling.HODW_SectionI_Ded_HOE.HasHODW_NamedStrom_Ded_HOE_ExtTerm){
             //if gt 0 and LT 1, multiple by COVA for $AMOUNT else is Dollar amt per shane
@@ -384,6 +398,7 @@ class PolicyRefreshTransport extends AbstractMessageTransport implements Initial
             costModelList.each(\costModel ->
             {
                 var propCov: Prop_Coverage = null
+                //print("${costModel.Coverage.PatternCode} :: ${costModel.Coverage.Pattern.Name} :: ${costModel.LimitDisplayValue ?: costModel.LimitValue} :: ${costModel.PremiumDisplayValue}")
                 if (costModel.Coverage.PatternCode == "HODW_Dwelling_Cov_HOE" || costModel.Coverage.PatternCode == "DPDW_Dwelling_Cov_HOE") {
                     propCov = new Prop_Coverage() { : CovALimit = costModel.LimitValue?.intValue(), : CovAPrem = costModel.Premium }
                 } else if (costModel.Coverage.PatternCode == "HODW_Other_Structures_HOE" || costModel.Coverage.PatternCode == "DPDW_Other_Structures_HOE") {
@@ -413,6 +428,7 @@ class PolicyRefreshTransport extends AbstractMessageTransport implements Initial
             var costModelList = una.pageprocess.QuoteScreenPCFController.getCostModels(cov)
             costModelList.each(\costModel -> {
                 var propCov: Prop_Coverage = null
+                //print("${costModel.Coverage.PatternCode} :: ${costModel.Coverage.Pattern.Name} :: ${costModel.LimitDisplayValue ?: costModel.LimitValue} :: ${costModel.PremiumDisplayValue}")
 
                 if (costModel.Coverage.PatternCode == "HOLI_Personal_Liability_HOE" || costModel.Coverage.PatternCode == "DPLI_Personal_Liability_HOE") {
                     propCov = new Prop_Coverage() { : CovELimit = costModel.LimitValue?.intValue(), : CovEPrem = costModel.Premium?.toString() }
@@ -433,6 +449,7 @@ class PolicyRefreshTransport extends AbstractMessageTransport implements Initial
         var endorsements = new Home_Endorsements() { : Endorsement = new ArrayList<Endorsements_Endorsement>() }
 
         policyPeriod.Forms.each(\form -> {
+            //print("${form.Pattern.Code} :: ${form.Pattern.FormDescription} :: ${form.Pattern.ClausePattern} ")
             var limit = "0"
             var premium = "0"
             form.FormAssociations.first()

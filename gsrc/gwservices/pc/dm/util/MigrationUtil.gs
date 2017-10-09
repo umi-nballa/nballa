@@ -42,7 +42,7 @@ abstract class MigrationUtil {
   public static final var _migrationRole: LockingLazyVar<Role> as MIGRATION_ROLE = LockingLazyVar.make(\-> {
     var mr = Query.make(Role).compare("Name", Equals, MIGRATION_ROLE_NAME.get()).select().FirstResult
     if (mr == null) {
-      throw new DAException("migration role not loaded")
+//      throw new DAException("migration role not loaded")
     }
     return mr
   })

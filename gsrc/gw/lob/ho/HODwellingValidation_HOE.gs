@@ -69,7 +69,7 @@ class HODwellingValidation_HOE extends PCValidationBase {
   }
   
   function validateHO3AndDP2DwellingConstructionFields() {
-    if (HODwelling.WindClass == null) {
+    if (HODwelling.WindClass == null and HODwelling.HOLine.BaseState == typekey.Jurisdiction.TC_HI) {
       addErrorOrWarning("WindClass", displaykey.Web.Policy.HomeownersLine.Validation.WindClassRequired, "HomeownersDwellingConstruction")
     }
     if (HODwelling.ConstructionCode == null) {

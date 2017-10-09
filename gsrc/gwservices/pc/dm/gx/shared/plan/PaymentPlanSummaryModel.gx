@@ -1,7 +1,9 @@
 <?xml version="1.0"?>
 <gx-model type="entity.PaymentPlanSummary" xmlns="http://guidewire.com/gx">
   <includes>
+    <include path="AllowedPaymentMethods[]" type="typekey.AccountPaymentMethod" propertyInclusionType="NORMAL"/>
     <include path="BillingId" type="java.lang.String" propertyInclusionType="NORMAL"/>
+    <include path="InvoiceFrequency" type="typekey.BillingPeriodicity" propertyInclusionType="NORMAL"/>
     <include path="Name" type="java.lang.String" propertyInclusionType="NORMAL"/>
     <include path="PublicID" type="java.lang.String" propertyInclusionType="NORMAL"/>
   </includes>

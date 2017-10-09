@@ -302,16 +302,12 @@ class CoveragesUtil {
     var results : List<gw.entity.TypeKey>
     var line = covTerm.Clause.PolicyLine
 
+    var state = covTerm.Clause.PolicyLine.BaseState
+    var policyType: typekey.HOPolicyType_HOE
+
     if(covTerm == null){
       return null
     }
-
-    if(covTerm.Pattern.TypeList != typekey.ValuationMethod) {
-      return covTerm.Pattern.OrderedAvailableValues
-    }
-
-    var state = covTerm.Clause.PolicyLine.BaseState
-    var policyType: typekey.HOPolicyType_HOE
 
     if(covTerm.Clause.OwningCoverable typeis Dwelling_HOE) {
 
@@ -319,6 +315,13 @@ class CoveragesUtil {
     } else{
 
       policyType = (covTerm.Clause.OwningCoverable as HomeownersLine_HOE).HOPolicyType
+    }
+
+    if(covTerm.Pattern.TypeList != typekey.ValuationMethod){
+      if(covTerm.Pattern.TypeList == typekey.FloodCoverageType){
+        return typekey.FloodCoverageType.getTypeKeys(false).where( \ typeCode -> typeCode.hasCategory(state) and typeCode.hasCategory(policyType))
+      }
+      return covTerm.Pattern.OrderedAvailableValues
     }
 
     results = covTerm.Pattern.OrderedAvailableValues.where( \ elt -> elt.hasCategory(policyType) and elt.hasCategory(state))

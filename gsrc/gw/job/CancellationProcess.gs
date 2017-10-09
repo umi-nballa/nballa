@@ -21,6 +21,7 @@ uses java.lang.Exception
 uses gw.api.system.PCLoggerCategory
 uses una.integration.plugins.portal.PolicyRefreshTransport
 uses java.util.Date
+uses gw.api.util.DateUtil
 
 /**
  * Encapsulates the actions taken within a Cancellation job.
@@ -705,15 +706,6 @@ class CancellationProcess extends JobProcess {
         Job.createRoleActivity(TC_UNDERWRITER,
             ActivityPattern.finder.getActivityPatternByCode("notification"),
             subject, description)
-    }
-
-    override function createPortalRefreshEventMessages() {
-
-        if(_branch.EditEffectiveDate.beforeOrEqualsIgnoreTime(new Date())) {
-            _branch.addEvent(PolicyRefreshTransport.REFRESH_MSG)
-        } else {
-            PolicyRefreshTransport.addFutureChange(_branch)
-        }
     }
 
     private class EscalationReasonChecker {

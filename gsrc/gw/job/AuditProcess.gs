@@ -272,6 +272,6 @@ class AuditProcess extends JobProcess {
     }
 
     override function createPortalRefreshEventMessages() {
-        //Do nothing
+        //Override the base to do nothing
     }
 }

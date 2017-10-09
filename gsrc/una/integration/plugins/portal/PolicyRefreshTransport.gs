@@ -87,7 +87,7 @@ class PolicyRefreshTransport extends AbstractMessageTransport implements Initial
         }
     }
 
-    public  function sendPersonalPolicyUPSERT( message: Message) { //
+    public  function sendPersonalPolicyUPSERT( message: Message) {
 
         var policyPeriod = message.PolicyPeriod
 
@@ -103,7 +103,7 @@ class PolicyRefreshTransport extends AbstractMessageTransport implements Initial
         policies.BalanceDueDate = new XmlDateTime()
         policies.LegacyPolicyNumber = policyPeriod.LegacyPolicyNumber_Ext?: ""
         policies.CallingCenter = "PC"
-        policies.print()
+        //policies.print()
 
         var response = service.PersonalPolicy_UPSERT(policies, authHeader)
         _logger.debug("Response: {}", response)

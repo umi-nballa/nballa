@@ -1466,6 +1466,12 @@
         label="displaykey.Web.Homeowners.Dwelling.PaidNonCATClaims_Ext"
         value="dwelling.PaidNonCATClaims_Ext"
         visible="dwelling.PolicyPeriod.BaseState == TC_CA &amp;&amp; dwelling.HOPolicyType == TC_DP3_Ext"/>
+      <Input
+        editable="true"
+        id="NumberOfMortgagees"
+        label="displaykey.una.dwelling.NumberOfMortgagees"
+        value="dwelling.NumberOfMortgagees_Ext"
+        visible="dwelling.PolicyPeriod.BaseState == TC_TX and {HOPolicyType_HOE.TC_TDP1_EXT, HOPolicyType_HOE.TC_TDP2_EXT, HOPolicyType_HOE.TC_TDP3_EXT}.contains(dwelling.HOPolicyType)"/>
     </InputColumn>
     <Code><![CDATA[uses gw.api.util.DisplayableException
 uses gw.api.util.LocationUtil

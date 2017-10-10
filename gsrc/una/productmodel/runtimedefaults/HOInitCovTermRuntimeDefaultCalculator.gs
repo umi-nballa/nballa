@@ -5,6 +5,7 @@ uses una.productmodel.runtimedefaults.CoverageTermsRuntimeDefaultController.CovT
 uses gw.api.domain.covterm.CovTerm
 uses una.config.ConfigParamsUtil
 uses una.utils.MathUtil
+uses java.math.BigDecimal
 
 /**
  * Created with IntelliJ IDEA.
@@ -81,6 +82,7 @@ class HOInitCovTermRuntimeDefaultCalculator extends HOCovTermRuntimeDefaultCalcu
         if(line.Dwelling.HODW_Dwelling_Cov_HOE.HODW_ExecutiveCov_HOE_ExtTerm.Value){
           result = 10000
         }
+        break
       case "HODW_OffPremises_Limit_HOE":
         result = getOffPremisesLimitDefault(line)
         break
@@ -170,7 +172,8 @@ class HOInitCovTermRuntimeDefaultCalculator extends HOCovTermRuntimeDefaultCalcu
 
   private function getOffPremisesLimitDefault(line : entity.HomeownersLine_HOE) : Double{
     var result : Double
-    var factor = (line.BaseState == TC_NC) ? 0.60bd : 0.20bd
+    var factor = ConfigParamsUtil.getDouble(TC_BusinessPropertyOffPremisesFactor, line.BaseState, line.Dwelling.HODW_Dwelling_Cov_HOE.HODW_ExecutiveCov_HOE_ExtTerm.Value?.booleanValue() as String)
+
     if(line.Dwelling.HODW_BusinessProperty_HOE_Ext.HODW_OnPremises_Limit_HOETerm.Value != null){
       result = (line.Dwelling.HODW_BusinessProperty_HOE_Ext.HODW_OnPremises_Limit_HOETerm.Value * factor).doubleValue()
     }

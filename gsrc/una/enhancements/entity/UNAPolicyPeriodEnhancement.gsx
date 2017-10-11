@@ -108,18 +108,30 @@ enhancement UNAPolicyPeriodEnhancement : entity.PolicyPeriod {
     }
   }
 
-    /**
-     * Gets the Display status for this period to show in the portal
-     */
-    public property get UNAPortalPeriodDisplayStatus() : String {
-        if (this.Status != "Bound") {
-            return this.Status.DisplayName
-        } else if (this.CancellationDate != null) {
-            return displaykey.PolicyPeriod.PortalPeriodDisplayStatus.Canceled
-        } else if (DateUtil.currentDate() >= this.PeriodEnd) {
-            return displaykey.PolicyPeriod.PortalPeriodDisplayStatus.Expired
-        } else {
-            return displaykey.PolicyPeriod.PortalPeriodDisplayStatus.InForce
-        }
-    }
+  property get HasUNAPriorCarrier() : boolean{
+    return this.Policy.PriorPolicies*.CarrierType?.contains(TC_UNA)
+  }
+
+  property get HasOtherCarrier() : boolean{
+    return this.Policy.PriorPolicies*.CarrierType?.contains(TC_OTHER)
+  }
+
+  property get HasNoPriorInsurance() : boolean{
+    return this.Policy.PriorPolicies*.CarrierType?.contains(TC_NOPRIORINS)
+  }
+
+  /**
+  * Gets the Display status for this period to show in the portal
+  */
+  public property get UNAPortalPeriodDisplayStatus() : String {
+      if (this.Status != "Bound") {
+          return this.Status.DisplayName
+      } else if (this.CancellationDate != null) {
+          return displaykey.PolicyPeriod.PortalPeriodDisplayStatus.Canceled
+      } else if (DateUtil.currentDate() >= this.PeriodEnd) {
+          return displaykey.PolicyPeriod.PortalPeriodDisplayStatus.Expired
+      } else {
+          return displaykey.PolicyPeriod.PortalPeriodDisplayStatus.InForce
+      }
+  }
 }

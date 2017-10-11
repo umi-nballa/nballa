@@ -36,7 +36,7 @@ final class YourHomeUtil extends BaseTunaValueUtil {
     dto.FirePolicyNumber = data.PolicyPeriod.MultiPolicyDiscountPolicies_Ext.firstWhere( \ p -> p.PolicyType == typekey.TypeofPolicy_Ext.TC_DWELLINGFIRE).PolicyNumber
     dto.FloodPolicyNumber = data.PolicyPeriod.MultiPolicyDiscountPolicies_Ext.firstWhere( \ p -> p.PolicyType == typekey.TypeofPolicy_Ext.TC_FLOOD).PolicyNumber
     dto.HomeownersPolicyNumber  = data.PolicyPeriod.MultiPolicyDiscountPolicies_Ext.firstWhere( \ p -> p.PolicyType == typekey.TypeofPolicy_Ext.TC_HOMEOWNER).PolicyNumber
-    dto.NumberOfUnitsBetweenFirewalls = Integer.valueOf(data.NumUnitsFireDivision_Ext)
+    dto.NumberOfUnitsBetweenFirewalls = Integer.valueOf(data.NumUnitsFireDivision_Ext ?: 0)
     dto.IsRentedToOthers = data.DwellingRentedEverToOthers_Ext
     dto.IsNewPurchase = data.HomeNewPurchase_Ext
     dto.PurchaseDateNew = data.HomePurchaseDate_Ext

@@ -125,7 +125,7 @@ class HODwellingValidation_HOE extends PCValidationBase {
     if (HODwelling.ElectricalType == null) {
       addErrorOrWarning("ElectricalType", displaykey.Web.Policy.HomeownersLine.Validation.ElectricalTypeRequired, "HomeownersDwellingConstruction")
     }
-    if (HODwelling.WindClass == null and HODwelling.HOLine.BaseState == typekey.Jurisdiction.TC_HI) {
+    if (HODwelling.WindClass == null) {
       addErrorOrWarning("WindClass", displaykey.Web.Policy.HomeownersLine.Validation.WindClassRequired, "HomeownersDwellingConstruction")
     }
     if (HODwelling.ConstructionCode == null) {

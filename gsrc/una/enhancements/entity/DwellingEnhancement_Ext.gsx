@@ -441,4 +441,29 @@ enhancement DwellingEnhancement_Ext : entity.Dwelling_HOE {
       this.PlumbingTypes_Ext?.removeFromTypeCodes(plumbingType)
     }
   }
+
+  function TXDwellFireTireDetermination():String{
+    var dwellingAge = this.PolicyPeriod.PeriodStart.YearOfDate - this.YearBuiltOrOverride
+    var chargeableClaimCount = this.HOLine.chargeableClaimsCount
+    var protectionClass = this.ProtectionClassCodeOrOverride.toInt()
+    var residenceType = this.ResidenceType
+    var noOfMortgages = this.NumberOfMortgagees_Ext
+
+    if(dwellingAge <= 15 && chargeableClaimCount == 0 && protectionClass < 9 && noOfMortgages < 2 && (residenceType == TC_singleFamily_Ext ||
+        residenceType == TC_townhouseRowhouse_Ext)){
+      this.PolicyPeriod.UWTier_Ext = "Select"
+    }
+
+    if((dwellingAge >= 16 && dwellingAge <= 35) && chargeableClaimCount == 0 && protectionClass < 10 && noOfMortgages < 3 && (residenceType == TC_singleFamily_Ext ||
+        residenceType == TC_townhouseRowhouse_Ext || residenceType == TC_Duplex)){
+      this.PolicyPeriod.UWTier_Ext = "Elite"
+    }
+
+    if(dwellingAge > 35 && chargeableClaimCount > 0 && protectionClass < 10 && noOfMortgages < 3 && (residenceType == TC_singleFamily_Ext ||
+        residenceType == TC_townhouseRowhouse_Ext)){
+      this.PolicyPeriod.UWTier_Ext = "Preferred"
+    }
+
+    return this.PolicyPeriod.UWTier_Ext
+  }
 }

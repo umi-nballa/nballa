@@ -431,7 +431,7 @@ class UNAHOGroup1RatingEngine extends UNAHORatingEngine_HOE<HomeownersLine_HOE> 
   }
 
   /**
-   * Rate Supplemental heating Surcharge
+   * Rate Retrofit Credit
    */
   function rateRetrofitCredit(dateRange: DateRange) {
     if(_logger.DebugEnabled)

@@ -144,14 +144,6 @@ enhancement PolicyPeriodBillingEnhancement : entity.PolicyPeriod {
       case TC_EVERY60DAYS: return TC_EVERY60DAYS
       case TC_EVERY90DAYS: return TC_EVERY90DAYS
       case TC_EVERY45DAYSWITHFIRST35DAYS: return TC_EVERY45DAYSWITHFIRST35DAYS
-      // Add missing periodicities
-      case TC_EVERYYEAR: return TC_EVERYYEAR
-      case TC_EVERYOTHERMONTH: return TC_EVERYOTHERMONTH
-      case TC_QUARTERLY: return TC_QUARTERLY
-      case TC_EVERYFOURMONTHS: return TC_EVERYFOURMONTHS
-      case TC_EVERYSIXMONTHS: return TC_EVERYSIXMONTHS
-      case TC_EVERYOTHERYEAR: return TC_EVERYOTHERYEAR
-      case TC_EVERYOTHERYEAR: return TC_EVERYOTHERYEAR
       default: return TC_MONTHLY
     }
   }

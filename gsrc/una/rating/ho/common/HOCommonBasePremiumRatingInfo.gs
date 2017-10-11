@@ -35,6 +35,7 @@ class HOCommonBasePremiumRatingInfo {
   var _occupancy : typekey.DwellingOccupancyType_HOE as OccupancyType
   var _usageType : typekey.DwellingUsage_HOE as DwellingUsageType
 
+
   construct(dwelling: Dwelling_HOE) {
     var hoLocation = dwelling?.HOLocation
     _territoryCode = hoLocation?.OverrideTerritoryCode_Ext? hoLocation?.TerritoryCodeOverridden_Ext : hoLocation?.TerritoryCodeTunaReturned_Ext
@@ -48,7 +49,13 @@ class HOCommonBasePremiumRatingInfo {
     var editEffectiveDate = policyPeriod?.EditEffectiveDate
     _consecutiveYrsWithUniversal = getDiffYears(originalEffectiveDate, editEffectiveDate)
 
-    _priorLosses = dwelling?.HOLine?.HOPriorLosses_Ext?.Count
+   // _priorLosses = dwelling?.HOLine?.HOPriorLosses_Ext?.Count
+
+    if(dwelling.PolicyPeriod.BaseState == TC_FL || dwelling.PolicyPeriod.BaseState == TC_CA || dwelling.PolicyPeriod.BaseState == TC_SC
+        || dwelling.PolicyPeriod.BaseState == TC_TX || dwelling.PolicyPeriod.BaseState == TC_NV || dwelling.HOPolicyType == TC_DP3_Ext)
+      if(dwelling?.PaidNonWeatherClaims_Ext !=null) {
+        _priorLosses = dwelling?.PaidNonWeatherClaims_Ext?.toInt()
+      }
 
     if (policyPeriod?.CreditInfoExt?.CreditReport?.CreditScore != null) {
       _creditScore = policyPeriod?.CreditInfoExt?.CreditReport?.CreditScore as int
@@ -99,4 +106,7 @@ class HOCommonBasePremiumRatingInfo {
       return time
     }
   }
+
+
+
 }

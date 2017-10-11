@@ -15,8 +15,6 @@ class UWDoubleWallCostal_each implements IRuleCondition<HomeownersLine_HOE>{
 
     if((homeowner.Dwelling.ConstructionType == typekey.ConstructionType_HOE.TC_STANDARDFRAMEDOUBLEWALL_EXTL ||
         homeowner.Dwelling.ConstructionTypeOrOverride == typekey.ConstructionType_HOE.TC_STANDARDFRAMEDOUBLEWALL_EXTL ||
-        //homeowner.Dwelling.ConstructionTypeL1_Ext == typekey.ConstructionType_HOE.TC_STANDARDFRAMEDOUBLEWALL_EXTL ||
-        homeowner.Dwelling.ConstructionTypeL1OrOverride == typekey.ConstructionType_HOE.TC_STANDARDFRAMEDOUBLEWALL_EXTL ||
         homeowner.Dwelling.ConstructionTypeL2_Ext == typekey.ConstructionType_HOE.TC_STANDARDFRAMEDOUBLEWALL_EXTL ||
         homeowner.Dwelling.ConstructionTypeL2OrOverride == typekey.ConstructionType_HOE.TC_STANDARDFRAMEDOUBLEWALL_EXTL) &&
         (homeowner.Dwelling.HOLocation.DistToCoast_Ext == typekey.DistToCoastOverridden_Ext.TC_0TO500FT ||

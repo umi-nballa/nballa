@@ -28,6 +28,7 @@ class HOCommonDwellingRatingInfo {
   var _constructionType : typekey.RateTableConstructionType_Ext as ConstructionType
   var _unitOwnersCovASpecialBaseLimit: int as UnitOwnersCovASpecialBaseLimit
   var _isDPPolicyType : boolean as IsDPPolicy
+  var _priorLosses: int as PriorLosses
 
 
 
@@ -66,5 +67,13 @@ class HOCommonDwellingRatingInfo {
     _constructionType = HOConstructionTypeMapper.setConstructionType(dwelling, dwelling.HOLine.BaseState)
     _unitOwnersCovASpecialBaseLimit = ConfigParamsUtil.getInt(TC_UnitOwnersCovASpecialBaseLimit, dwelling.HOLine.BaseState, dwelling.HOPolicyType)
     _isDPPolicyType = typekey.HOPolicyType_HOE.TF_FIRETYPES.TypeKeys.contains(dwelling.HOPolicyType)
+
+
+    if(dwelling.PolicyPeriod.BaseState == TC_FL || dwelling.PolicyPeriod.BaseState == TC_CA || dwelling.PolicyPeriod.BaseState == TC_SC
+        || dwelling.PolicyPeriod.BaseState == TC_TX || dwelling.PolicyPeriod.BaseState == TC_NV || dwelling.HOPolicyType == TC_DP3_Ext)
+      if(dwelling?.PaidNonWeatherClaims_Ext !=null) {
+        _priorLosses = dwelling?.PaidNonWeatherClaims_Ext?.toInt()
+      }
+
   }
 }

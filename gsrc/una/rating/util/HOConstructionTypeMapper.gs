@@ -62,7 +62,10 @@ class HOConstructionTypeMapper {
         return RateTableConstructionType_Ext.TC_BRICKVENEER
       else
         return RateTableConstructionType_Ext.TC_FRAME
-    } else {
+    } else if(constructionType == typekey.ConstructionType_HOE.TC_BRICKMASONRYVENEER){
+      return RateTableConstructionType_Ext.TC_BRICKVENEER
+    }
+    else{
       return RateTableConstructionType_Ext.TC_NA
     }
   }
@@ -70,7 +73,8 @@ class HOConstructionTypeMapper {
   static function setConstructionType(constructionType: ConstructionType_HOE): RateTableConstructionType_Ext {
     if (constructionType == typekey.ConstructionType_HOE.TC_CONCRETEBLOCK_EXT || constructionType == typekey.ConstructionType_HOE.TC_FIRERESISTIVE_EXT ||
         constructionType == typekey.ConstructionType_HOE.TC_POUREDCONCRETE_EXT || constructionType == typekey.ConstructionType_HOE.TC_SOLIDBRICKSTONE_EXT ||
-        constructionType == typekey.ConstructionType_HOE.TC_S || constructionType == typekey.ConstructionType_HOE.TC_SUPERIORNONCOMBUSTIBLE_EXT || constructionType == typekey.ConstructionType_HOE.TC_CONCRETEANDMASONRY) {
+        constructionType == typekey.ConstructionType_HOE.TC_S || constructionType == typekey.ConstructionType_HOE.TC_SUPERIORNONCOMBUSTIBLE_EXT ||
+        constructionType == typekey.ConstructionType_HOE.TC_CONCRETEANDMASONRY || constructionType == typekey.ConstructionType_HOE.TC_BRICKMASONRYVENEER) {
       return RateTableConstructionType_Ext.TC_MASONRY
     } else if (constructionType == typekey.ConstructionType_HOE.TC_FRAME_EXT || constructionType == typekey.ConstructionType_HOE.TC_OTHER) {
       return RateTableConstructionType_Ext.TC_FRAME

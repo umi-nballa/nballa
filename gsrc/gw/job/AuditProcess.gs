@@ -245,33 +245,29 @@ class AuditProcess extends JobProcess {
     JobProcessLogger.logInfo("Audit waived for branch: " + _branch)
   }
 
-    private function finishUnconditionally(skipValidation: boolean) {
-        if (not skipValidation) {
-            PolicyPeriodValidation.validateForAudit(_branch, TC_BINDABLE).raiseExceptionIfProblemsFound()
-        }
-        // In final audit for WC reporting policies, deposit released is set to true and deposit is set
-        // to 0 when sent to the billing system.  In premium report for WC reporting policies, deposit
-        // is set to null when sent to the billing system.  See calculateDeposit() in PolicyInfoExt for
-        // more information.
+  private function finishUnconditionally(skipValidation : boolean) {
+    if (not skipValidation) {
+      PolicyPeriodValidation.validateForAudit(_branch, TC_BINDABLE).raiseExceptionIfProblemsFound()
+    }
+    // In final audit for WC reporting policies, deposit released is set to true and deposit is set
+    // to 0 when sent to the billing system.  In premium report for WC reporting policies, deposit
+    // is set to null when sent to the billing system.  See calculateDeposit() in PolicyInfoExt for
+    // more information.
 
-        if (_branch.Audit.AuditInformation.IsFinalAudit and _branch.ReportingPlanSelected) {
-            _branch.PolicyTerm.DepositReleased = true
-        }
-
-        createBillingEventMessages()
-        if (_branch.Audit.AuditInformation.IsPremiumReport) {
-            _branch.updateTrendAnalysisValues()
-            if (not _branch.Audit.AuditInformation.IsReversal) {
-                rules.Audit.ReportingTrendAnalysis.invoke(_branch)
-            }
-        }
-        _branch.enqueueForCededPremiumCalculation(RIRecalcReason.TC_AUDITCOMPLETE, null)
-        Job.CloseDate = Date.CurrentDate
-        _branch.Status = TC_AUDITCOMPLETE
-        _branch.lockBranch()
+    if (_branch.Audit.AuditInformation.IsFinalAudit and _branch.ReportingPlanSelected) {
+      _branch.PolicyTerm.DepositReleased = true
     }
 
-    override function createPortalRefreshEventMessages() {
-        //Do nothing
+    createBillingEventMessages()
+    if (_branch.Audit.AuditInformation.IsPremiumReport) {
+      _branch.updateTrendAnalysisValues()
+      if (not _branch.Audit.AuditInformation.IsReversal) {
+        rules.Audit.ReportingTrendAnalysis.invoke(_branch)
+      }
     }
+    _branch.enqueueForCededPremiumCalculation(RIRecalcReason.TC_AUDITCOMPLETE, null)
+    Job.CloseDate = Date.CurrentDate
+    _branch.Status = TC_AUDITCOMPLETE
+    _branch.lockBranch()
+  }
 }

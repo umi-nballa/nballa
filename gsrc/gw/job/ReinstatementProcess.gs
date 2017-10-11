@@ -10,7 +10,6 @@ uses gw.api.database.Query
 uses gw.api.web.util.TransactionUtil
 uses java.lang.Exception
 uses gw.api.system.PCLoggerCategory
-uses una.integration.plugins.portal.PolicyRefreshTransport
 
 /**
  * Encapsulates the actions taken within a Reinstatement job.
@@ -100,7 +99,6 @@ class ReinstatementProcess extends JobProcess {
             .assertOkay()
 
         createBillingEventMessages()
-        createPortalRefreshEventMessages()
         _branch.Job.copyUsersFromJobToPolicy()
         prepareBranchForFinishingJob()
         processAudits()
@@ -196,21 +194,13 @@ class ReinstatementProcess extends JobProcess {
     return false
   }
 
-    override function issueJob(bindAndIssue: boolean) {
-        if (not bindAndIssue) {
-            throw new IllegalArgumentException("Bind-only not allowed for Reinstatement")
-        }
-        _branch.onBeginIssueJob()
-        reinstate()
+  override function issueJob(bindAndIssue : boolean) {
+    if (not bindAndIssue) {
+      throw new IllegalArgumentException("Bind-only not allowed for Reinstatement")
     }
-
-    override function createPortalRefreshEventMessages() {
-        if(_branch.EditEffectiveDate.beforeOrEqualsIgnoreTime(new Date())) {
-            _branch.addEvent(PolicyRefreshTransport.REFRESH_MSG)
-        } else {
-            PolicyRefreshTransport.addFutureChange(_branch)
-        }
-    }
+    _branch.onBeginIssueJob()
+    reinstate()
+  }
 }
 
 

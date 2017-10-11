@@ -1,11 +1,10 @@
 package rules.EventMessage.EventFired_dir.PortalPolicyRefresh_dir.PolicyPeriod_dir
-uses una.integration.plugins.portal.PolicyRefreshTransport
 
-@gw.rules.RuleName("PolicyRefreshChange")
-internal class PolicyRefreshChange {
+@gw.rules.RuleName("Cancel Period")
+internal class CancelPeriod {
   static function doCondition(messageContext : entity.MessageContext) : boolean {
 /*start00rule*/
-return messageContext.EventName == PolicyRefreshTransport.REFRESH_MSG
+return messageContext.EventName == una.integration.plugins.portal.PolicyRefreshTransportImpl.CANCELPERIOD_MSG
 /*end00rule*/
 }
 

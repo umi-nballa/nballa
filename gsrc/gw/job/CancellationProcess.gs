@@ -19,8 +19,6 @@ uses java.lang.IllegalStateException
 uses gw.api.web.util.TransactionUtil
 uses java.lang.Exception
 uses gw.api.system.PCLoggerCategory
-uses una.integration.plugins.portal.PolicyRefreshTransport
-uses java.util.Date
 
 /**
  * Encapsulates the actions taken within a Cancellation job.
@@ -541,7 +539,6 @@ class CancellationProcess extends JobProcess {
     _branch.updateTrendAnalysisValues()
     withdrawOtherCancellations()
     createBillingEventMessages()
-    createPortalRefreshEventMessages()
     if (Job.CancelReasonCode == TC_FLATREWRITE) {
       Job.createRoleActivity(TC_UNDERWRITER,
                              ActivityPattern.finder.getActivityPatternByCode("notification"),
@@ -699,24 +696,15 @@ class CancellationProcess extends JobProcess {
   /**
    * Escalates the job.
    */
-    function escalate(subject: String, description: String) {
-        canEscalate().assertOkay()
-        JobProcessLogger.logInfo("Escalating cancellation branch: ${_branch}")
-        Job.createRoleActivity(TC_UNDERWRITER,
-            ActivityPattern.finder.getActivityPatternByCode("notification"),
-            subject, description)
-    }
+  function escalate(subject : String, description : String) {
+    canEscalate().assertOkay()
+    JobProcessLogger.logInfo("Escalating cancellation branch: ${_branch}")
+    Job.createRoleActivity(TC_UNDERWRITER,
+      ActivityPattern.finder.getActivityPatternByCode("notification"),
+      subject, description)
+  }
 
-    override function createPortalRefreshEventMessages() {
-
-        if(_branch.EditEffectiveDate.beforeOrEqualsIgnoreTime(new Date())) {
-            _branch.addEvent(PolicyRefreshTransport.REFRESH_MSG)
-        } else {
-            PolicyRefreshTransport.addFutureChange(_branch)
-        }
-    }
-
-    private class EscalationReasonChecker {
+  private class EscalationReasonChecker {
     private var _messages = new ArrayList<String>()
     private var _state : PolicyPeriodStatus
 

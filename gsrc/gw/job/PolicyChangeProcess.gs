@@ -18,7 +18,6 @@ uses gw.api.job.EffectiveDateCalculator
 uses gw.api.web.util.TransactionUtil
 uses java.lang.Exception
 uses gw.api.system.PCLoggerCategory
-uses una.integration.plugins.portal.PolicyRefreshTransport
 
 /**
  * Encapsulates the actions taken within a Policy Change job.
@@ -158,7 +157,6 @@ class PolicyChangeProcess extends JobProcess implements IPolicyChangeProcess {
     _branch.Job.copyUsersFromJobToPolicy()
     processAudits()
     createBillingEventMessages()
-    createPortalRefreshEventMessages()
     _branch.updateTrendAnalysisValues()
     _branch.updatePolicyTermDepositAmount()
     bindReinsurableRisks()
@@ -462,21 +460,13 @@ class PolicyChangeProcess extends JobProcess implements IPolicyChangeProcess {
     return uwDiffs.map(\ d -> d.EffDatedBean.getSliceUntyped(newEffectiveDate) as UWIssue)
   }
 
-    protected function applyChangesWithNewEffectiveDate(srcBranch: PolicyPeriod, newBranch: PolicyPeriod, newEffectiveDate: Date) {
-        newBranch.applyChangesFromBranchForDate(srcBranch, newEffectiveDate)
+  protected function applyChangesWithNewEffectiveDate(srcBranch : PolicyPeriod, newBranch : PolicyPeriod, newEffectiveDate : Date) {
+    newBranch.applyChangesFromBranchForDate(srcBranch, newEffectiveDate)
 
-        // If we added objects that need to renumbered that do that here
-        newBranch.renumberAutoNumberSequences()
+    // If we added objects that need to renumbered that do that here
+    newBranch.renumberAutoNumberSequences()
 
-        // if we're applying changes to the branch, syncables should all be in edit - including ones we just applied
-        newBranch.AllAccountSyncables.each(\a -> a.prepareForJobEdit())
-    }
-
-    override function createPortalRefreshEventMessages() {
-        if(_branch.EditEffectiveDate.beforeOrEqualsIgnoreTime(new Date())) {
-            _branch.addEvent(PolicyRefreshTransport.REFRESH_MSG)
-        } else {
-            PolicyRefreshTransport.addFutureChange(_branch)
-        }
-    }
+    // if we're applying changes to the branch, syncables should all be in edit - including ones we just applied
+    newBranch.AllAccountSyncables.each(\ a -> a.prepareForJobEdit())
+  }
 }

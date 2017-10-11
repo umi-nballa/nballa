@@ -9,7 +9,6 @@ uses java.util.Date
 uses gw.api.web.util.TransactionUtil
 uses java.lang.Exception
 uses gw.api.system.PCLoggerCategory
-uses una.integration.plugins.portal.PolicyRefreshTransport
 
 /**
  * Encapsulates the actions taken within a Rewrite job.
@@ -167,7 +166,6 @@ class RewriteProcess extends NewTermProcess {
         .assertOkay()
     _branch.properlySetTransactionFlags()
     createBillingEventMessages()
-    createPortalRefreshEventMessages()
     _branch.Job.copyUsersFromJobToPolicy()
     prepareBranchForFinishingJob()
     handleFinalAudit()
@@ -215,15 +213,12 @@ class RewriteProcess extends NewTermProcess {
             .checkStatus(new PolicyPeriodStatus[] { TC_DRAFT, TC_QUOTED })
   }
 
-    override function issueJob(bindAndIssue: boolean) {
-        if (not bindAndIssue) {
-            throw new IllegalArgumentException("Bind-only not allowed for Rewrite")
-        }
-        _branch.onBeginIssueJob()
-        rewrite()
+  override function issueJob(bindAndIssue : boolean) {
+    if (not bindAndIssue) {
+      throw new IllegalArgumentException("Bind-only not allowed for Rewrite")
     }
+    _branch.onBeginIssueJob()
+    rewrite()
+  }
 
-    override function createPortalRefreshEventMessages() {
-        _branch.addEvent(PolicyRefreshTransport.REFRESH_MSG)
-    }
 }

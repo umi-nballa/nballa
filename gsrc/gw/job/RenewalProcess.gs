@@ -22,7 +22,6 @@ uses gw.api.web.util.TransactionUtil
 uses gw.api.system.PCLoggerCategory
 uses java.lang.Integer
 uses gw.acc.bulkproducerchange.BPCProcessCtrl
-uses una.integration.plugins.portal.PolicyRefreshTransport
 
 /**
  * Encapsulates the actions taken within a Renewal job.  The renewal process is
@@ -659,7 +658,6 @@ class RenewalProcess extends NewTermProcess {
          */
 
         createBillingEventMessages()
-        createPortalRefreshEventMessages()
         _branch.scheduleAllAudits()
         _branch.Job.copyUsersFromJobToPolicy()
         _branch.Policy.Account.markContactsForAutoSync()
@@ -946,25 +944,17 @@ class RenewalProcess extends NewTermProcess {
     return Job.hasOpenCancellationInPriorPeriod()
   }
 
-    protected function hasValidationIssues(): boolean {
-        try {
-            JobProcessValidator.validatePeriodForUI(_branch.getSlice(_branch.EditEffectiveDate), TC_READYFORISSUE, false)
-        } catch (e: EntityValidationException) {
-            return true
-        }
-
-        return false
+  protected function hasValidationIssues() : boolean {
+    try {
+      JobProcessValidator.validatePeriodForUI(_branch.getSlice(_branch.EditEffectiveDate), TC_READYFORISSUE, false)
+    } catch (e: EntityValidationException) {
+      return true
     }
 
-    override function createPortalRefreshEventMessages() {
-        if(_branch.EditEffectiveDate.beforeOrEqualsIgnoreTime(new Date())) {
-            _branch.addEvent(PolicyRefreshTransport.REFRESH_MSG)
-        } else {
-            PolicyRefreshTransport.addFutureChange(_branch)
-        }
-    }
+    return false
+  }
 
-    /**
+  /**
    * Inner class that encapsulates methods for determining when an underwriter should get involved
    * with a renewal.
    */

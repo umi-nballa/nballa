@@ -7,6 +7,7 @@ uses gwservices.pc.dm.batch.DataMigrationNonFatalException
 uses gwservices.pc.dm.batch.DataMigrationNonFatalException.CODE
 uses gwservices.pc.dm.gx.shared.product.covtermmodel.types.complex.CovTerm
 uses gw.api.productmodel.ClausePatternLookup
+uses gw.api.web.productmodel.MissingRequiredCoverageIssue
 
 class CoveragePopulator extends AbstractCovTermPopulator<Coverage, Coverable> {
   /* Logging prefix */
@@ -26,6 +27,11 @@ class CoveragePopulator extends AbstractCovTermPopulator<Coverage, Coverable> {
       _logger.debug(_LOG_TAG + "findEntity coverage pattern ${covPattern.Code}, parent ${parent}")
     }
     var coverage = parent.getOrCreateCoverage(covPattern)
+    if (coverage == null) {
+      var missingCovSyncIssue = new MissingRequiredCoverageIssue(covPattern, parent)
+      missingCovSyncIssue.fixIssue(parent.BranchUntyped)
+      coverage = parent.getOrCreateCoverage(covPattern)
+    }
     if (coverage == null) {
       var msg = "${Coverage#PatternCode} not available"
       throw new DataMigrationNonFatalException(CODE.MISSING_COVERAGE, msg)

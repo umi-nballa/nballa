@@ -84,6 +84,7 @@ class UNAHOGroup1RatingEngine extends UNAHORatingEngine_HOE<HomeownersLine_HOE> 
     var costs = rater.rateBasePremium(dateRange, this.NumDaysInCoverageRatedTerm)
     addCosts(costs)
     _dwellingRatingInfo.TotalBasePremium = _hoRatingInfo.TotalBasePremium
+
   }
 
   /**
@@ -237,7 +238,7 @@ class UNAHOGroup1RatingEngine extends UNAHORatingEngine_HOE<HomeownersLine_HOE> 
   override function rateHOLineCosts(dateRange: DateRange) {
     var dwelling = PolicyLine.Dwelling
     _discountsOrSurchargeRatingInfo = new HOGroup1DiscountsOrSurchargeRatingInfo(PolicyLine, _hoRatingInfo.AdjustedBaseClassPremium)
-    _discountsOrSurchargeRatingInfo.TotalBasePremium = _dwellingRatingInfo.TotalBasePremium
+    _discountsOrSurchargeRatingInfo.TotalBasePremium = _hoRatingInfo.TotalBasePremium
     if (_discountsOrSurchargeRatingInfo.PolicyType == typekey.HOPolicyType_HOE.TC_HO3 or
         (_discountsOrSurchargeRatingInfo.PolicyType == typekey.HOPolicyType_HOE.TC_HO6 and PolicyLine.BaseState == typekey.Jurisdiction.TC_NV) or
           (_discountsOrSurchargeRatingInfo.PolicyType == typekey.HOPolicyType_HOE.TC_DP3_EXT and PolicyLine.BaseState == typekey.Jurisdiction.TC_CA)){
@@ -250,6 +251,11 @@ class UNAHOGroup1RatingEngine extends UNAHORatingEngine_HOE<HomeownersLine_HOE> 
         rateSeasonalOrSecondaryResidenceSurcharge(dateRange)
     }
     }
+
+    if(_dwellingRatingInfo.RetrofitCreditApplies == true and _discountsOrSurchargeRatingInfo.PolicyType == typekey.HOPolicyType_HOE.TC_DP3_EXT){
+     rateRetrofitCredit(dateRange)
+    }
+
     var constructionType = dwelling.OverrideConstructionType_Ext? dwelling.ConstTypeOverridden_Ext : dwelling.ConstructionType
     if (constructionType == typekey.ConstructionType_HOE.TC_SUPERIORNONCOMBUSTIBLE_EXT and
         (_discountsOrSurchargeRatingInfo.PolicyType == typekey.HOPolicyType_HOE.TC_HO3 || _discountsOrSurchargeRatingInfo.PolicyType == typekey.HOPolicyType_HOE.TC_HO4 ||
@@ -322,7 +328,7 @@ class UNAHOGroup1RatingEngine extends UNAHORatingEngine_HOE<HomeownersLine_HOE> 
          if(dwelling.SupplHeatingSurcharge_Ext){
            rateSupplementalHeatingSurcharge(dateRange)
          }
-        if(_discountsOrSurchargeRatingInfo.PriorLosses > 0){
+        if((_discountsOrSurchargeRatingInfo.PriorLosses > 0) and (PolicyLine.BaseState != Jurisdiction.TC_AZ)){
          rateLossHistoryCredit(dateRange)
         }
         if((dwelling.getAgeOfHome(PolicyLine.Branch.EditEffectiveDate)) > ConfigParamsUtil.getInt(typekey.ConfigParameterType_Ext.TC_RENOVATIONCREDITAGEOFHOME, PolicyLine.BaseState)){
@@ -422,6 +428,22 @@ class UNAHOGroup1RatingEngine extends UNAHORatingEngine_HOE<HomeownersLine_HOE> 
     }
     if(_logger.DebugEnabled)
       _logger.debug("rateSupplementalHeatingSurcharge Rated Successfully", this.IntrinsicType)
+  }
+
+  /**
+   * Rate Retrofit Credit
+   */
+  function rateRetrofitCredit(dateRange: DateRange) {
+    if(_logger.DebugEnabled)
+      _logger.debug("Entering " + CLASS_NAME + ":: rateRetrofitCredit", this.IntrinsicType)
+    var rateRoutineParameterMap = getHOLineDiscountsOrSurchargesParameterSet(PolicyLine, _discountsOrSurchargeRatingInfo, PolicyLine.BaseState)
+    var costData = HOCreateCostDataUtil.createCostDataForHOLineCosts(dateRange, HORateRoutineNames.DP_RETROFIT_CREDIT_RATE_ROUTINE, HOCostType_Ext.TC_RETROFITCREDIT,
+        RateCache, PolicyLine, rateRoutineParameterMap, Executor, this.NumDaysInCoverageRatedTerm)
+    if (costData != null){
+      addCost(costData)
+    }
+    if(_logger.DebugEnabled)
+      _logger.debug("rateRetrofitCredit Rated Successfully", this.IntrinsicType)
   }
 
 
@@ -589,6 +611,8 @@ class UNAHOGroup1RatingEngine extends UNAHORatingEngine_HOE<HomeownersLine_HOE> 
       _logger.debug("Concrete Tile Roof Discount Rated Successfully", this.IntrinsicType)
   }
 
+
+
   /**
    *  Function to rate the Affinity discount
    */
@@ -612,7 +636,7 @@ class UNAHOGroup1RatingEngine extends UNAHORatingEngine_HOE<HomeownersLine_HOE> 
   function ratePrivateFireCompanyDiscount(dateRange: DateRange) {
     if (_logger.DebugEnabled)
       _logger.debug("Entering " + CLASS_NAME + ":: ratePrivateFireCompanyDiscount", this.IntrinsicType)
-    if (_discountsOrSurchargeRatingInfo.IsPrivateFireCompanyDiscountApplicable){
+    if (_discountsOrSurchargeRatingInfo.isPrivateFireCompanyDiscountApplicable){
       var rateRoutineParameterMap = getHOLineDiscountsOrSurchargesParameterSet(PolicyLine, _discountsOrSurchargeRatingInfo, PolicyLine.BaseState)
       var costData = HOCreateCostDataUtil.createCostDataForHOLineCosts(dateRange, HORateRoutineNames.PRIVATE_FIRE_COMPANY_DISCOUNT_AZ_RATE_ROUTINE, HOCostType_Ext.TC_PRIVATEFIRECOMPANYDISCOUNT,
           RateCache, PolicyLine, rateRoutineParameterMap, Executor, this.NumDaysInCoverageRatedTerm)

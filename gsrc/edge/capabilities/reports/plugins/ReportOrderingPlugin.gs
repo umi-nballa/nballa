@@ -42,7 +42,7 @@ abstract class ReportOrderingPlugin <T extends ReportRequestDTO, E extends Repor
   /**
    * Fetches a job by its number.
    */
-  private function getJobByNumber(jobNumber: String) : Job {
+  public function getJobByNumber(jobNumber: String) : Job {
     var result = Query.make(Job).compare("JobNumber", Equals, jobNumber).select().FirstResult
 
     if (result == null  ){

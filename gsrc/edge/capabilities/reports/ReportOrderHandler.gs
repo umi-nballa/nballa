@@ -14,6 +14,10 @@ uses edge.capabilities.reports.plugins.CreditReportOrderingPlugin
 uses edge.capabilities.reports.plugins.CLUEReportOrderingPlugin
 uses edge.capabilities.reports.dto.credit.CreditReportRequestDTO
 uses edge.capabilities.reports.dto.clue.CLUEReportResponseDTO
+uses edge.capabilities.policycommon.accountcontact.IAccountContactPlugin
+uses edge.PlatformSupport.Bundle
+uses edge.capabilities.quote.lob.homeowners.draft.mappers.EdgePolicyContactMapper
+uses edge.capabilities.quote.lob.homeowners.draft.mappers.contact.PolicyAdditionalNamedInsuredMapper
 
 /**
  * Created with IntelliJ IDEA.
@@ -39,17 +43,20 @@ class ReportOrderHandler implements IRpcHandler{
   */
   private var _reportOrderingPlugin : ReportOrderingPlugin
 
+  private var _accountContactPlugin : IAccountContactPlugin
+
   @InjectableNode
   @JsonRpcRunAsInternalGWUser
   @Param("reportOrderingPlugin", "Report Ordering Plugin")
   @Param("authorizer", "Authorizer added to check user can retrieve submission")
-  construct(reportOrderingPlugin : ReportOrderingPlugin, authorizer : IAuthorizerProviderPlugin) {
+  construct(reportOrderingPlugin : ReportOrderingPlugin, authorizer : IAuthorizerProviderPlugin, accountContactPlugin : IAccountContactPlugin) {
     var jobsToAuthorizeFor = REPORT_TO_JOB_TYPES_AUTHORIZATION.get(reportOrderingPlugin.IntrinsicType)
 
     jobsToAuthorizeFor.each( \ jobType -> {
       authorizer.authorizerFor(jobType)
     })
 
+    this._accountContactPlugin = accountContactPlugin
     this._reportOrderingPlugin = reportOrderingPlugin
   }
 
@@ -61,6 +68,30 @@ class ReportOrderHandler implements IRpcHandler{
    */
   @JsonRpcMethod
   public function orderCreditReport(reportRequest : CreditReportRequestDTO) : ReportResponseDTO {
+    var job = _reportOrderingPlugin.getJobByNumber(reportRequest.JobNumber)
+    //first update contact data then order.  needed because portal will not save prior to this.
+
+    Bundle.transaction( \ bundle -> {
+      job = bundle.add(job)
+        if(reportRequest.PrimaryInsured != null){
+          _accountContactPlugin.updateContact(job.SelectedVersion.PrimaryNamedInsured.ContactDenorm, reportRequest.PrimaryInsured)
+        }
+
+        if(reportRequest.CoInsured != null){
+          var coInsuredContact = job.SelectedVersion.PolicyContactRoles.whereTypeIs(PolicyAddlNamedInsured)?.atMostOneWhere( \ contact -> contact.ContactDenorm.PortalHash_Ext == reportRequest.CoInsured.Contact.PortalContactHash)
+          var additionalInsuredMapper = new PolicyAdditionalNamedInsuredMapper()
+
+          if(coInsuredContact == null){
+            var previousIndex = job.SelectedVersion.PolicyContactRoles.whereTypeIs(PolicyAddlNamedInsured)?.orderByDescending(\ pcr -> pcr.PortalIndex)?.first().PortalIndex
+            additionalInsuredMapper.createContact(job.SelectedVersion, previousIndex, reportRequest.CoInsured)
+            coInsuredContact = job.SelectedVersion.PolicyContactRoles.whereTypeIs(PolicyAddlNamedInsured)?.atMostOneWhere( \ contact -> contact.ContactDenorm.PortalHash_Ext == reportRequest.CoInsured.Contact.PortalContactHash) //re-retrieve to populate null entity
+          }
+
+          additionalInsuredMapper.updateContactRole(coInsuredContact, reportRequest.CoInsured)
+        }
+    })
+
+
     return _reportOrderingPlugin.orderReport(reportRequest)
   }
 

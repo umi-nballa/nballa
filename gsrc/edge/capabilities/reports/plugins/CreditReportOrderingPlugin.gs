@@ -24,7 +24,7 @@ class CreditReportOrderingPlugin extends ReportOrderingPlugin<CreditReportReques
   }
 
   override function executeReportOrder() {
-    una.pageprocess.credit.CreditReportScreen.orderCreditReport(CreditContact, PortalJob.LatestPeriod, false, false, null, null, null, null)
+    una.pageprocess.credit.CreditReportScreen.orderCreditReport(CreditContact, PortalJob.SelectedVersion, false, false, null, null, null, null)
   }
 
   override function toResponseDTO(): ReportResponseDTO {
@@ -34,7 +34,7 @@ class CreditReportOrderingPlugin extends ReportOrderingPlugin<CreditReportReques
   private property get CreditContact() : PolicyContactRole{
     var result : PolicyContactRole
 
-    switch(_request.CreditContact){
+    switch(_request.CreditOrderingContact){
       case TC_PNI:
         result = PortalJob.LatestPeriod.PrimaryNamedInsured
         break
@@ -44,7 +44,7 @@ class CreditReportOrderingPlugin extends ReportOrderingPlugin<CreditReportReques
     }
 
     if(result == null){
-      throw new IllegalStateException(){:Message = "Cannot find a policy contact for the typekey value ${_request.CreditContact}"}
+      throw new IllegalStateException(){:Message = "Cannot find a policy contact for the typekey value ${_request.CreditOrderingContact}"}
     }
 
     return result

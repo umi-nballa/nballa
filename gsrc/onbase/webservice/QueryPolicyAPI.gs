@@ -199,7 +199,8 @@ class QueryPolicyAPI {
     var additionalNamedInsuredContacts = policyPeriod.PolicyContactRoles.whereTypeIs(PolicyAddlNamedInsured)
     if(additionalNamedInsuredContacts.Count > 0) {
       additionalNamedInsureds = new ArrayList<ContactInfoForOnBase>()
-      additionalNamedInsuredContacts.each( \ contact -> additionalNamedInsureds.add(new ContactInfoForOnBase(contact.FirstName, contact.LastName)))
+      additionalNamedInsuredContacts.each( \ contact -> additionalNamedInsureds.add(contact.ContactDenorm typeis Company ? new ContactInfoForOnBase(contact.CompanyName, "")
+          : new ContactInfoForOnBase(contact.FirstName, contact.LastName)))
     }
 
     info.AdditionalNamedInsured = additionalNamedInsureds

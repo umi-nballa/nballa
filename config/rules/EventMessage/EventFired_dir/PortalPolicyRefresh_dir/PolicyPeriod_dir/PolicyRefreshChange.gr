@@ -1,0 +1,17 @@
+package rules.EventMessage.EventFired_dir.PortalPolicyRefresh_dir.PolicyPeriod_dir
+uses una.integration.plugins.portal.PolicyRefreshTransport
+
+@gw.rules.RuleName("PolicyRefreshChange")
+internal class PolicyRefreshChange {
+  static function doCondition(messageContext : entity.MessageContext) : boolean {
+/*start00rule*/
+return messageContext.EventName == PolicyRefreshTransport.REFRESH_MSG
+/*end00rule*/
+}
+
+  static function doAction(messageContext : entity.MessageContext, actions : gw.rules.Action) {
+/*start00rule*/
+messageContext.createMessage("${messageContext.EventName} - ${messageContext.Root}")
+/*end00rule*/
+  }
+}

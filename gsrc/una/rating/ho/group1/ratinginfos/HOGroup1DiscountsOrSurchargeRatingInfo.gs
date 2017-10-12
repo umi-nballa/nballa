@@ -12,15 +12,18 @@ uses java.math.BigDecimal
  */
 class HOGroup1DiscountsOrSurchargeRatingInfo extends HOCommonDiscountsOrSurchargeRatingInfo {
 
-  var _isPrivateFireCompanyDiscountApplicable: boolean as IsPrivateFireCompanyDiscountApplicable
+  var _isPrivateFireCompanyDiscountApplicable: boolean as isPrivateFireCompanyDiscountApplicable
   var _bcegFactor : int as BCEGFactor
   var _preferredBuilderExists : boolean as PreferredBuilderExists
   var _preferredFinancialInstitutionExists : boolean as PreferredFinancialInstitutionExists
+  var _paidNonCatClaims : int as PaidNonCatClaims
+  var _paidNonWeatherClaims : int as PaidNonWeatherClaims
 
   construct(line: HomeownersLine_HOE, totalBasePremium: BigDecimal) {
     super(line, totalBasePremium)
     this.CoverageALimit = line.Dwelling.HODW_Dwelling_Cov_HOE.HODW_Dwelling_Limit_HOETerm.Value
     this.AllPerilDeductible = line.Dwelling.AllPerilsOrAllOtherPerilsCovTerm.Value
+    var dwelling = line?.Dwelling
     _isPrivateFireCompanyDiscountApplicable = isPrivateFireCompanyDiscountApplicable(line)
 
     _bcegFactor = line.Dwelling?.HOLocation?.OverrideBCEG_Ext? line.Dwelling?.HOLocation?.BCEGOverridden_Ext?.Code?.toInt() : line.Dwelling.HOLocation?.BCEG_Ext?.Code?.toInt()
@@ -32,12 +35,21 @@ class HOGroup1DiscountsOrSurchargeRatingInfo extends HOCommonDiscountsOrSurcharg
         _preferredFinancialInstitutionExists = true
     }
 
-    if(line.BaseState == Jurisdiction.TC_CA and PolicyType == TC_DP3_Ext){
-      PriorLosses = line?.HOPriorLosses_Ext?.where( \ elt -> elt.ChargeableClaim == typekey.Chargeable_Ext.TC_YES and elt.ClaimAge <= 3).length
+   // if(line.BaseState == Jurisdiction.TC_CA and PolicyType == TC_DP3_Ext){
+     // PriorLosses = line?.HOPriorLosses_Ext?.where( \ elt -> elt.ChargeableClaim == typekey.Chargeable_Ext.TC_YES and elt.ClaimAge <= 3).length
+    //}
+
+     _paidNonCatClaims = dwelling?.PaidNonCATClaims_Ext
+     _paidNonWeatherClaims = dwelling?.PaidNonWeatherClaims_Ext
+
+    if(line.BaseState == Jurisdiction.TC_CA and PolicyType == TC_DP3_Ext) {
+      PriorLosses = (_paidNonCatClaims + _paidNonWeatherClaims)
+      } else if (line.BaseState == Jurisdiction.TC_CA){
+        PriorLosses = _paidNonWeatherClaims
     }
-
-
   }
+
+
 
   override property get YearForAgeOfHomeCalc() : int{
     var yearForCalc: int

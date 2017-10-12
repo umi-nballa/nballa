@@ -23,6 +23,8 @@ uses gw.internal.ext.org.apache.commons.collections.keyvalue.MultiKey
 uses gw.api.profiler.PCProfilerTag
 uses gw.api.system.PCLoggerCategory
 uses java.lang.Exception
+uses gw.plugin.messaging.BillingMessageTransport
+uses una.integration.plugins.portal.PolicyRefreshTransport
 
 /**
  * JobProcess classes encapsulate all of the actions that can be taken in the context of a Job.
@@ -1014,4 +1016,9 @@ abstract class JobProcess implements gw.api.job.IJobProcess {
    * Callback method to enable customization of any actions that have to happen pre-quote, i.e. RIGHT before the requestQuote fires.
    */
   protected function runPreQuote() {}
+
+  /**
+   * Send policy updates to Portal.
+   */
+   protected abstract function createPortalRefreshEventMessages()
 }

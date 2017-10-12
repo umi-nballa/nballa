@@ -31,6 +31,7 @@ class HOCommonDiscountsOrSurchargeRatingInfo {
   var _priorLosses : int as PriorLosses = 0
   var _state : String as State
 
+
   construct(line: HomeownersLine_HOE, totalBasePremium: BigDecimal) {
     _line = line
     _totalBasePremium = totalBasePremium
@@ -49,9 +50,14 @@ class HOCommonDiscountsOrSurchargeRatingInfo {
     var state = line?.BaseState
     _protectionDetails = HOProtectionDetailsMapper.getProtectionDetails(dwelling, state)
 
-    if(line?.HOPriorLosses_Ext != null){
-      _priorLosses = line?.HOPriorLosses_Ext?.where( \ elt -> elt.ChargeableClaim == typekey.Chargeable_Ext.TC_YES).length
-    }
+
+    if(dwelling.PolicyPeriod.BaseState == TC_FL || dwelling.PolicyPeriod.BaseState == TC_SC
+      || dwelling.PolicyPeriod.BaseState == TC_TX )
+      if(dwelling?.PaidNonWeatherClaims_Ext !=null) {
+         _priorLosses = dwelling?.PaidNonWeatherClaims_Ext
+      }
+
+
 
     var policyPeriod = line?.Dwelling?.PolicyPeriod
     var originalEffectiveDate = policyPeriod?.Policy.OriginalEffectiveDate
@@ -64,6 +70,7 @@ class HOCommonDiscountsOrSurchargeRatingInfo {
       _maxAgeOfHome = ConfigParamsUtil.getInt(TC_AgeOfHomeGreaterLimit, line.BaseState)
 
     }
+
 
 
   }

@@ -74,11 +74,11 @@ class HOBasePremiumRatingInfo extends HOCommonBasePremiumRatingInfo{
     }
 
     if(dwelling.PaidWeatherClaims_Ext !=null){
-      PaidWeather = dwelling.PaidWeatherClaims_Ext.toInt()
+      PaidWeather = dwelling.PaidWeatherClaims_Ext
     }
 
     if(dwelling.PaidNonWeatherClaims_Ext !=null){
-      PaidNonWeather = dwelling.PaidNonWeatherClaims_Ext.toInt()
+      PaidNonWeather = dwelling.PaidNonWeatherClaims_Ext
     }
 
     _ordinanceOrLawValue = dwelling?.HODW_OrdinanceCov_HOE.HODW_OrdinanceLimit_HOETerm?.Value

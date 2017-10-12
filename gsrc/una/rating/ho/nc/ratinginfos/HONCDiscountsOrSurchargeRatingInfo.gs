@@ -20,11 +20,11 @@ class HONCDiscountsOrSurchargeRatingInfo extends HOCommonDiscountsOrSurchargeRat
      var dwelling = line?.Dwelling
 
      if(dwelling?.PaidWeatherClaims_Ext !=null){
-       PaidWeather = dwelling?.PaidWeatherClaims_Ext?.toInt()
+       PaidWeather = dwelling?.PaidWeatherClaims_Ext
      }
 
      if(dwelling?.PaidNonWeatherClaims_Ext !=null){
-       PaidNonWeather = dwelling?.PaidNonWeatherClaims_Ext?.toInt()
+       PaidNonWeather = dwelling?.PaidNonWeatherClaims_Ext
      }
 
      PriorLosses = (PaidWeather + PaidNonWeather)

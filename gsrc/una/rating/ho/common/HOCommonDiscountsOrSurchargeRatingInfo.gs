@@ -54,7 +54,7 @@ class HOCommonDiscountsOrSurchargeRatingInfo {
     if(dwelling.PolicyPeriod.BaseState == TC_FL || dwelling.PolicyPeriod.BaseState == TC_SC
       || dwelling.PolicyPeriod.BaseState == TC_TX )
       if(dwelling?.PaidNonWeatherClaims_Ext !=null) {
-         _priorLosses = dwelling?.PaidNonWeatherClaims_Ext?.toInt()
+         _priorLosses = dwelling?.PaidNonWeatherClaims_Ext
       }
 
 

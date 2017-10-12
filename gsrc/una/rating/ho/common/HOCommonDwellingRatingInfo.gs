@@ -72,7 +72,7 @@ class HOCommonDwellingRatingInfo {
     if(dwelling.PolicyPeriod.BaseState == TC_FL || dwelling.PolicyPeriod.BaseState == TC_CA || dwelling.PolicyPeriod.BaseState == TC_SC
         || dwelling.PolicyPeriod.BaseState == TC_TX || dwelling.PolicyPeriod.BaseState == TC_NV || dwelling.HOPolicyType == TC_DP3_Ext)
       if(dwelling?.PaidNonWeatherClaims_Ext !=null) {
-        _priorLosses = dwelling?.PaidNonWeatherClaims_Ext?.toInt()
+        _priorLosses = dwelling?.PaidNonWeatherClaims_Ext
       }
 
   }

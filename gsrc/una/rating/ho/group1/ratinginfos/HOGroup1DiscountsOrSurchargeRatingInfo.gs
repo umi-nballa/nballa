@@ -39,8 +39,8 @@ class HOGroup1DiscountsOrSurchargeRatingInfo extends HOCommonDiscountsOrSurcharg
      // PriorLosses = line?.HOPriorLosses_Ext?.where( \ elt -> elt.ChargeableClaim == typekey.Chargeable_Ext.TC_YES and elt.ClaimAge <= 3).length
     //}
 
-     _paidNonCatClaims = dwelling?.PaidNonCATClaims_Ext?.toInt()
-     _paidNonWeatherClaims = dwelling?.PaidNonWeatherClaims_Ext?.toInt()
+     _paidNonCatClaims = dwelling?.PaidNonCATClaims_Ext
+     _paidNonWeatherClaims = dwelling?.PaidNonWeatherClaims_Ext
 
     if(line.BaseState == Jurisdiction.TC_CA and PolicyType == TC_DP3_Ext) {
       PriorLosses = (_paidNonCatClaims + _paidNonWeatherClaims)

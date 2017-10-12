@@ -31,7 +31,7 @@ class OpenRenewalsAutomationBatchProcess extends AbstractPolicyPeriodBatchProces
     var openRenewalPeriods = openPeriods?.join(PolicyPeriod#Job)?.compare(Job#Subtype, Equals, typekey.Job.TC_RENEWAL).select()
     var plugin = Plugins.get(IPolicyRenewalPlugin)
 
-    return openRenewalPeriods?.where( \ renewalPeriod -> renewalPeriod.BasedOn != null and renewalPeriod.Selected and plugin.getRenewalStartDate(renewalPeriod.BasedOn).equalsIgnoreTime(Date.CurrentDate))
+    return openRenewalPeriods?.where( \ renewalPeriod -> renewalPeriod.Selected and plugin.getRenewalStartDate(renewalPeriod.BasedOn).equalsIgnoreTime(Date.CurrentDate))
   }
 
   override function doWorkPerPolicy(eligiblePeriod: PolicyPeriod) {

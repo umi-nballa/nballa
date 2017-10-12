@@ -13,12 +13,9 @@ uses gw.accelerator.ruleeng.RuleEvaluationResult
 class UWDoubleWallCostal_each implements IRuleCondition<HomeownersLine_HOE>{
   override function evaluateRuleCriteria(homeowner : HomeownersLine_HOE) : RuleEvaluationResult {
 
-    if((homeowner.Dwelling.ConstructionType == typekey.ConstructionType_HOE.TC_STANDARDFRAMEDOUBLEWALL_EXTL ||
-        homeowner.Dwelling.ConstructionTypeOrOverride == typekey.ConstructionType_HOE.TC_STANDARDFRAMEDOUBLEWALL_EXTL ||
-        homeowner.Dwelling.ConstructionTypeL2_Ext == typekey.ConstructionType_HOE.TC_STANDARDFRAMEDOUBLEWALL_EXTL ||
+    if(( homeowner.Dwelling.ConstructionTypeOrOverride == typekey.ConstructionType_HOE.TC_STANDARDFRAMEDOUBLEWALL_EXTL ||
         homeowner.Dwelling.ConstructionTypeL2OrOverride == typekey.ConstructionType_HOE.TC_STANDARDFRAMEDOUBLEWALL_EXTL) &&
-        (homeowner.Dwelling.HOLocation.DistToCoast_Ext == typekey.DistToCoastOverridden_Ext.TC_0TO500FT ||
-            homeowner.Dwelling.HOLocation.DistToCoastOverridden_Ext == typekey.DistToCoastOverridden_Ext.TC_0TO500FT) ){
+        (homeowner.Dwelling.HOLocation.DistToCoastOrOverride == typekey.DistToCoastOverridden_Ext.TC_0TO500FT)) {
         return RuleEvaluationResult.execute()
     }
    return RuleEvaluationResult.skip()

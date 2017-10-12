@@ -205,7 +205,6 @@ enhancement CPBuildingEnhancement : CPBuilding {
     clonedBuilding.SqFtExt=this.SqFtExt
     clonedBuilding.RoofTypeCP=this.RoofTypeCP
     clonedBuilding.RoofShape=this.RoofShape
-    clonedBuilding.FlatRoofDesc=this.FlatRoofDesc
     clonedBuilding.RoofShapeOtherDes = this.RoofShapeOtherDes
 
     clonedBuilding.OccupancyType=this.OccupancyType

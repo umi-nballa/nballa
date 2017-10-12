@@ -18,13 +18,13 @@ class CreditReportOrderingPlugin extends ReportOrderingPlugin<CreditReportReques
   @InjectableNode
   construct(){}
 
-  override function orderReport(reportRequest : CreditReportRequestDTO) : ReportResponseDTO{
+  override function orderReport(reportRequest : CreditReportRequestDTO, job : Job) : ReportResponseDTO{
     _request = reportRequest
-    return super.orderReport(reportRequest)
+    return super.orderReport(reportRequest, job)
   }
 
   override function executeReportOrder() {
-    una.pageprocess.credit.CreditReportScreen.orderCreditReport(CreditContact, PortalJob.LatestPeriod, false, false, null, null, null, null)
+    una.pageprocess.credit.CreditReportScreen.orderCreditReport(CreditContact, PortalJob.SelectedVersion, false, false, null, null, null, null)
   }
 
   override function toResponseDTO(): ReportResponseDTO {
@@ -34,17 +34,17 @@ class CreditReportOrderingPlugin extends ReportOrderingPlugin<CreditReportReques
   private property get CreditContact() : PolicyContactRole{
     var result : PolicyContactRole
 
-    switch(_request.CreditContact){
+    switch(_request.CreditOrderingContact){
       case TC_PNI:
-        result = PortalJob.LatestPeriod.PrimaryNamedInsured
-        break
+          result = PortalJob.LatestPeriod.PrimaryNamedInsured
+          break
       case TC_CONI:
-        result = PortalJob.LatestPeriod.NamedInsureds.whereTypeIs(PolicyAddlNamedInsured).first() //TODO tlv this will change once we get an idea of the priority of additional named insured types
-        break
+          result = PortalJob.LatestPeriod.NamedInsureds.whereTypeIs(PolicyAddlNamedInsured).first() //TODO tlv this will change once we get an idea of the priority of additional named insured types
+          break
     }
 
     if(result == null){
-      throw new IllegalStateException(){:Message = "Cannot find a policy contact for the typekey value ${_request.CreditContact}"}
+      throw new IllegalStateException(){:Message = "Cannot find a policy contact for the typekey value ${_request.CreditOrderingContact}"}
     }
 
     return result

@@ -67,12 +67,6 @@ enhancement UNACovTermEnhancement_Ext : gw.api.domain.covterm.CovTerm {
 
       }
 
-    if(this.Clause.OwningCoverable typeis GeneralLiabilityLine)
-      {
-        if(this.PatternCode=="HiredAutoNonOwnedLimit_EXT")
-          return false
-      }
-
    if(uneditableCovTerms.contains(this.PatternCode) or uneditableCovTermsHIDP3.contains(this.PatternCode) or configResult != null){
       result = false
     }else if(coverable typeis Dwelling_HOE){
@@ -81,10 +75,10 @@ enhancement UNACovTermEnhancement_Ext : gw.api.domain.covterm.CovTerm {
 
       result = (min == null and max == null) or min != max
     }
-      else if({"CPOrdinanceorLawCoverage_EXT"}.contains(this.PatternCode))
-        {
-        result = false
-          }
+
+    if(this.PatternCode == "HODW_OnPremises_Limit_HOE"){
+      result = !(coverable as Dwelling_HOE).HODW_Dwelling_Cov_HOE.HODW_ExecutiveCov_HOE_ExtTerm.Value
+    }
 
    return result
   }

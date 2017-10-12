@@ -17,10 +17,6 @@ class CLUEReportOrderingPlugin extends ReportOrderingPlugin<ReportRequestDTO, CL
   @InjectableNode
   construct(){}
 
-  override function orderReport(reportRequest : ReportRequestDTO) : CLUEReportResponseDTO{
-    return super.orderReport(reportRequest)
-  }
-
   override function executeReportOrder() {
     una.integration.service.gateway.plugin.GatewayPlugin.makeCLUEGateway().orderClueProperty(PortalJob.LatestPeriod, AccountNumber)
   }

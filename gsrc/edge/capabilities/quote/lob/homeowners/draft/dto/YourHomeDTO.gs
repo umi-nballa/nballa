@@ -269,6 +269,9 @@ class YourHomeDTO {
   private var _consecutiveMonthsUnoccupied : Integer as ConsecutiveMonthsUnoccupied
 
   @JsonProperty
+  private var _numberOfMortgagees : Integer as NumberOfMortgagees
+
+  @JsonProperty
   private var _metricVersion : String as MetricVersion
 
   @JsonProperty

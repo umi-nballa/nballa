@@ -1,11 +1,8 @@
 package edge.capabilities.reports.plugins
 
-uses gw.api.database.Query
-uses edge.exception.EntityNotFoundException
 uses edge.capabilities.reports.dto.ReportRequestDTO
 uses edge.capabilities.reports.dto.ReportResponseDTO
 uses edge.PlatformSupport.Bundle
-uses edge.exception.IllegalStateException
 
 /**
  * Created with IntelliJ IDEA.
@@ -24,8 +21,8 @@ abstract class ReportOrderingPlugin <T extends ReportRequestDTO, E extends Repor
   private var _job : Job as PortalJob
   private var _accountNumber : String as AccountNumber
 
-  function orderReport(reportRequest : T) : E{
-    _job = getJobByNumber(reportRequest.JobNumber)
+  function orderReport(reportRequest : T, job : Job) : E{
+    _job = job
     _accountNumber = reportRequest.AccountNumber
 
     Bundle.transaction( \ bundle -> {
@@ -38,19 +35,4 @@ abstract class ReportOrderingPlugin <T extends ReportRequestDTO, E extends Repor
 
   abstract function toResponseDTO() : E
   abstract protected function executeReportOrder()
-
-  /**
-   * Fetches a job by its number.
-   */
-  public function getJobByNumber(jobNumber: String) : Job {
-    var result = Query.make(Job).compare("JobNumber", Equals, jobNumber).select().FirstResult
-
-    if (result == null  ){
-      throw new EntityNotFoundException() {: Message = "Job ${jobNumber} not found." }
-    }else if(!PolicyPeriodStatus.TF_OPEN.TypeKeys.contains(result.SelectedVersion.Status)){
-      throw new IllegalStateException(){:Message = "Job ${jobNumber} is no longer in an editable state."}
-    }
-
-    return result
-  }
 }

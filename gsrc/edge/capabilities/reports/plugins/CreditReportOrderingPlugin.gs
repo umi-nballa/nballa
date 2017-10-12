@@ -18,9 +18,9 @@ class CreditReportOrderingPlugin extends ReportOrderingPlugin<CreditReportReques
   @InjectableNode
   construct(){}
 
-  override function orderReport(reportRequest : CreditReportRequestDTO) : ReportResponseDTO{
+  override function orderReport(reportRequest : CreditReportRequestDTO, job : Job) : ReportResponseDTO{
     _request = reportRequest
-    return super.orderReport(reportRequest)
+    return super.orderReport(reportRequest, job)
   }
 
   override function executeReportOrder() {
@@ -36,11 +36,11 @@ class CreditReportOrderingPlugin extends ReportOrderingPlugin<CreditReportReques
 
     switch(_request.CreditOrderingContact){
       case TC_PNI:
-        result = PortalJob.LatestPeriod.PrimaryNamedInsured
-        break
+          result = PortalJob.LatestPeriod.PrimaryNamedInsured
+          break
       case TC_CONI:
-        result = PortalJob.LatestPeriod.NamedInsureds.whereTypeIs(PolicyAddlNamedInsured).first() //TODO tlv this will change once we get an idea of the priority of additional named insured types
-        break
+          result = PortalJob.LatestPeriod.NamedInsureds.whereTypeIs(PolicyAddlNamedInsured).first() //TODO tlv this will change once we get an idea of the priority of additional named insured types
+          break
     }
 
     if(result == null){

@@ -16,8 +16,10 @@ uses edge.capabilities.reports.dto.credit.CreditReportRequestDTO
 uses edge.capabilities.reports.dto.clue.CLUEReportResponseDTO
 uses edge.capabilities.policycommon.accountcontact.IAccountContactPlugin
 uses edge.PlatformSupport.Bundle
-uses edge.capabilities.quote.lob.homeowners.draft.mappers.EdgePolicyContactMapper
 uses edge.capabilities.quote.lob.homeowners.draft.mappers.contact.PolicyAdditionalNamedInsuredMapper
+uses gw.api.database.Query
+uses edge.exception.EntityNotFoundException
+uses edge.exception.IllegalStateException
 
 /**
  * Created with IntelliJ IDEA.
@@ -36,11 +38,11 @@ class ReportOrderHandler implements IRpcHandler{
   //we are not validating credit currently for Renewals because we do not support renewal job alterations
   //through the portal.  Besides that, Renewals are normally automated anyways
   private final var REPORT_TO_JOB_TYPES_AUTHORIZATION : Map<IType, List<IType>> = {CreditReportOrderingPlugin -> {Submission},
-                                                                                   CLUEReportOrderingPlugin -> {Submission}}
+      CLUEReportOrderingPlugin -> {Submission}}
 
   /**
-  * Report ordering plugin
-  */
+   * Report ordering plugin
+   */
   private var _reportOrderingPlugin : ReportOrderingPlugin
 
   private var _accountContactPlugin : IAccountContactPlugin
@@ -68,31 +70,31 @@ class ReportOrderHandler implements IRpcHandler{
    */
   @JsonRpcMethod
   public function orderCreditReport(reportRequest : CreditReportRequestDTO) : ReportResponseDTO {
-    var job = _reportOrderingPlugin.getJobByNumber(reportRequest.JobNumber)
+    var job = getJobByNumber(reportRequest.JobNumber)
     //first update contact data then order.  needed because portal will not save prior to this.
 
     Bundle.transaction( \ bundle -> {
       job = bundle.add(job)
-        if(reportRequest.PrimaryInsured != null){
-          _accountContactPlugin.updateContact(job.SelectedVersion.PrimaryNamedInsured.ContactDenorm, reportRequest.PrimaryInsured)
+      if(reportRequest.PrimaryInsured != null){
+        _accountContactPlugin.updateContact(job.SelectedVersion.PrimaryNamedInsured.ContactDenorm, reportRequest.PrimaryInsured)
+      }
+
+      if(reportRequest.CoInsured != null){
+        var coInsuredContact = job.SelectedVersion.PolicyContactRoles.whereTypeIs(PolicyAddlNamedInsured)?.atMostOneWhere( \ contact -> contact.ContactDenorm.PortalHash_Ext == reportRequest.CoInsured.Contact.PortalContactHash)
+        var additionalInsuredMapper = new PolicyAdditionalNamedInsuredMapper()
+
+        if(coInsuredContact == null){
+          var previousIndex = job.SelectedVersion.PolicyContactRoles.whereTypeIs(PolicyAddlNamedInsured)?.orderByDescending(\ pcr -> pcr.PortalIndex)?.first().PortalIndex
+          additionalInsuredMapper.createContact(job.SelectedVersion, previousIndex, reportRequest.CoInsured)
+          coInsuredContact = job.SelectedVersion.PolicyContactRoles.whereTypeIs(PolicyAddlNamedInsured)?.atMostOneWhere( \ contact -> contact.ContactDenorm.PortalHash_Ext == reportRequest.CoInsured.Contact.PortalContactHash) //re-retrieve to populate null entity
         }
 
-        if(reportRequest.CoInsured != null){
-          var coInsuredContact = job.SelectedVersion.PolicyContactRoles.whereTypeIs(PolicyAddlNamedInsured)?.atMostOneWhere( \ contact -> contact.ContactDenorm.PortalHash_Ext == reportRequest.CoInsured.Contact.PortalContactHash)
-          var additionalInsuredMapper = new PolicyAdditionalNamedInsuredMapper()
-
-          if(coInsuredContact == null){
-            var previousIndex = job.SelectedVersion.PolicyContactRoles.whereTypeIs(PolicyAddlNamedInsured)?.orderByDescending(\ pcr -> pcr.PortalIndex)?.first().PortalIndex
-            additionalInsuredMapper.createContact(job.SelectedVersion, previousIndex, reportRequest.CoInsured)
-            coInsuredContact = job.SelectedVersion.PolicyContactRoles.whereTypeIs(PolicyAddlNamedInsured)?.atMostOneWhere( \ contact -> contact.ContactDenorm.PortalHash_Ext == reportRequest.CoInsured.Contact.PortalContactHash) //re-retrieve to populate null entity
-          }
-
-          additionalInsuredMapper.updateContactRole(coInsuredContact, reportRequest.CoInsured)
-        }
+        additionalInsuredMapper.updateContactRole(coInsuredContact, reportRequest.CoInsured)
+      }
     })
 
 
-    return _reportOrderingPlugin.orderReport(reportRequest)
+    return _reportOrderingPlugin.orderReport(reportRequest, job)
   }
 
   /**
@@ -103,6 +105,21 @@ class ReportOrderHandler implements IRpcHandler{
    */
   @JsonRpcMethod
   public function orderCLUEReport(reportRequest : ReportRequestDTO) : CLUEReportResponseDTO {
-    return _reportOrderingPlugin.orderReport(reportRequest) as CLUEReportResponseDTO
+    return _reportOrderingPlugin.orderReport(reportRequest, getJobByNumber(reportRequest.JobNumber)) as CLUEReportResponseDTO
+  }
+
+  /**
+   * Fetches a job by its number.
+   */
+  private function getJobByNumber(jobNumber: String) : Job {
+    var result = Query.make(Job).compare("JobNumber", Equals, jobNumber).select().FirstResult
+
+    if (result == null  ){
+      throw new EntityNotFoundException() {: Message = "Job ${jobNumber} not found." }
+    }else if(!PolicyPeriodStatus.TF_OPEN.TypeKeys.contains(result.SelectedVersion.Status)){
+      throw new IllegalStateException(){:Message = "Job ${jobNumber} is no longer in an editable state."}
+    }
+
+    return result
   }
 }

@@ -93,20 +93,6 @@ enhancement DwellingEnhancement_Ext : entity.Dwelling_HOE {
     return result
   }
 
-  property get EarthquakeDeductibleValue(): DwellingCov_HOE {
-    var result: DwellingCov_HOE
-
-      if(this.HODW_Comp_Earthquake_CA_HOE_ExtExists) {
-
-      } else if(this.HODW_Earthquake_HOEExists) {
-
-      } else if(this.HODW_Limited_Earthquake_CA_HOEExists) {
-
-      }
-
-     return result
-  }
-
   property get HasAllRenovations() : boolean {
 
     return this.ElectricalSystemUpgrade and this.HeatingUpgrade and this.PlumbingUpgrade and this.RoofingUpgrade

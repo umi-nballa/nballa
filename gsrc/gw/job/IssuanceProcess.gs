@@ -178,6 +178,9 @@ class IssuanceProcess extends JobProcess {
         issue()
     }
 
+    /**
+     * Override because we want to tell the Portal about an issuance immediately
+    */
     override function createPortalRefreshEventMessages() {
         _branch.addEvent(PolicyRefreshTransport.REFRESH_MSG)
     }

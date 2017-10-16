@@ -87,7 +87,7 @@ class PolicyRefreshTransport extends AbstractMessageTransport implements Initial
         }
     }
 
-    public  function sendPersonalPolicyUPSERT( message: Message) { //
+    public  function sendPersonalPolicyUPSERT( message: Message) {
 
         var policyPeriod = message.PolicyPeriod
 
@@ -103,7 +103,7 @@ class PolicyRefreshTransport extends AbstractMessageTransport implements Initial
         policies.BalanceDueDate = new XmlDateTime()
         policies.LegacyPolicyNumber = policyPeriod.LegacyPolicyNumber_Ext?: ""
         policies.CallingCenter = "PC"
-        policies.print()
+        //policies.print()
 
         var response = service.PersonalPolicy_UPSERT(policies, authHeader)
         _logger.debug("Response: {}", response)
@@ -337,12 +337,17 @@ class PolicyRefreshTransport extends AbstractMessageTransport implements Initial
                                 : UserLineCode = getGroupLineCode(policyPeriod),
                                 : WiringYr = dwelling.ElectricalSystemUpgradeDate?.toString(),
                                 : YrBuilt = dwelling.YearBuiltOrOverride?.toString(),
-                                : NSDed = "",
-                                : NSDollar = "",
-                                : EQDed = "",
-                                : EQDollar = "",
-                                : WHDollar = "",
-                                : HurricaneDollar = "989898900", // TODO: Dependent on DE2608
+                                : NSDed = "",// TODO: Add once Tou is done with refactor
+                                : NSDollar = "",// TODO: Add once Tou is done with refactor
+                                : EQDed = "",// TODO: Add once Tou is done with refactor
+                                : EQDollar = "",// TODO: Add once Tou is done with refactor
+                                : WHDollar = "",// TODO: Add once Tou is done with refactor
+                                : HurricaneDollar = "989898900", // TODO: Dependent on DE2608 // TODO: Add once Tou is done with refactor
+                                : AttachedEndPrem = "",// TODO: Add once Tou is done with refactor
+                                : FeesAndAss = "",// TODO: Add once Tou is done with refactor
+                                : BasicCovPrem = "",// TODO: Add once Tou is done with refactor
+                                : SchedPropPrem = "",// TODO: Add once Tou is done with refactor
+                                : TotalPolPrem = "", // TODO: Add once Tou is done with refactor
                                 : Coverage = getCoverages(coveragesList, dwelling),
                                 : ItemNotes = getNotes(policyPeriod),
                                 : LossHist = new ArrayList<Prop_LossHist>() {},

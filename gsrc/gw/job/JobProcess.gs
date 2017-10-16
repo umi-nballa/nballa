@@ -25,6 +25,7 @@ uses gw.api.system.PCLoggerCategory
 uses java.lang.Exception
 uses gw.plugin.messaging.BillingMessageTransport
 uses una.integration.plugins.portal.PolicyRefreshTransport
+uses gw.api.util.DateUtil
 
 /**
  * JobProcess classes encapsulate all of the actions that can be taken in the context of a Job.
@@ -1020,5 +1021,12 @@ abstract class JobProcess implements gw.api.job.IJobProcess {
   /**
    * Send policy updates to Portal.
    */
-   protected abstract function createPortalRefreshEventMessages()
+   protected function createPortalRefreshEventMessages() {
+       if(_branch.EditEffectiveDate.beforeOrEqualsIgnoreTime(DateUtil.currentDate())) {
+           _branch.addEvent(PolicyRefreshTransport.REFRESH_MSG)
+       } else {
+           PolicyRefreshTransport.addFutureChange(_branch)
+       }
+   }
+
 }

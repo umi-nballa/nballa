@@ -11,13 +11,13 @@ uses gw.api.web.job.JobWizardHelper
 class PolicyInfoPCFController {
 
   public static function onEnter(period : PolicyPeriod, jobWizardHelper : JobWizardHelper, openForEdit : Boolean){
-    //FL HO3 - New Submission, Renewal & Rewrite(Full & New Term) ONLY ---- To determine Named Insured or Co-Insured's(Spouse & Co-Insured ONLY)Age is greater than 60 (or) not
-    period.confirmAnyInsuredAgeOver60()
-    //TX TDPs UW Tier determination
-    if(period.BaseState == TC_TX && typekey.HOPolicyType_HOE.TF_ALLTDPTYPES.TypeKeys.contains(period.HomeownersLine_HOE.HOPolicyType)){
-      period.HomeownersLine_HOE.Dwelling.TXDwellFireTireDetermination()
-    }
     if(openForEdit){
+      //FL HO3 - New Submission, Renewal & Rewrite(Full & New Term) ONLY ---- To determine Named Insured or Co-Insured's(Spouse & Co-Insured ONLY)Age is greater than 60 (or) not
+      period.confirmAnyInsuredAgeOver60()
+      //TX TDPs UW Tier determination
+      if(period.BaseState == TC_TX && typekey.HOPolicyType_HOE.TF_ALLTDPTYPES.TypeKeys.contains(period.HomeownersLine_HOE.HOPolicyType)){
+        period.HomeownersLine_HOE.Dwelling.determineTXUWTier()
+      }
       gw.web.productmodel.ProductModelSyncIssuesHandler.syncPolicyTerm( period, jobWizardHelper)
       if(period.BaseState == TC_TX and period.HomeownersLine_HOE.HOPolicyType == TC_TDP1_Ext and period.includedPerilsCovered_Ext == null){
         period.includedPerilsCovered_Ext = TC_fireAndlightning

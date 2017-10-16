@@ -420,9 +420,9 @@ enhancement DwellingEnhancement_Ext : entity.Dwelling_HOE {
     }
   }
 
-  function TXDwellFireTireDetermination():UWTier_Ext{
+  function determineTXUWTier(){
     var dwellingAge = this.PolicyPeriod.PeriodStart.YearOfDate - this.YearBuiltOrOverride
-    var chargeableClaimCount = this.HOLine.chargeableClaimsCount
+    var chargeableClaimCount = this.HOLine.ChargeableClaimsCount
     var protectionClass = this.ProtectionClassCodeOrOverride.toInt()
     var residenceType = this.ResidenceType
     var noOfMortgages = this.NumberOfMortgagees_Ext
@@ -441,6 +441,5 @@ enhancement DwellingEnhancement_Ext : entity.Dwelling_HOE {
         residenceType == TC_townhouseRowhouse_Ext)){
       this.PolicyPeriod.UWTier_Ext = UWTier_Ext.TC_PREFERRED
     }
-    return this.PolicyPeriod.UWTier_Ext
   }
 }

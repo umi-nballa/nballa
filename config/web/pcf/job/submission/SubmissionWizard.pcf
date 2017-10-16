@@ -105,7 +105,7 @@
     </WizardStepGroup>
     <JobWizardStep
       id="RiskAnalysis"
-      onEnter="if(policyPeriod.BaseState == TC_TX &amp;&amp; typekey.HOPolicyType_HOE.TF_ALLTDPTYPES.TypeKeys.contains(policyPeriod.HomeownersLine_HOE.HOPolicyType)){policyPeriod.HomeownersLine_HOE.Dwelling.TXDwellFireTireDetermination()}"
+      onEnter="if(openForEdit &amp;&amp; policyPeriod.BaseState == TC_TX &amp;&amp; typekey.HOPolicyType_HOE.TF_ALLTDPTYPES.TypeKeys.contains(policyPeriod.HomeownersLine_HOE.HOPolicyType)){policyPeriod.HomeownersLine_HOE.Dwelling.determineTXUWTier()}"
       save="openForEdit"
       screen="Job_RiskAnalysisScreen(policyPeriod, openForEdit, jobWizardHelper)"
       title="displaykey.Web.Job.Policy.RiskAnalysis"

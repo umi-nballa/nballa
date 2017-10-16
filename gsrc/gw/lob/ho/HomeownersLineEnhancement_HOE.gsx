@@ -122,14 +122,10 @@ enhancement HomeownersLineEnhancement_HOE : entity.HomeownersLine_HOE {
   }
 
   //Property to get Chargeable Claims Count
-  property get chargeableClaimsCount():int{
+  property get ChargeableClaimsCount():int{
     var chargeableClaimCount = 0
     if(this.ClueHit_Ext){
-      for(loss in this.HOPriorLosses_Ext){
-        if(loss.ChargeableClaim == TC_YES){
-          chargeableClaimCount = chargeableClaimCount + 1
-        }
-      }
+      chargeableClaimCount = this.HOPriorLosses_Ext.where( \ loss -> loss.ChargeableClaim == TC_YES).Count
     }else{//No CLUE Hit
       //For TX TDPs UW Tier determination, we'll use PaidNonWeatherClaims_Ext field on the dwelling screen
       chargeableClaimCount = this.Dwelling.PaidNonWeatherClaims_Ext

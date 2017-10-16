@@ -108,11 +108,23 @@ enhancement UNAPolicyPeriodEnhancement : entity.PolicyPeriod {
     }
   }
 
+  property get HasUNAPriorCarrier() : boolean{
+    return this.Policy.PriorPolicies*.CarrierType?.contains(TC_UNA)
+  }
+
+  property get HasOtherCarrier() : boolean{
+    return this.Policy.PriorPolicies*.CarrierType?.contains(TC_OTHER)
+  }
+
+  property get HasNoPriorInsurance() : boolean{
+    return this.Policy.PriorPolicies*.CarrierType?.contains(TC_NOPRIORINS)
+  }
+
     /**
      * Gets the Display status for this period to show in the portal
      */
     public property get UNAPortalPeriodDisplayStatus() : String {
-        if (this.Status != "Bound") {
+        if (this.Status != typekey.PolicyPeriodStatus.TC_BOUND) {
             return this.Status.DisplayName
         } else if (this.CancellationDate != null) {
             return displaykey.PolicyPeriod.PortalPeriodDisplayStatus.Canceled

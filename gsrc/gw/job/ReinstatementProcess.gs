@@ -204,13 +204,6 @@ class ReinstatementProcess extends JobProcess {
         reinstate()
     }
 
-    override function createPortalRefreshEventMessages() {
-        if(_branch.EditEffectiveDate.beforeOrEqualsIgnoreTime(new Date())) {
-            _branch.addEvent(PolicyRefreshTransport.REFRESH_MSG)
-        } else {
-            PolicyRefreshTransport.addFutureChange(_branch)
-        }
-    }
 }
 
 

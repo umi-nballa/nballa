@@ -25,7 +25,7 @@ class PolicyRefreshBatchProcess extends BatchProcessBase {
      * Construct to call the super class construct
      */
     construct() {
-        super(TC_POLICYREFRESHFUTUREDATEDTRANS)
+        super(TC_POLICYREFRESHFUTUREDATEDTRANS_Ext)
     }
 
     override function doWork() {

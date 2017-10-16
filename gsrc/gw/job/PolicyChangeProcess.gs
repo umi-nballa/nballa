@@ -472,11 +472,4 @@ class PolicyChangeProcess extends JobProcess implements IPolicyChangeProcess {
         newBranch.AllAccountSyncables.each(\a -> a.prepareForJobEdit())
     }
 
-    override function createPortalRefreshEventMessages() {
-        if(_branch.EditEffectiveDate.beforeOrEqualsIgnoreTime(new Date())) {
-            _branch.addEvent(PolicyRefreshTransport.REFRESH_MSG)
-        } else {
-            PolicyRefreshTransport.addFutureChange(_branch)
-        }
-    }
 }

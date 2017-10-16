@@ -223,6 +223,9 @@ class RewriteProcess extends NewTermProcess {
         rewrite()
     }
 
+    /**
+     * Override because we want to tell the Portal about this rewrite immediately
+     */
     override function createPortalRefreshEventMessages() {
         _branch.addEvent(PolicyRefreshTransport.REFRESH_MSG)
     }

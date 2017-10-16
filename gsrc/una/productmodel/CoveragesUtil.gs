@@ -414,7 +414,7 @@ class CoveragesUtil {
     var yearBuilt = dwelling.YearBuiltOrOverride
     var isQualifyingResidenceType = {ResidenceType_HOE.TC_SINGLEFAMILY_EXT, ResidenceType_HOE.TC_DUPLEX}.contains(dwelling.ResidenceType)
     var isQualifyingFoundationType = dwelling.Foundation != TC_StiltsPilings_Ext
-    var constructionTypes = {dwelling.ConstructionTypeOrOverride, dwelling.ConstructionTypeL1OrOverride}
+    var constructionTypes = {dwelling.ConstructionTypeOrOverride}
     constructionTypes.removeWhere( \ elt -> elt == null)
     var isQualifyingConstructionType = constructionTypes.subtract(typekey.ConstructionType_HOE.TF_WOODFRAMECONSTRUCTIONTYPES.TypeKeys).Count == 0
 

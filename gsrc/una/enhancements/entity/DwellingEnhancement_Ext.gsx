@@ -159,14 +159,6 @@ enhancement DwellingEnhancement_Ext : entity.Dwelling_HOE {
     }
   }
 
-  property get ConstructionTypeL1OrOverride() : typekey.ConstructionType_HOE{
-    if(this.OverrideConstructionType_Ext and this.ConstTypeOverridden_Ext != null){
-      return this.ConstTypeOverridden_Ext
-    }else{
-      return this.ConstructionType
-    }
-  }
-
   property get ConstructionTypeL2OrOverride() : typekey.ConstructionType_HOE{
     if(this.OverrideConstructionTypeL2_Ext and this.ConstTypeOverriddenL2_Ext != null){
       return this.ConstTypeOverriddenL2_Ext

@@ -10,10 +10,10 @@ class HOConstructionTypeMapper {
 
   static function setConstructionType(dwelling : Dwelling_HOE, state: Jurisdiction): RateTableConstructionType_Ext {
     if(gw.lob.ho.HODwellingUtil_HOE.getNumStories(dwelling)==typekey.NumberOfStories_HOE.TC_ONEANDHALFSTORIES_EXT || gw.lob.ho.HODwellingUtil_HOE.getNumStories(dwelling)==typekey.NumberOfStories_HOE.TC_TWOSTORIES_EXT ){
-      var dwellingConstructionTypeL1 = dwelling.OverrideConstructionType_Ext? dwelling.ConstTypeOverridden_Ext : dwelling.ConstructionType
-      var exteriorWallFinishL1 = dwelling.OverrideExteriorWFvalL1_Ext? dwelling.ExteriorWFvalueOverridL1_Ext : dwelling.ExteriorWallFinishL1_Ext
-      var dwellingConstructionTypeL2 = dwelling.OverrideConstructionTypeL2_Ext? dwelling.ConstTypeOverriddenL2_Ext : dwelling.ConstructionTypeL2_Ext
-      var exteriorWallFinishL2 = dwelling.OverrideExteriorWFvalL2_Ext? dwelling.ExteriorWFvalueOverridL2_Ext : dwelling.ExteriorWallFinishL2_Ext
+      var dwellingConstructionTypeL1 = dwelling.ConstructionTypeOrOverride
+      var exteriorWallFinishL1 = dwelling.ExteriorWallFinishL1OrOverride
+      var dwellingConstructionTypeL2 = dwelling.ConstructionTypeL2OrOverride
+      var exteriorWallFinishL2 = dwelling.ExteriorWallFinishL2OrOverride
       switch (state) {
         case TC_TX:
             var returnConstructionType = setConstructionTypeForTX(dwellingConstructionTypeL1, exteriorWallFinishL1)
@@ -34,8 +34,8 @@ class HOConstructionTypeMapper {
               return setConstructionType(dwellingConstructionTypeL2)
       }
     } else{
-      var dwellingConstructionType = dwelling.OverrideConstructionType_Ext? dwelling.ConstTypeOverridden_Ext : dwelling.ConstructionType
-      var exteriorWallFinish = dwelling.OverrideExteriorWFval_Ext? dwelling.ExteriorWFvalueOverridden_Ext : dwelling.ExteriorWallFinish_Ext
+      var dwellingConstructionType = dwelling.ConstructionTypeOrOverride
+      var exteriorWallFinish = dwelling.ExteriorWallFinishOrOverride
       switch (state) {
         case TC_TX:
             return setConstructionTypeForTX(dwellingConstructionType, exteriorWallFinish)
@@ -53,24 +53,23 @@ class HOConstructionTypeMapper {
   }
 
   static function setConstructionTypeForTX(constructionType: ConstructionType_HOE, exteriorWallFinish: ExteriorWallFinish_Ext): RateTableConstructionType_Ext {
-    if (constructionType == typekey.ConstructionType_HOE.TC_CONCRETEBLOCK_EXT || constructionType == typekey.ConstructionType_HOE.TC_FIRERESISTIVE_EXT ||
-        constructionType == typekey.ConstructionType_HOE.TC_POUREDCONCRETE_EXT || constructionType == typekey.ConstructionType_HOE.TC_SOLIDBRICKSTONE_EXT ||
-        constructionType == typekey.ConstructionType_HOE.TC_S || constructionType == typekey.ConstructionType_HOE.TC_SUPERIORNONCOMBUSTIBLE_EXT) {
+    if (typekey.ConstructionType_HOE.TF_TEXASBRICKCONSTRUCTION.TypeKeys.contains(constructionType)) {
       return RateTableConstructionType_Ext.TC_BRICK
     } else if (constructionType == typekey.ConstructionType_HOE.TC_FRAME_EXT) {
       if (exteriorWallFinish == typekey.ExteriorWallFinish_Ext.TC_BRICKSTONEMASONRY)
         return RateTableConstructionType_Ext.TC_BRICKVENEER
       else
         return RateTableConstructionType_Ext.TC_FRAME
-    } else {
+    } else if(constructionType == typekey.ConstructionType_HOE.TC_BRICKMASONRYVENEER){
+      return RateTableConstructionType_Ext.TC_BRICKVENEER
+    }
+    else{
       return RateTableConstructionType_Ext.TC_NA
     }
   }
 
   static function setConstructionType(constructionType: ConstructionType_HOE): RateTableConstructionType_Ext {
-    if (constructionType == typekey.ConstructionType_HOE.TC_CONCRETEBLOCK_EXT || constructionType == typekey.ConstructionType_HOE.TC_FIRERESISTIVE_EXT ||
-        constructionType == typekey.ConstructionType_HOE.TC_POUREDCONCRETE_EXT || constructionType == typekey.ConstructionType_HOE.TC_SOLIDBRICKSTONE_EXT ||
-        constructionType == typekey.ConstructionType_HOE.TC_S || constructionType == typekey.ConstructionType_HOE.TC_SUPERIORNONCOMBUSTIBLE_EXT || constructionType == typekey.ConstructionType_HOE.TC_CONCRETEANDMASONRY) {
+    if (typekey.ConstructionType_HOE.TF_MASONRYCONSTRUCTIONTYPES.TypeKeys.contains(constructionType)) {
       return RateTableConstructionType_Ext.TC_MASONRY
     } else if (constructionType == typekey.ConstructionType_HOE.TC_FRAME_EXT || constructionType == typekey.ConstructionType_HOE.TC_OTHER) {
       return RateTableConstructionType_Ext.TC_FRAME

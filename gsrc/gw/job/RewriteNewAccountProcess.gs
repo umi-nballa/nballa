@@ -159,6 +159,9 @@ class RewriteNewAccountProcess extends NewTermProcess {
         super.withdrawWithoutCheckingConditions()
     }
 
+    /**
+     * Override because we want to tell the Portal about an this rewrite immediately
+     */
     override function createPortalRefreshEventMessages() {
         _branch.addEvent(PolicyRefreshTransport.REFRESH_MSG)
     }

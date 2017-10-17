@@ -51,4 +51,14 @@ enhancement HOLocationEnhancement_Ext : entity.HOLocation_HOE
       return this.FirelineSHIA_Ext
   }
 
+  property get DistToCoastOrOverride() : typekey.DistToCoastOverridden_Ext{
+    if(this.OverrideDistToCoast_Ext and this.DistToCoastOverridden_Ext != null){
+      return this.DistToCoastOverridden_Ext
+    } else{
+      return this.DistToCoast_Ext
+    }
+
+
+  }
+
 }

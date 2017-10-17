@@ -43,7 +43,8 @@ class ProcessesPlugin implements IProcessesPlugin {
         return new TenantInspectionBatchProcess()
       case BatchProcessType.TC_OPENRENEWALSAUTOMATION:
         return new OpenRenewalsAutomationBatchProcess()
-      case BatchProcessType.TC_POLICYREFRESHFUTUREDATEDTRANS:
+      // Policy Refresh Service to send future dated changes to the Portal
+      case BatchProcessType.TC_POLICYREFRESHFUTUREDATEDTRANS_EXT:
         return new PolicyRefreshBatchProcess()
       default:
         return null

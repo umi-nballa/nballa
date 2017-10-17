@@ -956,14 +956,6 @@ class RenewalProcess extends NewTermProcess {
         return false
     }
 
-    override function createPortalRefreshEventMessages() {
-        if(_branch.EditEffectiveDate.beforeOrEqualsIgnoreTime(new Date())) {
-            _branch.addEvent(PolicyRefreshTransport.REFRESH_MSG)
-        } else {
-            PolicyRefreshTransport.addFutureChange(_branch)
-        }
-    }
-
     /**
    * Inner class that encapsulates methods for determining when an underwriter should get involved
    * with a renewal.

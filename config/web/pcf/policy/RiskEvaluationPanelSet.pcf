@@ -117,6 +117,16 @@
         </RowIterator>
       </ListViewPanel>
     </PanelRef>
+    <DetailViewPanel>
+      <InputColumn>
+        <TextInput
+          id="UnderwritingTier_Ext"
+          label="displaykey.Web.SubmissionWizard.PolicyInfo.UnderwritingTier_Ext"
+          required="false"
+          value="policyPeriod.UWTier_Ext"
+          visible="policyPeriod.BaseState == TC_TX &amp;&amp; typekey.HOPolicyType_HOE.TF_ALLTDPTYPES.TypeKeys.contains(policyPeriod.HomeownersLine_HOE.HOPolicyType)"/>
+      </InputColumn>
+    </DetailViewPanel>
     <Code><![CDATA[function createUserProfilesMap() : java.util.Map<String, gw.util.Pair<UWAuthorityProfile[], String>> {
   // map where the value pair is the array of user profiles chosen and the localized name of the input label
   var map = new java.util.LinkedHashMap<String, gw.util.Pair<UWAuthorityProfile[], String>>()

@@ -52,13 +52,9 @@ enhancement UNATypeKeyArrayEnhancement: entity.TypekeyArray_Ext {
     }
 
     if(typeList.getTypeKeys(true)?.contains(typeCode)){
-      var codes = TypeListCodes
+      var codes = TypeListCodes ?: new ArrayList<String>()
 
-      if(codes == null){
-        codes = new ArrayList<String>()
-      }
-
-      if(!codes?.contains(typeCode)){
+      if(!codes?.contains(typeCode.Code)){
         codes.add(typeCode.Code)
       }
 

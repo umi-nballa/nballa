@@ -15,6 +15,7 @@ uses una.utils.ActivityUtil
 uses una.config.activity.OFACWorkController
 uses edge.util.helper.UserUtil
 uses una.config.ConfigParamsUtil
+uses una.integration.plugins.portal.PolicyRefreshTransport
 
 /**
  * Encapsulates the actions taken within a Submission job.
@@ -478,6 +479,7 @@ class SubmissionProcess extends NewTermProcess {
   private function finalizeBeforeIssuing() {
     prepareBranchForFinishingJob()
     createBillingEventMessages()
+    createPortalRefreshEventMessages()
     _branch.scheduleAllAudits()
     _branch.updatePolicyTermDepositAmount()
   }
@@ -498,12 +500,13 @@ class SubmissionProcess extends NewTermProcess {
     })
   }
 
-  override function issueJob(bindAndIssue : boolean) {
-    _branch.onBeginIssueJob()
-    if (bindAndIssue) {
-      issue()
-    } else {
-      bindOnly()
+    override function issueJob(bindAndIssue: boolean) {
+        _branch.onBeginIssueJob()
+        if (bindAndIssue) {
+            issue()
+        } else {
+            bindOnly()
+        }
     }
-  }
+
 }

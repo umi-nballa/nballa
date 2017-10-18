@@ -152,8 +152,15 @@ class RewriteNewAccountProcess extends NewTermProcess {
   /**
    * Remove RewrittenToNewAccount flag from old Policy.
    */
-  override protected function withdrawWithoutCheckingConditions() {
-    _branch.Policy.clearPolicyLinksForRewriteNewAccount()
-    super.withdrawWithoutCheckingConditions()
-  }
+    override protected function withdrawWithoutCheckingConditions() {
+        _branch.Policy.clearPolicyLinksForRewriteNewAccount()
+        super.withdrawWithoutCheckingConditions()
+    }
+
+    /**
+     * Override because we want to tell the Portal about an this rewrite immediately
+     */
+    override function createPortalRefreshEventMessages() {
+        _branch.addEvent(PolicyRefreshTransport.REFRESH_MSG)
+    }
 }

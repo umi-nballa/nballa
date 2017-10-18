@@ -258,16 +258,13 @@ class AuditProcess extends JobProcess {
       _branch.PolicyTerm.DepositReleased = true
     }
 
-    createBillingEventMessages()
-    if (_branch.Audit.AuditInformation.IsPremiumReport) {
-      _branch.updateTrendAnalysisValues()
-      if (not _branch.Audit.AuditInformation.IsReversal) {
-        rules.Audit.ReportingTrendAnalysis.invoke(_branch)
-      }
-    }
     _branch.enqueueForCededPremiumCalculation(RIRecalcReason.TC_AUDITCOMPLETE, null)
     Job.CloseDate = Date.CurrentDate
     _branch.Status = TC_AUDITCOMPLETE
     _branch.lockBranch()
   }
+
+    override function createPortalRefreshEventMessages() {
+        //Override the base to do nothing
+    }
 }

@@ -4,6 +4,8 @@ uses java.lang.IllegalArgumentException
 uses java.lang.Exception
 uses java.lang.IllegalStateException
 uses gw.api.domain.Clause
+uses java.util.Date
+uses gw.api.util.DateUtil
 
 /**
  * Created with IntelliJ IDEA.
@@ -117,4 +119,19 @@ enhancement UNAPolicyPeriodEnhancement : entity.PolicyPeriod {
   property get HasNoPriorInsurance() : boolean{
     return this.Policy.PriorPolicies*.CarrierType?.contains(TC_NOPRIORINS)
   }
+
+    /**
+     * Gets the Display status for this period to show in the portal
+     */
+    public property get UNAPortalPeriodDisplayStatus() : String {
+        if (this.Status != typekey.PolicyPeriodStatus.TC_BOUND) {
+            return this.Status.DisplayName
+        } else if (this.CancellationDate != null) {
+            return displaykey.PolicyPeriod.PortalPeriodDisplayStatus.Canceled
+        } else if (DateUtil.currentDate() >= this.PeriodEnd) {
+            return displaykey.PolicyPeriod.PortalPeriodDisplayStatus.Expired
+        } else {
+            return displaykey.PolicyPeriod.PortalPeriodDisplayStatus.InForce
+        }
+    }
 }

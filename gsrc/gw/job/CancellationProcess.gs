@@ -19,6 +19,7 @@ uses java.lang.IllegalStateException
 uses gw.api.web.util.TransactionUtil
 uses java.lang.Exception
 uses gw.api.system.PCLoggerCategory
+uses gw.api.util.DateUtil
 
 /**
  * Encapsulates the actions taken within a Cancellation job.
